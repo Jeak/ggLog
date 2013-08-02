@@ -9,14 +9,31 @@
     <script type="text/javascript">
       function newworkout()
       {
-        //document.getElementById("logs").innerHTML = "change";
-        document.getElementById("logs").style = "position:relative;top:10px;left:50px;width:600px;background-color:#EEEEEE";
+        document.getElementById("logs").className = "ggLog-newworkout";
+      }
+      function closenewworkout()
+      {
+        document.getElementById("logs").className = "ggLog-hide";
       }
       function changewn()
       {
         document.getElementById("workoutname").innerHTML =  document.getElementById("ggLogwn").value;
       }
     </script>
+    <style>
+      div.ggLog-hide
+      {
+        display:none;
+      }
+      div.ggLog-newworkout
+      {
+        position:relative;
+        top:10px;
+        left:50px;
+        width:600px;
+        background-color:#EEEEEE
+      }
+    </style>
   </head>
   <body style="width:100%">
     <div class="container">
@@ -37,7 +54,8 @@
         </button>
         <ul class="dropdown-menu">
           <li>
-            <a href="#" onclick="newworkout()">New Workout</a>
+            <!--a href="#" onclick="newworkout()">New Workout</a-->
+            <a href="javascript:newworkout();">New Workout</a>
           </li>
           <li>
             <a href="#">Second Link</a>
@@ -49,7 +67,8 @@
       </div> 
       <!--button onclick="newworkout()" style="position:absolute;top:0;right:100px;">New Workout</button-->
     </div>
-    <div id="logs" style="visibility:hidden">
+    <!--div class="container" id="logs" style="visibility:hidden"-->
+    <div class="ggLog-hide" id="logs">
       <form action="demo.php" method="post">
         <p class="text-center"><b><span style="color:red">New</span> <span id="workoutname">Untitled Workout</span></b></p>
         <div style="position:relative;height:35px;width:100%;">
@@ -128,7 +147,10 @@
           </div>
         </div>
         <div style="position:relative;width:100%;height:35px;top:0">
-          <input type="submit" value="save" style="display:block;margin-left:auto;margin-right:auto;" />
+          <div style="display:block;margin-left:auto;margin-right:auto;width:200px" >
+            <input type="submit" value="save" />
+            <button onClick="closenewworkout()" >cancel</button>
+          </div>
         </div>
       </form>
     </div>
