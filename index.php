@@ -12,10 +12,10 @@
     <div class="container">
       <ul class="nav nav-tabs">
         <li class="active">
-          <a href="#">Home</a>
+          <a href="index.php">Home</a>
         </li>
         <li>
-          <a href="#">Logs</a><a></a>
+          <a href="demo.php">Logs</a><a></a>
         </li>
       </ul>
     </div>
