@@ -16,19 +16,19 @@ function navbar($activepage)
   $navpages = array(new navitem("index.php", "Home")); //adding the pages
   $navpages[] = new navitem("demo.php","Logs");
 
-  echo "<div class=\"container\">\n";
-  echo "  <div class=\"navbar\"></div>\n";
-  echo "  <ul class=\"nav nav-tabs\">\n";
+  echo "<div class=\"container\">";
+  echo "<div class=\"navbar\"></div>";
+  echo "<ul class=\"nav nav-tabs\">";
   for($i=0;$i<count($navpages);++$i)
   {
     if($activepage == $navpages[$i]->pageurl)
-      echo "    <li class=\"active\">\n";
+      echo "<li class=\"active\">";
     else
-      echo "    <li>\n";
-    echo "      <a href=\"" . $navpages[$i]->pageurl . "\">" . $navpages[$i]->pagename . "</a>\n";
-    echo "    </li>\n";
+      echo "<li>";
+    echo "<a href=\"" . $navpages[$i]->pageurl . "\">" . $navpages[$i]->pagename . "</a>";
+    echo "</li>";
   }
-  echo "  </ul>\n";
+  echo "</ul>";
   echo "</div>\n";
 }
 /*  
