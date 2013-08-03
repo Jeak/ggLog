@@ -9,11 +9,11 @@
     <script type="text/javascript">
       function newworkout()
       {
-        document.getElementById("logs").className = "ggLog-newworkout";
+        document.getElementById("addworkout").className = "ggLog-newworkout";
       }
       function closenewworkout()
       {
-        document.getElementById("logs").className = "ggLog-hide";
+        document.getElementById("addworkout").className = "ggLog-hide";
       }
       function changewn()
       {
@@ -36,17 +36,7 @@
     </style>
   </head>
   <body style="width:100%">
-    <div class="container">
-      <div class="navbar"></div>
-      <ul class="nav nav-tabs">
-        <li>
-          <a href="index.php">Home</a>
-        </li>
-        <li class="active">
-          <a href="demo.php">Logs</a>
-        </li>
-      </ul>
-    </div>
+    <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <div style="position:relative;top:0;width:100%;height:50px;">
       <div class="btn-group" style="position:absolute;top:0;left:100px">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -67,8 +57,7 @@
       </div> 
       <!--button onclick="newworkout()" style="position:absolute;top:0;right:100px;">New Workout</button-->
     </div>
-    <!--div class="container" id="logs" style="visibility:hidden"-->
-    <div class="ggLog-hide" id="logs">
+    <div class="ggLog-hide" id="addworkout">
       <form action="demo.php" method="post">
         <p class="text-center"><b><span style="color:red">New</span> <span id="workoutname">Untitled Workout</span></b></p>
         <div style="position:relative;height:35px;width:100%;">
