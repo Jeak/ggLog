@@ -9,16 +9,7 @@
   </head>
   
   <body>
-    <div class="container">
-      <ul class="nav nav-tabs">
-        <li class="active">
-          <a href="#">Home</a>
-        </li>
-        <li>
-          <a href="#">Logs</a><a></a>
-        </li>
-      </ul>
-    </div>
+    <?php require_once("navbar.php"); navbar("index.php"); ?>
     <h1 class="text-center">ggLog</h1>
     <p class="text-center"><b>A running log for the rest of us.</b></p>
     <p class="text-center">ggLog is an online running log for those of us who simply:<br></p>
