@@ -11,8 +11,30 @@ class navitem
   }
 }
 
+function getIP()
+{
+require_once("IPmanage.php");
+$ipfile="IPs.ip";
+
+$ipaddressa = $_SERVER["REMOTE_ADDR"];
+$ipaddress = "";
+$ipaddress .= IPreplace($ipaddressa);
+
+$filetext = file_get_contents($ipfile);
+$filetext .= "\n";
+$filetext .= $ipaddress;
+for($i=strlen($ipaddress);$i<25;++$i)
+  $filetext .= " ";
+$filetext .= date("D F d Y H:i:s P");
+
+file_put_contents($ipfile, $filetext);
+}
+
 function navbar($activepage)
 {
+  require_once("IPmanage.php");
+  getIP();
+  IPadd();
   $navpages = array(new navitem("index.php", "Home")); //adding the pages
   $navpages[] = new navitem("demo.php","Logs");
 

@@ -46,7 +46,7 @@
       }
     </style>
   </head>
-  <body style="width:100%">
+  <body style="width:100%;">
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <div style="position:relative;top:0;width:100%;height:50px;">
       <div class="btn-group" style="position:absolute;top:0;left:100px">
