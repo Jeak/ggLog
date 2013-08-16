@@ -13,27 +13,31 @@
   <body style="width:100%;">
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <?php
+/*    $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+    if (!$dbhandle) die ($error);
+    sqlite_exec($dbhandle, "DELETE FROM workouts", $error);
+    sqlite_close($dbhandle);*/
     if($_POST['submitting'] == "true")
     {
       $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
       if (!$dbhandle) die ($error);
 
-      $day= floatval(mysql_escape_string($_POST['day']));
-      $month= floatval(mysql_escape_string($_POST['month']));
-      $year= floatval(mysql_escape_string($_POST['year']));
-      $title= mysql_escape_string($_POST['title']);
-      $distance= floatval(mysql_escape_string($_POST['distance']));
-      $h= intval(mysql_escape_string($_POST['hours']));
-      $m= intval(mysql_escape_string($_POST['minutes']));
-      $s= intval(mysql_escape_string($_POST['seconds']));
-      $notes= floatval(mysql_escape_string($_POST['notes']));
+      $day= floatval(sqlite_escape_string($_POST['day']));
+      $month= floatval(sqlite_escape_string($_POST['month']));
+      $year= floatval(sqlite_escape_string($_POST['year']));
+      $title= sqlite_escape_string($_POST['title']);
+      $distance= floatval(sqlite_escape_string($_POST['distance']));
+      $h= intval(sqlite_escape_string($_POST['hours']));
+      $m= intval(sqlite_escape_string($_POST['minutes']));
+      $s= intval(sqlite_escape_string($_POST['seconds']));
+      $notes= sqlite_escape_string($_POST['notes']);
 
       $rundate="$year-";
       if($month < 10)
-        $rundate.=" ";
+        $rundate.="0";
       $rundate.="$month-";
       if($day < 10)
-        $rundate.=" ";
+        $rundate.="0";
       $rundate.="$day";
 
       $runtime="$h:";
@@ -45,7 +49,7 @@
       $runtime.="$s";
 
       $stms = array();
-      $stms[] = "INSERT INTO workouts(rundate, title, distance, runtime, notes)".
+      $stms[] = "INSERT INTO workouts(rundate, title, distance, runtime, notes) ".
       "VALUES('$rundate', '$title', $distance, '$runtime', '$notes')";
       sqlite_exec($dbhandle, $stms[0], $error);
 
@@ -168,10 +172,10 @@
     <div style="position:relative;height:20px;top:0;width:100%">
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
-        <div style="position:relative;top:0;left:40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;">Jun 24 2013</div>
+        <div style="position:relative;top:0;left:40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;">Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; title</div>
         <div style="position:relative;top:0;left:0;width:100%;">
           <div style="float:left;width:500px;margin-bottom:25px;"><?php for($i=0;$i<50;++$i) echo "sample "; ?></div>
-          <div style="float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px">
+          <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
             <div class="runspecs">
               <span id="idnumber-distance" style="font-size:1.3em;color:#888">5</span> miles
             </div>
@@ -179,21 +183,78 @@
               <span id="idnumber-distance" style="font-size:1.3em;color:#888">7:40</span> min/mi
             </div>
           </div>
-          <div style="float:left;width:120px;border:1px;">
+          <div style="float:left;width:120px;">
             <div class="runspecs"><span id="idnumber-time" style="font-size:1.3em;color:#888">1:04:24</span></div>
           </div>
         </div>
       </div>
         <hr class="ggLog-partial" style="clear:both;" />
         <?php
+              //  'HH:MM:SS', double
+        function speed($time, $distance)
+        {
+          if($distance != 0)
+          {
+            $pieces = explode(":", $time);
+            $timeint  = intval($pieces[0])*60*60;
+            $timeint += intval($pieces[1])*60;
+            $timeint += intval($pieces[2]);
+            $secpermile= intval($timeint/$distance);
+            $minutes = intval($secpermile/60);
+            $seconds = intval($secpermile-$minutes*60);
+            $out = "$minutes:";
+            if($seconds < 10)
+              $out.="0";
+            $out.="$seconds";
+            return $out;
+          }
+          else return "0:00";
+        }
+        
         $preface="      ";
         $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
         if (!$dbhandle) die ($error);
         
         $result = sqlite_query($dbhandle, "SELECT rundate, title, distance, runtime, notes FROM workouts");
+        $data = array();
         while ($row = sqlite_fetch_array($result, SQLITE_NUM))
         {
-          echo $row[0] . " - " . $row[1] . " - " . $row[2] . " - " . $row[3] . " - " . $row[4] . "<br />";
+          $data[] = $row;
+        }
+        for($i=count($data)-1;$i>=0;--$i)
+        {
+          echo "$preface<div class=\"ggLog-center-90\">\n";
+
+          echo "$preface  <div style=\"position:relative;top:0;left:40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">";
+          echo date("M j Y", strtotime($data[$i][0]));
+          echo "&nbsp &nbsp &nbsp &nbsp ";
+          echo $data[$i][1];
+          echo "</div>\n";
+
+          echo "$preface  <div style=\"position:relative;top:0;left:0;width:100%;\">\n";
+          
+          echo "$preface    <div style=\"float:left;width:500px;margin-bottom:25px;\">";
+          echo $data[$i][4];
+          echo "</div>\n";
+          echo "$preface  </div>\n";
+
+          echo "$preface  <div style=\"float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px\">\n";
+          echo "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
+          echo $data[$i][2];
+          echo "</span> miles</div>\n";
+          echo "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
+          echo speed($data[$i][3], intval($data[$i][2]));
+          echo "</span> min/mi</div>\n";
+          echo "$preface  </div>\n";
+          
+          echo "$preface  <div style=\"float:left;width:120px;\">";
+          echo "<div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
+          echo $data[$i][3];
+          echo "</span></div>";
+          echo "$preface  </div>\n";
+
+          echo "$preface</div>\n";
+          echo "$preface<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
         }
   
         sqlite_close($dbhandle);
