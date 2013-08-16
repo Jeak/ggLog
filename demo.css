@@ -1,0 +1,61 @@
+div.ggLog-hide
+{
+  display:none;
+}
+div.ggLog-newworkoutmobile
+{
+  display:block;
+}
+div.ggLog-newworkout
+{
+  position:relative;
+  top:10px;
+  left:50px;
+  width:90%;
+}
+div.ggLog-center
+{
+  border-radius:15px; 
+  padding:10px;
+  background-color:#EEEEEE;
+  width:600px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+hr.ggLog-partial
+{
+  width:80%;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+div.ggLog-center-90
+{
+/*  border-radius:15px; */
+  padding:10px; 
+/*  background-color:#EEEEEE; */
+  left:150px;
+  width:800px;
+  position:relative;
+  top:0;
+}
+div.runspecs
+{
+  position:relative;
+  top:0;
+  left:0;
+  width:200px;
+  padding:3px;
+}
+div.ggLog-centermobile
+{
+  border-radius:15px; 
+  padding:10px;
+  background-color:#EEEEEE;
+  width:90%;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+

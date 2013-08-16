@@ -2,52 +2,56 @@
 <html style="width:100%">
   <head>
     <title>Running Logs</title>
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="demo.css" />
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="ggLogEssentials.js"></script>
     <script type="text/javascript" src="demo.js"></script>
-    <style>
-      div.ggLog-hide
-      {
-        display:none;
-      }
-      div.ggLog-newworkoutmobile
-      {
-        display:block;
-      }
-      div.ggLog-newworkout
-      {
-        position:relative;
-        top:10px;
-        left:50px;
-        width:90%;
-      }
-      div.ggLog-center
-      {
-        border-radius:15px; 
-        padding:10px;
-        background-color:#EEEEEE;
-        width:600px;
-        display:block;
-        margin-left:auto;
-        margin-right:auto;
-      }
-      div.ggLog-centermobile
-      {
-        border-radius:15px; 
-        padding:10px;
-        background-color:#EEEEEE;
-        width:90%;
-        display:block;
-        margin-left:auto;
-        margin-right:auto;
-      }
-    </style>
   </head>
   <body style="width:100%;">
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
+    <?php
+    if($_POST['submitting'] == "true")
+    {
+      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+      if (!$dbhandle) die ($error);
+
+      $day= floatval(mysql_escape_string($_POST['day']));
+      $month= floatval(mysql_escape_string($_POST['month']));
+      $year= floatval(mysql_escape_string($_POST['year']));
+      $title= mysql_escape_string($_POST['title']);
+      $distance= floatval(mysql_escape_string($_POST['distance']));
+      $h= intval(mysql_escape_string($_POST['hours']));
+      $m= intval(mysql_escape_string($_POST['minutes']));
+      $s= intval(mysql_escape_string($_POST['seconds']));
+      $notes= floatval(mysql_escape_string($_POST['notes']));
+
+      $rundate="$year-";
+      if($month < 10)
+        $rundate.=" ";
+      $rundate.="$month-";
+      if($day < 10)
+        $rundate.=" ";
+      $rundate.="$day";
+
+      $runtime="$h:";
+      if($m < 10)
+        $runtime.="0";
+      $runtime.="$m:";
+      if($s < 10)
+        $runtime.="0";
+      $runtime.="$s";
+
+      $stms = array();
+      $stms[] = "INSERT INTO workouts(rundate, title, distance, runtime, notes)".
+      "VALUES('$rundate', '$title', $distance, '$runtime', '$notes')";
+      sqlite_exec($dbhandle, $stms[0], $error);
+
+      sqlite_close($dbhandle);
+    }
+    ?>
     <div style="position:relative;top:0;width:100%;height:50px;">
       <div class="btn-group" style="position:absolute;top:0;left:100px">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -71,9 +75,10 @@
     <div class="ggLog-hide" id="addworkoutdesktop">
       <div class="ggLog-center">
         <form action="demo.php" method="post">
+          <input type="hidden" name="submitting" value="true" />
           <p class="text-center"><b><span style="color:red">New</span> <span id="workoutname">Untitled Workout</span></b></p>
           <div style="position:relative;height:35px;width:100%;">
-            <div style="position:absolute;top:0;left:0;">Title: <input type="text" name="title" id="ggLogwn" value="abcd" oninput="changewn()" /></div>
+            <div style="position:absolute;top:0;left:0;">Title: <input type="text" name="title" id="ggLogwn" value="" oninput="changewn()" /></div>
             <div style="position:absolute;top:0;right:0;">
               Date:
               <select name="month" style="width:70px;">
@@ -124,16 +129,16 @@
                 <option value="31">31</option>
               </select>
               <select name="year" style="width:70px">
-                <option value="2012">2012</option>
                 <option value="2013" selected>2013</option>
-                <option value="2014">2014</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
               </select>
             </div>
           </div>
           <div style="position:relative;width:100%;height:170px;top:0">
             <div style="position:absolute;top:0;left:0;width:420px;">
               <p class="text-center">Workout notes:</p>
-              <textarea style="width:400px;height:120px;" name=notes> </textarea>
+              <textarea style="width:400px;height:120px;" name="notes"></textarea>
             </div>
             <div style="position:absolute;top:0;right:0;width:160px;height:170px">
               <div style="position:relative;top:35px;right:0;width:160px;height:35px;">
@@ -157,26 +162,42 @@
       </div>
     </div>
     <div class="ggLog-hide" id="addworkoutmobile">
-      <div class="ggLog-centermobile">
-        <form action="demo.php" method="post">
-          <p class="text-center"><b>New Untitled Workout</b></p>
-          <div style="display:block;">Title: <input type="text" name="title" /></div>
-          <div style="display:block;" id="AddWorkoutMobileDate">
-            <!--Javascript will fill this out-->
-          </div>
-          <div style="display:block;">Distance: <input type="number" name="distance" style="width:50px;" /> mi</div>
-          <div style="display:block;left:10%;">
-            Time:
-            <input type="number" name="hours" style="width:20px"/>h
-            <input type="number" name="minutes" style="width:30px"/>m
-            <input type="number" name="seconds" style="width:30px"/>s
-          </div>
-          <div style="display:block;">Workout Notes:</div>
-          <div style="display:block;"><textarea name="notes"></textarea></div>
-          <div style="display:block;"><input type="submit" value="save"> <button onClick="closenewworkout()">cancel</button></div>
-        </form>
-      </div>
+      Mobile version under construction...
+      <!-- Probably would be better if the mobile site was at a different url -->
     </div>
-  <div style="position:relative;height:20px;"></div>
+    <div style="position:relative;height:20px;top:0;width:100%">
+      <hr class="ggLog-partial" style="clear:both;"/>
+      <div class="ggLog-center-90">
+        <div style="position:relative;top:0;left:40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;">Jun 24 2013</div>
+        <div style="position:relative;top:0;left:0;width:100%;">
+          <div style="float:left;width:500px;margin-bottom:25px;"><?php for($i=0;$i<50;++$i) echo "sample "; ?></div>
+          <div style="float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px">
+            <div class="runspecs">
+              <span id="idnumber-distance" style="font-size:1.3em;color:#888">5</span> miles
+            </div>
+            <div class="runspecs">
+              <span id="idnumber-distance" style="font-size:1.3em;color:#888">7:40</span> min/mi
+            </div>
+          </div>
+          <div style="float:left;width:120px;border:1px;">
+            <div class="runspecs"><span id="idnumber-time" style="font-size:1.3em;color:#888">1:04:24</span></div>
+          </div>
+        </div>
+      </div>
+        <hr class="ggLog-partial" style="clear:both;" />
+        <?php
+        $preface="      ";
+        $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+        if (!$dbhandle) die ($error);
+        
+        $result = sqlite_query($dbhandle, "SELECT rundate, title, distance, runtime, notes FROM workouts");
+        while ($row = sqlite_fetch_array($result, SQLITE_NUM))
+        {
+          echo $row[0] . " - " . $row[1] . " - " . $row[2] . " - " . $row[3] . " - " . $row[4] . "<br />";
+        }
+  
+        sqlite_close($dbhandle);
+        ?>
+    </div>
   </body>
 </html>
