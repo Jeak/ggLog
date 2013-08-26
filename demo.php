@@ -226,21 +226,21 @@
           echo "$preface<div class=\"ggLog-center-90\">\n";
 
           echo "$preface  <div style=\"position:relative;top:0;left:40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">";
-          echo date("M j Y", strtotime($data[$i][0]));
+          echo date("M j Y", strtotime($data[$i][0])); // Date
           echo "&nbsp &nbsp &nbsp &nbsp ";
-          echo $data[$i][1];
+          echo stripslashes($data[$i][1]); // title
           echo "</div>\n";
 
           echo "$preface  <div style=\"position:relative;top:0;left:0;width:100%;\">\n";
           
           echo "$preface    <div style=\"float:left;width:500px;margin-bottom:25px;\">";
-          echo $data[$i][4];
+          echo stripslashes($data[$i][4]); // notes?
           echo "</div>\n";
           echo "$preface  </div>\n";
 
           echo "$preface  <div style=\"float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px\">\n";
           echo "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
-          echo $data[$i][2];
+          echo $data[$i][2]; // distance
           echo "</span> miles</div>\n";
           echo "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
           echo speed($data[$i][3], intval($data[$i][2]));
@@ -249,7 +249,7 @@
           
           echo "$preface  <div style=\"float:left;width:120px;\">";
           echo "<div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
-          echo $data[$i][3];
+          echo $data[$i][3];  // pace (maybe)
           echo "</span></div>";
           echo "$preface  </div>\n";
 
