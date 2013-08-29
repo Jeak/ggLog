@@ -6,17 +6,41 @@ function IsMobileBrowser()
 }
 function SetDateDropdown(idname)
 {
-  var contents ="Date: <select name=\"month\" style=\"width:70px;\">  <option value=\"1\">Jan</option>  <option value=\"2\">Feb</option>  <option value=\"3\">Mar</option>  <option value=\"4\">Apr</option>  <option value=\"5\">May</option>  <option value=\"6\">Jun</option>  <option value=\"7\">Jul</option>  <option value=\"8\">Aug</option>  <option value=\"9\">Sep</option>  <option value=\"10\">Oct</option>  <option value=\"11\">Nov</option>  <option value=\"12\">Dec</option></select> ";
+  var today = new Date();
+  var year = today.getUTCFullYear();
+  var date = today.getDate();
+  var month = today.getMonth();
+  var months = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+  var contents ="Date: <select name=\"month\" style=\"width:70px;\"> ";
+  for(var i=0;i<12;++i)
+  {
+    if(i == month)
+    {
+      contents += "<option value=\"" + i+1 + "\" selected>" + months[i] + "</option>";
+    }
+    else
+    {
+      contents += "<option value=\"" + i+1 + "\">" + months[i] + "</option>";
+    }
+  }
+  
+//  var contents ="Date: <select name=\"month\" style=\"width:70px;\">  <option value=\"1\">Jan</option>  <option value=\"2\">Feb</option>  <option value=\"3\">Mar</option>  <option value=\"4\">Apr</option>  <option value=\"5\">May</option>  <option value=\"6\">Jun</option>  <option value=\"7\">Jul</option>  <option value=\"8\">Aug</option>  <option value=\"9\">Sep</option>  <option value=\"10\">Oct</option>  <option value=\"11\">Nov</option>  <option value=\"12\">Dec</option></select> ";
+  contents += "</select>"
   contents += "<select name=\"day\" style=\"width:60px;\">";
   for(var i=1;i<32;i++)
   {
-    contents += "<option value=\"" + i + "\">" + i + "</option>";
+    if(i == date)
+    {
+      contents += "<option value=\"" + i + "\" selected>" + i + "</option>";
+    }
+    else
+    {
+      contents += "<option value=\"" + i + "\">" + i + "</option>";
+    }
   }
   contents += "</select> ";
-  var today = new Date();
-  var year = today.getUTCFullYear();
   contents += "<select name=\"year\" style=\"width:70px\">"
-  for(var i=-2;i<3;i++)
+  for(var i=-2;i<1;i++)
   {
     if(i==0)
     {
