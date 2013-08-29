@@ -1,5 +1,6 @@
+
 <!doctype html>
-<html style="width:100%">
+<html style="width:100%;height:100%">
   <head>
     <title>Running Logs</title>
     <meta name="viewport" content="width=device-width" />
@@ -12,14 +13,15 @@
     <script type="text/javascript" src="ggLogEssentials.js"></script>
     <script type="text/javascript" src="demo.js"></script>
   </head>
-  <body style="width:100%;" onLoad="SetDateDropdown('datesdrop')">
+  <body style="width:100%;height:100%;" onLoad="SetDateDropdown('datesdrop')">
+    <div class="ggLog-hide" id="coverForNotices"> covers screen with black for okay messages </div>
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <?php
 /*    $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
     if (!$dbhandle) die ($error);
     sqlite_exec($dbhandle, "DELETE FROM workouts", $error);
     sqlite_close($dbhandle);*/
-    if($_POST['submitting'] == "true")
+    if($_POST['submitting'] == "newworkout")
     {
       $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
       if (!$dbhandle) die ($error);
@@ -50,9 +52,9 @@
         $runtime.="0";
       $runtime.="$s";
 
-      $stms = array();
-      $stms[] = "INSERT INTO workouts(rundate, title, distance, runtime, notes) ".
-      "VALUES('$rundate', '$title', $distance, '$runtime', '$notes')";
+      $stms = array(); // you've got to pass NULL to PID to make it actually auto increment.
+      $stms[] = "INSERT INTO workouts(rundate, title, distance, runtime, notes, PID) ".
+      "VALUES('$rundate', '$title', $distance, '$runtime', '$notes', NULL)";
       sqlite_exec($dbhandle, $stms[0], $error);
 
       sqlite_close($dbhandle);
@@ -81,7 +83,7 @@
     <div class="ggLog-hide" id="addworkoutdesktop">
       <div class="ggLog-center">
         <form action="demo.php" method="post" class="form-inline">
-          <input type="hidden" name="submitting" value="true" />
+          <input type="hidden" name="submitting" value="newworkout" />
           <p class="text-center"><b><span style="color:red">New</span> <span id="workoutname">Untitled Workout</span></b></p>
           <div style="position:relative;height:35px;width:100%;">
             <div style="position:absolute;top:0;left:0;"><label>Title:</label> <input type="text" style="width:250px;" class="form-control" name="title" id="ggLogwn" value="" /></div>
@@ -122,7 +124,7 @@
     <div style="position:relative;height:20px;top:0;width:100%">
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
-        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; title</div>
+        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:coverscreen()" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; title</div>
         <div style="position:relative;top:0;left:0;width:100%;">
           <div style="float:left;width:500px;margin-bottom:25px;"><?php for($i=0;$i<50;++$i) echo "sample "; ?></div>
           <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
@@ -165,17 +167,73 @@
         {
           return str_replace("\n", "<br />\n", $in);
         }
+
+        function sortbydate(&$workouts, $location=0)
+        {
+          $dates = array();
+          $found = array();
+          $incr = 0;
+          foreach( $workouts as $row )
+          {
+            $value;
+            $exists = array_search($row[$location], $found);
+            if($exists === false)
+            {
+              $value = $row[$location];
+              $found[] = $row[$location];
+            }
+            else // if there's multiple entries with the same date, change it so you don't end up overriding anything
+            {
+              $value = $row[$location] . '-' . $incr;
+            }
+            $dates[] = $value; // ex: $dates[0] = '2013-06-24'
+            ++$incr;
+          }
+          $dates = array_flip($dates); // ex: $dates['2013-06-24'] = 0;
+          ksort($dates); // sort by the key (the date)
+          $newworkouts = array();
+          // makes array with only the date and the key of the original array.
+          // sorts by date
+          // changes the date to the key and the key of the original array to the value
+          // reorders the workouts
+          // example: $workouts = array(0 => array(... '2013-06-24' ...),  1 => array(... '2013-08-16 ... ));
+          //          $dates = array(0 => '2013-06-24', 1=> '2013-08-16')
+          //          $dates = array('2013-08-16' => 1, '2013-06-24' => 0) // which is eq. to $dates array(0=>1, 1=>0)
+          //          $workouts[0] = $workouts[1]; $workouts[1] = $workouts[0]
+          foreach( $dates as $loc )
+          {
+            $newworkouts[] = $workouts[$loc];
+          }
+          $workouts = $newworkouts;
+        }
         
         $preface="      ";
         $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
         if (!$dbhandle) die ($error);
+
+        /*            //  UNCOMMENT THIS TO DISPLAY ALL VALUES IN A TABLE
+                      // -------------------------------------------------
+        $result = sqlite_query($dbhandle, "SELECT * FROM workouts");
+        echo "<table style=\"border:2px solid black;\">";
+        while( $row = sqlite_fetch_array($result, SQLITE_NUM))
+        {
+          echo "<tr style=\"border:2px solid black;\">";
+          foreach($row as $col)
+          {
+            echo "<td style=\"border:2px solid black;width:120px;\">" . $col . "</td>";
+          }
+          echo "</tr>";
+        }
+        echo "</table><br /><br /><br />";
+        */
         
-        $result = sqlite_query($dbhandle, "SELECT rundate, title, distance, runtime, notes FROM workouts");
+        $result = sqlite_query($dbhandle, "SELECT rundate, title, distance, runtime, notes, PID FROM workouts");
         $data = array();
         while ($row = sqlite_fetch_array($result, SQLITE_NUM))
         {
           $data[] = $row;
         }
+        sortbydate($data);
         for($i=count($data)-1;$i>=0;--$i)
         {
           echo "$preface<div class=\"ggLog-center-90\">\n";
@@ -184,7 +242,7 @@
 //<a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a>
           echo "$preface  <a href=\"\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a> <a href=\"\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
           echo " &nbsp; &nbsp; ";
-          echo date("M j Y", strtotime($data[$i][0])); // Date
+          echo date("M j Y", strtotime($data[$i][0])) . " " . $data[$i][5]; // Date
           echo "&nbsp &nbsp &nbsp &nbsp ";
           echo stripslashes($data[$i][1]); // title
           echo "</div>\n";

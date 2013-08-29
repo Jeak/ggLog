@@ -23,3 +23,14 @@ function changewn()
 //  else
 //    document.getElementById("workoutname").innerHTML =  document.getElementById("ggLogwn").value;
 }
+function coverscreen(id)
+{
+//  document.getElementById('coverForNotices').className="cover";
+  document.getElementById('coverForNotices').className="cover";
+  document.getElementById('')
+}
+function uncoverscreen()
+{
+  document.getElementById('coverForNotices').className="ggLog-hide";
+}
+

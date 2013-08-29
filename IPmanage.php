@@ -4,6 +4,21 @@ function dbfilename()
   return dirname(__FILE__) . "/ipm.db";
 }
 
+function allowed($name)
+{
+  $dev = array();
+  $dev[] = 'JG';
+  $dev[] = 'Jack Gallegos';
+  $dev[] = 'David Berard';
+
+  foreach ( $dev as $i )
+  {
+    if($name == $i )
+      return true;
+  }
+  return false;
+}
+
 function IPadd()
 {
   $dbhandle = sqlite_open(dbfilename(), 0666, $error);

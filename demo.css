@@ -23,6 +23,19 @@ div.ggLog-center
   margin-left:auto;
   margin-right:auto;
 }
+div.cover
+{
+  position:fixed;
+  z-index:5;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  color:white;
+  background-color:#333;
+  opacity:0.6;
+  filter:alpha(opacity=60); /* For IE8 and earlier */
+}
 hr.ggLog-partial
 {
   width:80%;
