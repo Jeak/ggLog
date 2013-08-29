@@ -14,12 +14,12 @@ function newworkout()
 function closenewworkout()
 {
   document.getElementById("addworkoutdesktop").className = "ggLog-hide";
-  document.getElementById("addworkoutmobile").className = "ggLog-hide";
+//  document.getElementById("addworkoutmobile").className = "ggLog-hide";
 }
 function changewn()
 {
-  if(document.getElementById("ggLogwn").value == "")
-    document.getElementById("workoutname").innerHTML = "Untitled Workout";
-  else
-    document.getElementById("workoutname").innerHTML =  document.getElementById("ggLogwn").value;
+//  if(document.getElementById("ggLogwn").value == "")
+//    document.getElementById("workoutname").innerHTML = "Untitled Workout";
+//  else
+//    document.getElementById("workoutname").innerHTML =  document.getElementById("ggLogwn").value;
 }

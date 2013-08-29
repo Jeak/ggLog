@@ -80,35 +80,36 @@
     </div>
     <div class="ggLog-hide" id="addworkoutdesktop">
       <div class="ggLog-center">
-        <form action="demo.php" method="post">
+        <form action="demo.php" method="post" class="form-inline">
           <input type="hidden" name="submitting" value="true" />
           <p class="text-center"><b><span style="color:red">New</span> <span id="workoutname">Untitled Workout</span></b></p>
           <div style="position:relative;height:35px;width:100%;">
-            <div style="position:absolute;top:0;left:0;">Title: <input type="text" name="title" id="ggLogwn" value="" oninput="changewn()" /></div>
+            <div style="position:absolute;top:0;left:0;"><label>Title:</label> <input type="text" style="width:250px;" class="form-control" name="title" id="ggLogwn" value="" /></div>
             <div style="position:absolute;top:0;right:0;" id="datesdrop">
             </div>
           </div>
           <div style="position:relative;width:100%;height:170px;top:0">
             <div style="position:absolute;top:0;left:0;width:420px;">
-              <p class="text-center">Workout notes:</p>
-              <textarea style="width:400px;height:120px;" name="notes"></textarea>
+              <p class="text-center"><b>Workout notes:</b></p>
+              <textarea style="width:400px;height:120px;" class="form-control" name="notes"></textarea>
             </div>
             <div style="position:absolute;top:0;right:0;width:160px;height:170px">
               <div style="position:relative;top:35px;right:0;width:160px;height:35px;">
-                Distance: <input type="text" name="distance" style="width:60px"/>
+                <label> Distance:</label>
+                <input type="text" class="form-control" name="distance" style="width:90px" placeholder="Distance" />
               </div>
-              <div style="position:relative;top:35px;right:0;width:160px;height:35px;">
+              <div style="position:relative;top:50px;right:0;width:160px;height:35px;">
                 Time:
-                <input type="text" name="hours" style="width:10px"/>h
-                <input type="text" name="minutes" style="width:15px"/>m
-                <input type="text" name="seconds" style="width:15px"/>s
+                <input type="text" name="hours" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h"/> :
+                <input type="text" name="minutes" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" /> :
+                <input type="text" name="seconds" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s"/>
               </div>
             </div>
           </div>
           <div style="position:relative;width:100%;height:35px;top:0">
             <div style="display:block;margin-left:auto;margin-right:auto;width:200px" >
               <input type="submit" value="save" />
-              <button onClick="closenewworkout()" >cancel</button>
+              <button onClick="closenewworkout(); return false;" >cancel</button>
             </div>
           </div>
         </form>
