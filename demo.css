@@ -59,3 +59,27 @@ div.ggLog-centermobile
   margin-right:auto;
 }
 
+a.editworkoutlink:link
+{
+  text-decoration:none;
+  color:#999;
+  font-size:0.9em;
+}
+a.editworkoutlink:visited
+{
+  text-decoration:none;
+  color:#999;
+  font-size:0.9em;
+}
+a.editworkoutlink:hover
+{
+  text-decoration:none;
+  color:#111;
+  font-size:0.9em;
+}
+a.editworkoutlink:active
+{
+  text-decoration:none;
+  color:#111;
+  font-size:0.9em;
+}

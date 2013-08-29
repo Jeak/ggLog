@@ -10,17 +10,21 @@ function SetDateDropdown(idname)
   var year = today.getUTCFullYear();
   var date = today.getDate();
   var month = today.getMonth();
-  var months = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var contents ="Date: <select name=\"month\" style=\"width:70px;\"> ";
+//  alert(year);
+//  alert(date);
+//  alert(month);
   for(var i=0;i<12;++i)
   {
+  var j = i+1
     if(i == month)
     {
-      contents += "<option value=\"" + i+1 + "\" selected>" + months[i] + "</option>";
+      contents += "<option value=\"" + j + "\" selected>" + months[i] + "</option>";
     }
     else
     {
-      contents += "<option value=\"" + i+1 + "\">" + months[i] + "</option>";
+      contents += "<option value=\"" + j + "\">" + months[i] + "</option>";
     }
   }
   
@@ -52,6 +56,6 @@ function SetDateDropdown(idname)
     }
   }
   contents += "</select>";
-
+  
   document.getElementById(idname).innerHTML = contents;
 }

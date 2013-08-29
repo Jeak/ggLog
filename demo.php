@@ -4,9 +4,11 @@
     <title>Running Logs</title>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="demo.css" />
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css">
+    <!--link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"-->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <!--script type="text/javascript" src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script-->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="ggLogEssentials.js"></script>
     <script type="text/javascript" src="demo.js"></script>
   </head>
@@ -119,7 +121,7 @@
     <div style="position:relative;height:20px;top:0;width:100%">
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
-        <div style="position:relative;top:0;left:40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;">Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; title</div>
+        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; title</div>
         <div style="position:relative;top:0;left:0;width:100%;">
           <div style="float:left;width:500px;margin-bottom:25px;"><?php for($i=0;$i<50;++$i) echo "sample "; ?></div>
           <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
@@ -177,7 +179,10 @@
         {
           echo "$preface<div class=\"ggLog-center-90\">\n";
 
-          echo "$preface  <div style=\"position:relative;top:0;left:40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">";
+          echo "$preface  <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">";
+//<a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a>
+          echo "$preface  <a href=\"\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a> <a href=\"\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
+          echo " &nbsp; &nbsp; ";
           echo date("M j Y", strtotime($data[$i][0])); // Date
           echo "&nbsp &nbsp &nbsp &nbsp ";
           echo stripslashes($data[$i][1]); // title
