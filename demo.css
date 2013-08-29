@@ -31,10 +31,33 @@ div.cover
   left:0;
   width:100%;
   height:100%;
-  color:white;
+}
+div.colorcover
+{
+  position:absolute;
+  width:100%;
+  height:100%;
   background-color:#333;
   opacity:0.6;
   filter:alpha(opacity=60); /* For IE8 and earlier */
+}
+div.ggLog-centerquestion
+{
+/*  display:block;
+  margin-left:auto;
+  margin-right:auto; */
+  position:relative;
+  width:300px;
+  height:150px;
+  top:50%;
+  margin-top:-75px; /* half of height */
+  left:50%;
+  margin-left:-150px;
+
+  padding:20px;
+  border-radius:10px; 
+  z-index:6;
+  background-color:#FFF;
 }
 hr.ggLog-partial
 {

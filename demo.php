@@ -14,13 +14,20 @@
     <script type="text/javascript" src="demo.js"></script>
   </head>
   <body style="width:100%;height:100%;" onLoad="SetDateDropdown('datesdrop')">
-    <div class="ggLog-hide" id="coverForNotices"> covers screen with black for okay messages </div>
+
+    <div class="ggLog-hide" id="coverForNotices">
+    </div>
+
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <?php
 /*    $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
     if (!$dbhandle) die ($error);
     sqlite_exec($dbhandle, "DELETE FROM workouts", $error);
     sqlite_close($dbhandle);*/
+    if($_POST['submitting'] == "deleteworkout")
+    {
+//      echo "<script type=\"text/javascript\">alert(\"delete " . $_POST['PID'] . "\");</script>";
+    }
     if($_POST['submitting'] == "newworkout")
     {
       $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
@@ -101,7 +108,7 @@
                 <input type="text" class="form-control" name="distance" style="width:90px" placeholder="Distance" />
               </div>
               <div style="position:relative;top:50px;right:0;width:160px;height:35px;">
-                Time:
+                <label>Time:</label>
                 <input type="text" name="hours" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h"/> :
                 <input type="text" name="minutes" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" /> :
                 <input type="text" name="seconds" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s"/>
@@ -110,8 +117,8 @@
           </div>
           <div style="position:relative;width:100%;height:35px;top:0">
             <div style="display:block;margin-left:auto;margin-right:auto;width:200px" >
-              <input type="submit" value="save" />
-              <button onClick="closenewworkout(); return false;" >cancel</button>
+              <input type="submit" class="form-control" value="save" style="width:60px;" />
+              <button onClick="closenewworkout(); return false;" class="form-control" style="width:60px;" >cancel</button>
             </div>
           </div>
         </form>
@@ -124,7 +131,7 @@
     <div style="position:relative;height:20px;top:0;width:100%">
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
-        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:coverscreen()" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; title</div>
+        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; title</div>
         <div style="position:relative;top:0;left:0;width:100%;">
           <div style="float:left;width:500px;margin-bottom:25px;"><?php for($i=0;$i<50;++$i) echo "sample "; ?></div>
           <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
@@ -240,9 +247,10 @@
 
           echo "$preface  <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">";
 //<a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a>
-          echo "$preface  <a href=\"\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a> <a href=\"\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
+          echo "$preface  <a href=\"\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+          echo "$preface  <a href=\"javascript:deleteworkout($PID);\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
           echo " &nbsp; &nbsp; ";
-          echo date("M j Y", strtotime($data[$i][0])) . " " . $data[$i][5]; // Date
+          echo date("M j Y", strtotime($data[$i][0])); // date
           echo "&nbsp &nbsp &nbsp &nbsp ";
           echo stripslashes($data[$i][1]); // title
           echo "</div>\n";
