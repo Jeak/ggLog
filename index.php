@@ -21,7 +21,8 @@
       <li class="text-left">Spend a lot of time on our devices</li>
       <li class="text-left">Run a lot</li>
     </ul>
-    <p class="text-center">If this sounds like you, then feel free to jump in. Click the <b>Logs</b>&nbsp;tab to get started.</p><br><br>
+    <p class="text-center">If this sounds like you, then feel free to jump in. Click the <a href="demo.php"><b>Logs</b></a>&nbsp;tab to get started.</p><br><br>
+    <div style="display:block;margin-left:auto;margin-right:auto;width:900px;"><b><p class="text-center" style="font-size:1.5em">If you find a bug (problem) or have a suggestion, visit our logs page and post a new workout with your bug report or suggestion</p></b></div>
     <a class="btn btn-link" href="https://github.com/Jeak/ggLog">our Github :D</a>
     <p>Powered by <a href="http://twitter.github.io/bootstrap/">#Bootstrap</a></p>
   </body>

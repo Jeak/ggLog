@@ -26,9 +26,30 @@
     sqlite_close($dbhandle);*/
     if($_POST['submitting'] == "deleteworkout")
     {
-//      echo "<script type=\"text/javascript\">alert(\"delete " . $_POST['PID'] . "\");</script>";
+      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+      if (!$dbhandle) die ($error);
+      
+      $results = sqlite_query($dbhandle, "SELECT PID FROM workouts");
+      $found = false;
+      while ($row = sqlite_fetch_array($results, SQLITE_NUM)) // keep this?  it probably uses time & resources
+      {
+        if(intval($_POST['PID']) == intval($row[0]))
+        {
+          $found = true;
+          break;
+        }
+      }
+
+      $stm = "DELETE FROM workouts WHERE PID=" . $_POST['PID'];
+      if($found == true)
+      {
+        sqlite_exec($dbhandle, $stm, $error);
+      }
+      //[RELEASE] for the release, replace with @sqlite_exec() to surpress errors
+      
+      sqlite_close($dbhandle);
     }
-    if($_POST['submitting'] == "newworkout")
+    else if($_POST['submitting'] == "newworkout")
     {
       $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
       if (!$dbhandle) die ($error);
@@ -131,9 +152,9 @@
     <div style="position:relative;height:20px;top:0;width:100%">
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
-        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; title</div>
+        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; Feel free to post a workout!</div>
         <div style="position:relative;top:0;left:0;width:100%;">
-          <div style="float:left;width:500px;margin-bottom:25px;"><?php for($i=0;$i<50;++$i) echo "sample "; ?></div>
+          <div style="float:left;width:500px;margin-bottom:25px;">Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion.</div>
           <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
             <div class="runspecs">
               <span id="idnumber-distance" style="font-size:1.3em;color:#888">5</span> miles
@@ -243,12 +264,14 @@
         sortbydate($data);
         for($i=count($data)-1;$i>=0;--$i)
         {
+          $PID = $data[$i][5];
+          echo $PID;
           echo "$preface<div class=\"ggLog-center-90\">\n";
 
           echo "$preface  <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">";
 //<a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a>
           echo "$preface  <a href=\"\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
-          echo "$preface  <a href=\"javascript:deleteworkout($PID);\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
+          echo "$preface  <a href=\"javascript:deleteworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
           echo " &nbsp; &nbsp; ";
           echo date("M j Y", strtotime($data[$i][0])); // date
           echo "&nbsp &nbsp &nbsp &nbsp ";

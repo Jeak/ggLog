@@ -44,7 +44,7 @@ function SetDateDropdown(idname)
   }
   contents += "</select> ";
   contents += "<select name=\"year\" style=\"width:70px;padding-left:3px;padding-right:3px;\" class=\"form-control\">";
-  for(var i=-2;i<1;i++)
+  for(var i=0;i>-7;i--)
   {
     if(i==0)
     {

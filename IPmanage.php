@@ -10,6 +10,7 @@ function allowed($name)
   $dev[] = 'JG';
   $dev[] = 'Jack Gallegos';
   $dev[] = 'David Berard';
+  $dev[] = 'John Nover';
 
   foreach ( $dev as $i )
   {
@@ -149,7 +150,8 @@ function IPupdate($ip, $name)
 
 if( $_POST['name'] != "" && $_POST['name'] != NULL)
 {
-  IPupdate($_POST['ip'], $_POST['name']);
+  if(allowed(IPreplace($_SERVER["REMOTE_ADDR"])) == true)
+    IPupdate($_POST['ip'], $_POST['name']);
 }
 
 ?>

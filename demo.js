@@ -39,12 +39,12 @@ function deleteworkout(id)
       <div class="colorcover"></div>
       <div class="ggLog-centerquestion">
         <p class="text-center"><b>Are you sure you want to delete this workout?</b></p>
-        <div style="position:absolute;left:100px;width:150px;">
+        <div style="position:absolute;left:80px;width:150px;">
           <form class="form-inline">
             <input type="hidden" value="deleteworkout" name="submitting" />
             <input type="hidden" value="###" name="PID" />
-            <input type="submit" class="form-control" style="width:50px;" value="Yes" />
-            <button onClick="canceldeleteworkout(); return false;" class="form-control" style="width:50px;">No</button>
+            <button onClick="return true;" onkeypress="dwswitchbutton(event)" class="form-control" style="width:70px;">Yes</button>
+            <button onClick="canceldeleteworkout(); return false;" onkeypress="dwswitchbutton(event)" class="form-control" style="width:70px;">No</button>
           </form>
         </div>
       </div>
@@ -57,14 +57,14 @@ function deleteworkout(id)
   content += "    <p class=\"text-center\"><b>";
     content += message;
     content += "</b></p>";
-  content += "    <div style=\"position:absolute;left:100px;width:150px;\">";
+  content += "    <div style=\"position:absolute;left:80px;width:150px;\">";
   content += "      <form class=\"form-inline\" action=\"demo.php\" method=\"post\">";
   content += "        <input type=\"hidden\" value=\"deleteworkout\" name=\"submitting\" />";
   content += "        <input type=\"hidden\" value=\"";
     content += id;
     content += "\" name=\"PID\" />";
-  content += "        <button onClick=\"return true;\" onkeypress=\"dwswitchbutton(event)\" class=\"form-control\" style=\"width:50px;\">Yes</button>";
-  content += "      <button onClick=\"canceldeleteworkout(); return false;\" onkeypress=\"dwswitchbutton(event)\" class=\"form-control\" style=\"width:50px;\">No</button>";
+  content += "        <button onClick=\"return true;\" onkeypress=\"dwswitchbutton(event)\" class=\"form-control\" style=\"width:70px;\">Yes</button>";
+  content += "      <button onClick=\"canceldeleteworkout(); return false;\" onkeypress=\"dwswitchbutton(event)\" class=\"form-control\" style=\"width:70px;\">No</button>";
   content += "    </form>";
   content += "  </div>";
   content += "</div>";
@@ -78,7 +78,7 @@ function canceldeleteworkout()
 {
   document.getElementById('coverForNotices').className="ggLog-hide";
 }
-function dwswitchbutton(evt)
+function dwswitchbutton(evt) // this function allows for switching between the yes and no buttons
 {
   if(evt.keyCode == 37 || evt.keyCode == 39)
   {

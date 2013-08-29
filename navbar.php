@@ -1,4 +1,9 @@
 <?php
+
+$iploc = "./";
+
+require_once($iploc . "IPmanage.php");
+
 class navitem
 {
   public $pageurl;
@@ -13,8 +18,7 @@ class navitem
 
 function getIP()
 {
-require_once("IPmanage.php");
-$ipfile="IPs.ip";
+$ipfile=$iploc . "IPs.ip";
 
 $ipaddressa = $_SERVER["REMOTE_ADDR"];
 $ipaddress = "";
@@ -32,7 +36,6 @@ file_put_contents($ipfile, $filetext);
 
 function navbar($activepage)
 {
-  require_once("IPmanage.php");
   getIP();
   IPadd();
   $navpages = array(new navitem("index.php", "Home")); //adding the pages
