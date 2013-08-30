@@ -24,32 +24,8 @@
     if (!$dbhandle) die ($error);
     sqlite_exec($dbhandle, "DELETE FROM workouts", $error);
     sqlite_close($dbhandle);*/
-    if($_POST['submitting'] == "deleteworkout")
-    {
-      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-      if (!$dbhandle) die ($error);
-      
-      $results = sqlite_query($dbhandle, "SELECT PID FROM workouts");
-      $found = false;
-      while ($row = sqlite_fetch_array($results, SQLITE_NUM)) // keep this?  it probably uses time & resources
-      {
-        if(intval($_POST['PID']) == intval($row[0]))
-        {
-          $found = true;
-          break;
-        }
-      }
-
-      $stm = "DELETE FROM workouts WHERE PID=" . $_POST['PID'];
-      if($found == true)
-      {
-        sqlite_exec($dbhandle, $stm, $error);
-      }
-      //[RELEASE] for the release, replace with @sqlite_exec() to surpress errors
-      
-      sqlite_close($dbhandle);
-    }
-    else if($_POST['submitting'] == "newworkout")
+    
+    function addworkout($PID = -1)
     {
       $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
       if (!$dbhandle) die ($error);
@@ -80,16 +56,59 @@
         $runtime.="0";
       $runtime.="$s";
 
-      $stms = array(); // you've got to pass NULL to PID to make it actually auto increment.
-      $stms[] = "INSERT INTO workouts(rundate, title, distance, runtime, notes, PID) ".
-      "VALUES('$rundate', '$title', $distance, '$runtime', '$notes', NULL)";
-      sqlite_exec($dbhandle, $stms[0], $error);
-
+      if($PID < 0)
+      {
+        $stm = "INSERT INTO workouts(rundate, title, distance, runtime, notes, PID) ". // pass NULL to PID to make it auto increment
+        "VALUES('$rundate', '$title', $distance, '$runtime', '$notes', NULL)";
+        sqlite_exec($dbhandle, $stm, $error);
+      }
+      else
+      {
+        $stm = "UPDATE workouts ".
+        "SET rundate='$rundate', title='$title', distance=$distance, runtime='$runtime', notes='$notes' ".
+        "WHERE PID=$PID";
+        sqlite_exec($dbhandle, $stm, $error);
+      }
       sqlite_close($dbhandle);
+    }
+
+
+    if($_POST['submitting'] == "editworkout")
+    {
+      addworkout(intval($_POST['PID']));
+    }
+    else if($_POST['submitting'] == "deleteworkout")
+    {
+      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+      if (!$dbhandle) die ($error);
+      
+      $results = sqlite_query($dbhandle, "SELECT PID FROM workouts");
+      $found = false;
+      while ($row = sqlite_fetch_array($results, SQLITE_NUM)) // keep this?  it probably uses time & resources
+      {
+        if(intval($_POST['PID']) == intval($row[0]))
+        {
+          $found = true;
+          break;
+        }
+      }
+
+      $stm = "DELETE FROM workouts WHERE PID=" . $_POST['PID'];
+      if($found == true)
+      {
+        sqlite_exec($dbhandle, $stm, $error);
+      }
+      //[RELEASE] for the release, replace with @sqlite_exec() to surpress errors
+      
+      sqlite_close($dbhandle);
+    }
+    else if($_POST['submitting'] == "newworkout")
+    {
+      addworkout();
     }
     ?>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
-        <button type="button" class="btn btn-primary" style="position:relative;width:100px;left:70%;margin-left:-70px;" onclick="javascript:newworkout();">New Workout</button>
+        <button type="button" class="btn btn-primary" style="position:relative;left:70%;margin-left:-70px;" onclick="javascript:newworkout();">New Workout</button>
       <!--button onclick="newworkout()" style="position:absolute;top:0;right:100px;">New Workout</button-->
     </div>
     <div class="ggLog-hide" id="addworkoutdesktop">

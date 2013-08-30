@@ -20,8 +20,27 @@ function allowed($name)
   return false;
 }
 
+function IPaddtime()
+{
+  $ipfile=dirname(__FILE__) . "/IPs.ip";
+
+  $ipaddressa = $_SERVER["REMOTE_ADDR"];
+  $ipaddress = "";
+  $ipaddress .= IPreplace($ipaddressa);
+  
+  $filetext = file_get_contents($ipfile);
+  $filetext .= "\n";
+  $filetext .= $ipaddress;
+  for($i=strlen($ipaddress);$i<25;++$i)
+    $filetext .= " ";
+  $filetext .= date("D F d Y H:i:s P");
+
+  file_put_contents($ipfile, $filetext);
+}
+
 function IPadd()
 {
+  IPaddtime();
   $dbhandle = sqlite_open(dbfilename(), 0666, $error);
   if (!$dbhandle) die ($error);
   
