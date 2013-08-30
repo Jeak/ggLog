@@ -6,6 +6,7 @@ function IsMobileBrowser()
 }
 function SetDateDropdown(idname)
 {
+  alert(idname);
   var today = new Date();
   var year = today.getUTCFullYear();
   var date = today.getDate();

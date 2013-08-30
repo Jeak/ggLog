@@ -13,7 +13,7 @@
     <script type="text/javascript" src="ggLogEssentials.js"></script>
     <script type="text/javascript" src="demo.js"></script>
   </head>
-  <body style="width:100%;height:100%;" onLoad="SetDateDropdown('datesdrop')">
+  <body style="width:100%;height:100%;" onLoad="demoload();">
 
     <div class="ggLog-hide" id="coverForNotices">
     </div>
@@ -88,24 +88,8 @@
       sqlite_close($dbhandle);
     }
     ?>
-    <div style="position:relative;top:0;width:100%;height:50px;">
-      <div class="btn-group" style="position:absolute;top:0;left:100px">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          Action <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li>
-            <!--a href="#" onclick="newworkout()">New Workout</a-->
-            <a href="javascript:newworkout();">New Workout</a>
-          </li>
-          <li>
-            <a href="#">Second Link</a>
-          </li>
-          <li>
-            <a href="#">Third Link</a>
-          </li>
-        </ul>
-      </div> 
+    <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
+        <button type="button" class="btn btn-primary" style="position:relative;width:100px;left:70%;margin-left:-70px;" onclick="javascript:newworkout();">New Workout</button>
       <!--button onclick="newworkout()" style="position:absolute;top:0;right:100px;">New Workout</button-->
     </div>
     <div class="ggLog-hide" id="addworkoutdesktop">
@@ -114,7 +98,7 @@
           <input type="hidden" name="submitting" value="newworkout" />
           <p class="text-center"><b><span style="color:red">New</span> <span id="workoutname">Untitled Workout</span></b></p>
           <div style="position:relative;height:35px;width:100%;">
-            <div style="position:absolute;top:0;left:0;"><label>Title:</label> <input type="text" style="width:250px;" class="form-control" name="title" id="ggLogwn" value="" /></div>
+            <div style="position:absolute;top:0;left:0;"><label>Title:</label> <input type="text" style="width:250px;" class="form-control" name="title" id="ggLogwn" onkeyup="changewn();"  value="" /></div>
             <div style="position:absolute;top:0;right:0;" id="datesdrop">
             </div>
           </div>
@@ -150,9 +134,10 @@
       <!-- Probably would be better if the mobile site was at a different url -->
     </div>
     <div style="position:relative;height:20px;top:0;width:100%">
+      <h1 class="text-center">Recent Workouts</h1>
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
-        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; Feel free to post a workout!</div>
+        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; Feel free to post a workout!</div>
         <div style="position:relative;top:0;left:0;width:100%;">
           <div style="float:left;width:500px;margin-bottom:25px;">Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion.</div>
           <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
@@ -167,6 +152,30 @@
             <div class="runspecs"><span id="idnumber-time" style="font-size:1.3em;color:#888">1:04:24</span></div>
           </div>
         </div>
+      </div>
+      <hr class="ggLog-partial" style="clear:both;" />
+      <div class="ggLog-center-90"><form class="form-inline">
+        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#000;font-size:1em;"> <div style = "position:absolute;top:0;left:40px;" id="PID--1drop">-----</div> <div style="position:absolute;top:0;left:350px;"><label>Title: </label><input type="text" value="Feel free to post a workout!" class="form-control" style="width:200px" name="title" /></div></div>
+        <div style="position:relative;top:0;left:0;width:100%;">
+          <div style="float:left;width:500px;margin-bottom:25px;"><textarea class="form-control" style="margin-top:20px;width:480px;height:120px;">Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion.</textarea></div>
+          <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
+            <div class="runspecs">
+              <input type="text" class="form-control" style="margin-top:5px;padding-left:3px;padding-right:3px;width:40px;" name="distance" value="5"> miles
+            </div>
+          </div>
+          <div style="float:left;width:120px;">
+            <div class="runspecs">
+                <input type="text" name="hours" value="1" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h"/> :
+                <input type="text" name="minutes" value="04" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" /> :
+                <input type="text" name="seconds" value="24" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s"/>
+            </div>
+          </div>
+            <div style="float:left;width:230px;padding-left:10px;">
+              <button class="form-control" style="width:55px;">save</button>
+              <button class="form-control" style="width:55px;">cancel</button>
+              <button class="form-control" style="width:55px;">delete</button>
+            </div>
+        </div></form>
       </div>
         <hr class="ggLog-partial" style="clear:both;" />
         <?php
@@ -265,28 +274,32 @@
         for($i=count($data)-1;$i>=0;--$i)
         {
           $PID = $data[$i][5];
-          echo $PID;
-          echo "$preface<div class=\"ggLog-center-90\">\n";
+//          echo $PID;
+          echo "$preface<div class=\"ggLog-center-90\" id=\"PID-" . $PID . "\">\n";
+          
+//          store hard-to-access data in hidden inputs
+          echo "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "date\" value=\"" . $data[$i][0] . "\" />\n";
+          echo "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "title\" value=\"" . $data[$i][1] . "\" />\n";
 
-          echo "$preface  <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">";
+          echo "$preface  <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">\n";
 //<a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a>
-          echo "$preface  <a href=\"\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+          echo "$preface  <a href=\"javascript:editworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>\n";
           echo "$preface  <a href=\"javascript:deleteworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
           echo " &nbsp; &nbsp; ";
-          echo date("M j Y", strtotime($data[$i][0])); // date
-          echo "&nbsp &nbsp &nbsp &nbsp ";
+          echo date("D M j Y", strtotime($data[$i][0])); // date
+          echo "&nbsp; &nbsp; &nbsp; &nbsp; ";
           echo stripslashes($data[$i][1]); // title
           echo "</div>\n";
 
           echo "$preface  <div style=\"position:relative;top:0;left:0;width:100%;\">\n";
           
-          echo "$preface    <div style=\"float:left;width:500px;margin-bottom:25px;\">";
+          echo "$preface    <div style=\"float:left;width:500px;margin-bottom:25px;\" id=\"PID-" . $PID . "notes\">";
           echo htmlnewline(stripslashes($data[$i][4])); // notes?
           echo "</div>\n";
           echo "$preface  </div>\n";
 
           echo "$preface  <div style=\"float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px\">\n";
-          echo "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
+          echo "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "distance\">";
           echo $data[$i][2]; // distance
           echo "</span> miles</div>\n";
           echo "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
@@ -295,8 +308,8 @@
           echo "$preface  </div>\n";
           
           echo "$preface  <div style=\"float:left;width:120px;\">";
-          echo "<div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
-          echo $data[$i][3];  // pace (maybe)
+          echo "<div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "time\">";
+          echo $data[$i][3];  // time
           echo "</span></div>";
           echo "$preface  </div>\n";
 
