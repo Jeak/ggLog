@@ -7,14 +7,21 @@ function newworkout()
   }
   else
   {
-    document.getElementById("addworkoutdesktop").className = "ggLog-newworkout";
-    var inputs = document.getElementById("addworkoutdesktop").getElementsByTagName("input");
-    for(var i=0;i<inputs.length;i++)
+    if(document.getElementById("addworkoutdesktop").className == "ggLog-newworkout")
     {
-      if(inputs[i].name == 'title')
+      closenewworkout();
+    }
+    else
+    {
+      document.getElementById("addworkoutdesktop").className = "ggLog-newworkout";
+      var inputs = document.getElementById("addworkoutdesktop").getElementsByTagName("input");
+      for(var i=0;i<inputs.length;i++)
       {
-        inputs[i].focus();
-        break;
+        if(inputs[i].name == 'title')
+        {
+          inputs[i].focus();
+          break;
+        }
       }
     }
   }

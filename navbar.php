@@ -21,6 +21,7 @@ function navbar($activepage)
   IPadd();
   $navpages = array(new navitem("index.php", "Home")); //adding the pages
   $navpages[] = new navitem("demo.php","Logs");
+  $navpages[] = new navitem("about.php","About");
 
   echo "<div class=\"container\">";
   echo "<div class=\"navbar\"></div>";

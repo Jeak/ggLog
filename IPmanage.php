@@ -130,7 +130,7 @@ function IPview()
     $out .= "<form action=\"IPmanage.php\" method=\"post\"><input type=\"hidden\" value=\"" . $row[0] . "\" name=\"ip\"/>";
 
     $out .= "<td>";
-    $out .= $row[0];
+    $out .= "<a target=\"_blank\" href = \"http://whatismyipaddress.com/ip/" . $row[0] . "\">" . $row[0] . "</a>";
     $out .= "</td>\n";
 
       $out .= "<td>";

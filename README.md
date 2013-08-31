@@ -1,15 +1,15 @@
 # ggLog
 
 To Install, copy the neccesary scripts and html documents into a folder of your web server.  
-Demo at http://ko.kooia.info/ggLog/  
-Concept video available at: http://youtu.be/I5KrViMpEa4  
+Demo at [http://ko.kooia.info/ggLog/](http://ko.kooia.info/ggLog/)  
+Concept video available at: [http://youtu.be/I5KrViMpEa4](http://youtu.be/I5KrViMpEa4)  
 Many of the files are for storing IP addresses, requiring SQLite.  
-Icons from Glyphicons, as integrated into Bootstrap 3.0 http://glyphicons.com/  
+Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/](http://glyphicons.com/)  
 
 ## Contributors
 
-* Jack Gallegos
-* David Berard
+* [Jack Gallegos](https://github.com/Jeak)
+* [David Berard](https://github.com/davidberard98)
 * John Nover
 
 ## Current functions
@@ -34,4 +34,4 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 http://glyphicons.com/
 * Specify races vs workouts
 * PDF export / printing
 * privacy settings
-* Switch to PDO functions instead of sqlite_exec and sqlite_query
+* Switch to PDO functions instead of sqlite\_exec and sqlite\_query
