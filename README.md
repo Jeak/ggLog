@@ -10,7 +10,7 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
 
 * [Jack Gallegos](https://github.com/Jeak)
 * [David Berard](https://github.com/davidberard98)
-* John Nover
+* [John Nover](https://www.facebook.com/john.nover.7)
 
 ## Current functions
 * Add workouts
