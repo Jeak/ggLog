@@ -5,20 +5,15 @@
     <title>Running Logs</title>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="demo.css" />
-    <!--link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"-->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <!--script type="text/javascript" src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script-->
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="ggLogEssentials.js"></script>
     <script type="text/javascript" src="demo.js"></script>
   </head>
   <body style="width:100%;height:100%;" onLoad="demoload();">
-
-    <div class="ggLog-hide" id="coverForNotices">
-    </div>
-
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
+    <div class="ggLog-hide" id="coverForNotices"></div>
     <?php
 /*    $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
     if (!$dbhandle) die ($error);
@@ -109,7 +104,6 @@
     ?>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
         <button type="button" class="btn btn-primary" style="position:relative;left:70%;margin-left:-70px;" onclick="javascript:newworkout();">New Workout</button>
-      <!--button onclick="newworkout()" style="position:absolute;top:0;right:100px;">New Workout</button-->
     </div>
     <div class="ggLog-hide" id="addworkoutdesktop">
       <div class="ggLog-center">
@@ -152,7 +146,7 @@
       Mobile version under construction...
       <!-- Probably would be better if the mobile site was at a different url -->
     </div>
-    <div style="position:relative;height:20px;top:0;width:100%">
+    <div style="position:relative;height:20px;top:0;width:100%;">
       <h1 class="text-center">Recent Workouts</h1>
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">

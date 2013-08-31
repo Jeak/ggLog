@@ -41,9 +41,8 @@ function changewn()
 }
 function coverscreen(id)
 {
-//  document.getElementById('coverForNotices').className="cover";
-  document.getElementById('coverForNotices').className="cover";
-  document.getElementById('')
+//  document.getElementById('coverForNotices').className="ggLog-cover";
+  document.getElementById('coverForNotices').className="ggLog-cover";
 }
 function uncoverscreen()
 {
@@ -72,7 +71,7 @@ function deleteworkout(id)
   content += "</div>";
 
   document.getElementById('coverForNotices').innerHTML=content;
-  document.getElementById('coverForNotices').className="cover";
+  document.getElementById('coverForNotices').className="ggLog-cover";
 
   document.getElementById('coverForNotices').getElementsByTagName('button')[1].focus();
 }

@@ -23,7 +23,7 @@ function navbar($activepage)
   $navpages[] = new navitem("demo.php","Logs");
   $navpages[] = new navitem("about.php","About");
 
-  echo "<div class=\"container\">";
+  echo "<div class=\"container\" >";
   echo "<div class=\"navbar\"></div>";
   echo "<ul class=\"nav nav-tabs\">";
   for($i=0;$i<count($navpages);++$i)
