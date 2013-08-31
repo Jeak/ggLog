@@ -30,5 +30,6 @@
     <div style="display:block;margin-left:auto;margin-right:auto;width:900px;"><b><p class="text-center" style="font-size:1.5em">If you find a bug (problem) or have a suggestion, visit our logs page and post a new workout with your bug report or suggestion</p></b></div>
     <a class="btn btn-link" href="https://github.com/Jeak/ggLog">our Github :D</a>
     <p>Powered by <a href="http://twitter.github.io/bootstrap/">#Bootstrap</a></p>
+    <div style="width:100%;"><a href="http://imgur.com/AYamMmn"><img style="display:block;margin-left:auto;margin-right:auto;" src="http://i.imgur.com/AYamMmn.png" title="Hosted by imgur.com" /></a></div>
   </body>
 </html>

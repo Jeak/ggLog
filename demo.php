@@ -316,7 +316,7 @@
           echo $data[$i][2]; // distance
           echo "</span> miles</div>\n";
           echo "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
-          echo speed($data[$i][3], intval($data[$i][2]));
+          echo speed($data[$i][3], $data[$i][2]);
           echo "</span> min/mi</div>\n";
           echo "$preface  </div>\n";
           
