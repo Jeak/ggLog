@@ -34,6 +34,11 @@
       $m= intval(sqlite_escape_string($_POST['minutes']));
       $s= intval(sqlite_escape_string($_POST['seconds']));
       $notes= sqlite_escape_string($_POST['notes']);
+      
+      $works = true;
+      
+      if(!checkdate($month, $day, $year))
+        $works = false;
 
       $rundate="$year-";
       if($month < 10)
@@ -51,18 +56,21 @@
         $runtime.="0";
       $runtime.="$s";
 
-      if($PID < 0)
+      if($works == true)
       {
-        $stm = "INSERT INTO workouts(rundate, title, distance, runtime, notes, PID) ". // pass NULL to PID to make it auto increment
-        "VALUES('$rundate', '$title', $distance, '$runtime', '$notes', NULL)";
-        sqlite_exec($dbhandle, $stm, $error);
-      }
-      else
-      {
-        $stm = "UPDATE workouts ".
-        "SET rundate='$rundate', title='$title', distance=$distance, runtime='$runtime', notes='$notes' ".
-        "WHERE PID=$PID";
-        sqlite_exec($dbhandle, $stm, $error);
+        if($PID < 0)
+        {
+          $stm = "INSERT INTO workouts(rundate, title, distance, runtime, notes, PID) ". // pass NULL to PID to make it auto increment
+          "VALUES('$rundate', '$title', $distance, '$runtime', '$notes', NULL)";
+          sqlite_exec($dbhandle, $stm, $error);
+        }
+        else
+        {
+          $stm = "UPDATE workouts ".
+          "SET rundate='$rundate', title='$title', distance=$distance, runtime='$runtime', notes='$notes' ".
+          "WHERE PID=$PID";
+          sqlite_exec($dbhandle, $stm, $error);
+        }
       }
       sqlite_close($dbhandle);
     }
@@ -192,22 +200,54 @@
       </div>
         <hr class="ggLog-partial" style="clear:both;" />
         <?php
-              //  'HH:MM:SS', double
-        function speed($time, $distance)
+        
+        function timetoseconds($time)
         {
-          if($distance != 0)
+          $pieces = explode(":", $time);
+          $timeint  = intval($pieces[0])*60*60;
+          $timeint += intval($pieces[1])*60;
+          $timeint += intval($pieces[2]);
+          return $timeint;
+        }
+        function secondstotime($secs, $depth=3)
+        {
+          if($depth == 2)
           {
-            $pieces = explode(":", $time);
-            $timeint  = intval($pieces[0])*60*60;
-            $timeint += intval($pieces[1])*60;
-            $timeint += intval($pieces[2]);
-            $secpermile= intval($timeint/$distance);
-            $minutes = intval($secpermile/60);
-            $seconds = intval($secpermile-$minutes*60);
+            $minutes = intval($secs/60);
+            $seconds = intval($secs-$minutes*60);
             $out = "$minutes:";
             if($seconds < 10)
               $out.="0";
             $out.="$seconds";
+            return $out;
+          }
+          else if($depth == 3)
+          {
+            $hours = intval($secs/3600);
+            $minutes = intval(($secs-$hours*3600)/60);
+            $seconds = intval($secs-$minutes*60-$hours*3600);
+            $out = "$hours:";
+            if($minutes < 10)
+              $out.="0";
+            $out .= "$minutes:";
+            if($seconds < 10)
+              $out.="0";
+            $out.="$seconds";
+            return $out;
+          }
+          return "";
+        }
+              //  'HH:MM:SS', double
+              //or        S , double
+        function speed($time, $distance)
+        {
+          if($distance != 0)
+          {
+            $timeint = $time; // for $time as seconds
+            if(gettype($time) == 'string')
+              $timeint = timetoseconds($time);
+            $secpermile= intval($timeint/$distance);
+            $out = secondstotime($secpermile, 2);
             return $out;
           }
           else return "0:00";
@@ -284,6 +324,38 @@
           $data[] = $row;
         }
         sortbydate($data);
+        
+        require_once('weeks.php');
+        $wm = new weekManage();
+        foreach($data as $workout)
+        {
+          $day = strtotime($workout[0]);
+          $time = timetoseconds($workout[3]);
+          $distance = $workout[2];
+          $wm->addtime($day, $time);
+          $wm->addmiles($day, $distance);
+        }
+//        $thisweek = $wm->get(time());
+        $orderedweeks;
+        foreach($wm->weeks as $week)
+        {
+          $orderedweeks[] = array($week->beginday, $week->endday, $week->distance, $week->time);
+        }
+        sortbydate($orderedweeks);
+        echo "<div style=\"width:700px;display:block;margin-left:auto;margin-right:auto;\">\n";
+        foreach($orderedweeks as $thisweek)
+        {
+          echo "<span style=\"color:#999;font-size:1.5em;\">";
+          echo date('M j Y', $thisweek[0]) . " to ";
+          echo date('M j Y', $thisweek[1]);
+          echo " with " . $thisweek[2];
+          echo " miles in " . secondstotime($thisweek[3]);
+          echo " (avg " . speed($thisweek[3], $thisweek[2]) . ")";
+          echo "</span><br />\n";
+        }
+        echo "</div>\n";
+        echo "<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
+        
         for($i=count($data)-1;$i>=0;--$i)
         {
           $PID = $data[$i][5];
