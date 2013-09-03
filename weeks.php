@@ -6,11 +6,13 @@ class singleWeek
   public $endday;
   public $distance;
   public $time;
+  public $numberofruns;
 
   function __construct($newday, $beginning = 1)
   {
     $this->distance = 0;
     $this->time = 0;
+    $this->numberofruns = 0;
     $this->set($newday, $beginning);
   }
 
@@ -40,11 +42,13 @@ class singleWeek
   function addmiles($dist)
   {
     $this->distance += $dist;
+    $this->numberofruns += 1;
   }
 
   function addtime($time)
   {
     $this->time += $time;
+    $this->numberofruns += 1;
   }
 
   static function weekbeginning($newday, $beginning)

@@ -123,7 +123,7 @@ function IPview()
 
   $out = "";
 
-  $out .= "<table width=\"500\" border=\"1\"><tr style=\"background-color:#000000;color:#FFFFFF\"><td width=\"150\">IP</td><td width=\"200\">Name</td><td width=\"100\">Visits</td><td width=\"50\">Edit</td></tr>";
+  $out .= "<table width=\"530\" border=\"1\"><tr style=\"background-color:#000000;color:#FFFFFF\"><td width=\"150\">IP</td><td width=\"200\">Name</td><td width=\"130\">Visits</td><td width=\"50\">Edit</td></tr>";
   while ($row = sqlite_fetch_array($result, SQLITE_NUM))
   {
     $out .= "<tr>";
@@ -137,7 +137,7 @@ function IPview()
     if($row[1] != "")
       $out .= $row[1];
     else
-      $out .= "<input type=\"text\" name=\"name\" value=\"\"/>";
+      $out .= "<input type=\"text\" style=\"width:170px;\" name=\"name\" value=\"\"/>";
     $out .= "</td>\n";
 
     $out .= "<td>";
