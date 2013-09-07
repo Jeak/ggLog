@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>New Page</title>
+    <title>About</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/3.0.0/css/bootstrap-combined.min.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
@@ -18,13 +17,15 @@
   
   <body>
     <?php require_once("navbar.php"); navbar("about.php"); ?>
+    <div style="display:block;width:160px;margin-left:auto;margin-right:auto;">
+    </div>
     <h4> Loaded from <a href="https://github.com/Jeak/ggLog">our github</a> <br /> in Markdown </h4>
     <div style="max-width:900px;margin-left: auto;margin-right: auto;margin-top:40px;margin-bottom:30px;border: 1px solid #555;padding:10px;border-radius:10px;background-color:#DDC">
     <?php
-    $stuff = file_get_contents('https://raw.github.com/Jeak/ggLog/master/README.md');
-    file_put_contents("README.md", $stuff);
-    exec("perl Markdown.pl README.md > about.inf");
-    echo file_get_contents('about.inf');
+      $stuff = file_get_contents('https://raw.github.com/Jeak/ggLog/master/README.md');
+      file_put_contents("README.md", $stuff);
+      exec("perl Markdown.pl README.md > about.inf");
+      echo file_get_contents('about.inf');
     ?>
     </div>
   </body>

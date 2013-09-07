@@ -41,7 +41,7 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
 * __Auto-add total mileage__
 * __Set seasons with auto-adding mileage (Summer Training, Track season, Winter Training, Cross Country)__
     + Order by week
-    + SQLite database/table for seasons __easy__
+    + SQLite database/table for seasons __easy__ __dev__
     + UI for editing seasons
 * Set goals (daily, weekly, season-ly, yearly)
     + update primary SQLite database to include a location for goals
@@ -59,4 +59,8 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
     + in js or php or perl
 * privacy settings
 * Switch to PDO functions instead of sqlite\_exec and sqlite\_query
+* Perhaps some kind of auto-loading weather
+* Set location
+* Set weight
+    + calculate calories burned
 * Configure page

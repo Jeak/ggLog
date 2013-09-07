@@ -111,7 +111,33 @@
     }
     ?>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
-        <button type="button" class="btn btn-primary" style="position:relative;left:70%;margin-left:-70px;" onclick="javascript:newworkout();">New Workout</button>
+      <div class="btn-group" style="display:block;width:400px;margin-left:auto;margin-right:auto;">
+        <button type="button" class="btn btn-default" style="" onclick="javascript:newworkout();">New Workout</button>
+        <button type="button" class="btn btn-default" onclick="">Edit seasons</button>
+      </div>
+    </div>
+    <div class="ggLog-newworkout" id="editseasons">
+      <div class="ggLog-center" style="background-color:#FFF;">
+        <a href="javascript:editseason('new');" style="margin-left:30px;">New season</a>
+        <ul class="list-group" style="margin-top:15px;width:475px;max-height:350px;overflow:auto;">
+          <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');">Summer Training <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+        </ul>
+      </div>
     </div>
     <div class="ggLog-hide" id="addworkoutdesktop">
       <div class="ggLog-center">

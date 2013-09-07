@@ -102,7 +102,7 @@ function editworkout(id)
 {
   //parse the current one
   var idval = "PID-" + id;
-  var staticHTML = document.getElementById(idval).innerHTML;
+  var staticHTML = document.getElementById(idval).innerHTML; // so you don't have to rewrite the code when you cancel
   var date = document.getElementById(idval + "date").value;
   var title = document.getElementById(idval + "title").value;
   var notes = removebr(document.getElementById(idval + "notes").innerHTML);
@@ -157,17 +157,92 @@ function editworkout(id)
   SetDateDropdown(idval + "drop");
   
 }
+
 function canceleditworkout(id)
 {
   var idval = "PID-" + id;
   var val = document.getElementById(idval + "orig").value;
   document.getElementById(idval).innerHTML = unescape(val);
 }
+
+function mouseoverseason(id)
+{
+  var idval = id + "-edit";
+  document.getElementById(idval).className = "glyphicon glyphicon-pencil";
+
+}
+function mouseoffseason(id)
+{
+  var idval = id + "-edit";
+  document.getElementById(idval).className = "ggLog-hide";
+}
+
+function editseason(type, id)
+{
+  var NewSeasonBeginId = "newseason-bd";
+  var NewSeasonEndId = "newseason-ed";
+  var sn = "";
+  var title = "New Season";
+
+  if(type == 'edit')
+  {
+    sn = document.getElementById(id).innerHTML;
+    var loc = sn.indexOf("<span");
+    sn = sn.substr(0, loc);
+    sn = sn.trim();
+    title="Edit '" + sn + "'";
+  }
+
+  var content = "";
+  content += "<div class=\"colorcover\" onclick=\"canceleditseason(); return false;\"></div>";
+  content += "  <div class=\"ggLog-centernewseason\">";
+  content += "    <p class=\"text-center\"><b>" + title + "</b></p>";
+  content += "    <form action=\"demo.php\" method=\"post\" class=\"form-inline\">";
+  content += "      <input type=\"hidden\" name=\"submitting\" value=\"newseason\" />";
+  content += "      <label>Season Name:</label> <input type=\"text\" name=\"seasonname\" value=\"" + sn + "\" style=\"width:300px;\" class=\"form-control\" /><br />";
+  content += "      <label>Begins:</label> <span id=\"" + NewSeasonBeginId + "\"></span><br />";
+  content += "      <label>Ends:</label> <span id=\"" + NewSeasonEndId + "\"></span><br />";
+  content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:60px;margin-top:10px;\" onclick=\"return true;\">Save</button> ";
+  content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:10px;margin-top:10px;\" onclick=\"canceleditseason(); return false;\">Cancel</button>";
+  content += "    </form>";
+  content += "  </div>";
+  content += "</div>";
+
+  document.getElementById('coverForNotices').innerHTML=content;
+  document.getElementById('coverForNotices').className="ggLog-cover";
+
+  if(type == 'new')
+  {
+    SetDateDropdown(NewSeasonBeginId, "begin-", false);
+    SetDateDropdown(NewSeasonEndId, "end-", false);
+  }
+  else if(type == 'edit')
+  {
+    var dateinfo = document.getElementById(id).getElementsByTagName('span')[0];
+    var info = dateinfo.innerHTML;
+    var beginmonth = decodeseasondates(info, 1);
+    var beginday = decodeseasondates(info, 2);
+    var beginyear = decodeseasondates(info, 3);
+    var endmonth = decodeseasondates(info, 4);
+    var endday = decodeseasondates(info, 5);
+    var endyear = decodeseasondates(info, 6);
+    SetDateDropdown(NewSeasonBeginId, "begin-", false, beginyear, beginmonth, beginday);
+    SetDateDropdown(NewSeasonEndId, "end-", false, endyear, endmonth, endyear);
+  }
+  
+}
+
+function canceleditseason()
+{
+  document.getElementById('coverForNotices').className="ggLog-hide";
+}
+
 function addbr(inhtml)
 {
 inhtml = inhtml.replace(new RegExp('\n', 'g'), '<br />\n');
 return inhtml;
 }
+
 function removebr(inhtml)
 {
   inhtml = inhtml.replace(new RegExp('\n', 'g'), '');
@@ -176,6 +251,30 @@ function removebr(inhtml)
   inhtml = inhtml.replace(new RegExp('<br>', 'g'), '\n');
   return inhtml;
 }
+
+function decodeseasondates(str, type)
+{
+  var parts = str.split(' to ');
+  for(var i=0;i<parts.length;++i)
+  {
+    parts[i] = parts[i].split(" ");
+    var datevar = new Date(parts[i][0] + " 13 2013");
+    parts[i][0] = datevar.getMonth();
+    parts[i][1] = parseInt(parts[i][1]);
+    parts[i][2] = parseInt(parts[i][2]);
+  }
+  switch (type)
+  {
+    case 1: return parts[0][0]; break;
+    case 2: return parts[0][1]; break;
+    case 3: return parts[0][2]; break;
+    case 4: return parts[1][0]; break;
+    case 5: return parts[1][1]; break;
+    case 6: return parts[1][2]; break;
+  }
+  return parts[0][0];
+}
+
 function decodetime(str, type)
            //    '1:24:41', 'h' would return 1; (--, 'm') would return 24;
 {
@@ -194,6 +293,7 @@ function decodetime(str, type)
   }
   return -1;
 }
+
 function encodetime(h, m, s)
 {
   var out = h + ":";
@@ -201,6 +301,7 @@ function encodetime(h, m, s)
   out+=twodigits(s);
   return out;
 }
+
 function twodigits(x) // integer x
 {
 var y = "";

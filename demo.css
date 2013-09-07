@@ -59,6 +59,21 @@ div.ggLog-centerquestion
   z-index:6;
   background-color:#FFF;
 }
+div.ggLog-centernewseason
+{
+  position:relative;
+  width:360px;
+  height:230px;
+  top:50%;
+  margin-top:-115px;
+  left:50%;
+  margin-left:-180px;
+
+  padding:20px;
+  border-radius:10px; 
+  z-index:6;
+  background-color:#FFF;
+}
 hr.ggLog-partial
 {
   width:80%;
@@ -119,3 +134,7 @@ a.editworkoutlink:active
   color:#111;
   font-size:0.9em;
 }
+a.none:link {text-decoration:none;color:inherit;}
+a.none:visited {text-decoration:none;color:inherit;}
+a.none:hover {text-decoration:none;color:inherit;}
+a.none:active {text-decoration:none;color:inherit;}
