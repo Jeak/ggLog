@@ -35,7 +35,7 @@ function SetDateDropdown(idname, prefix, showlabel, year, month, date)
 //  alert(month);
   for(var i=0;i<12;++i)
   {
-  var j = i+1
+  var j = i+1; // javascript dates are 0-11, while php dates are 1-12
     if(i == month)
     {
       contents += "<option value=\"" + j + "\" selected>" + months[i] + "</option>";

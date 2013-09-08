@@ -116,7 +116,7 @@ function editworkout(id)
   content += "  <input type=\"hidden\" id=\"" + idval + "orig\" value=\"" + escape(staticHTML) + "\" />";
 
   content += "  <form class=\"form-inline\" action=\"demo.php\" method=\"post\">";
-  content += "    <input type=\"hidden\" name=\"submitting\" value=\"editworkout\" />";
+  content += "    <input type=\"hidden\" name=\"submitting\" value=\"newworkout\" />";
   content += "    <input type=\"hidden\" name=\"PID\" value=\"" + id + "\" />";
   content += "    <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#000;font-size:1em;\">";
   content += "      <div style = \"position:absolute;top:0;left:40px;\" id=\"" + idval + "drop\"></div>";
@@ -208,6 +208,11 @@ function editseason(type, id)
   content += "      <label>Ends:</label> <span id=\"" + NewSeasonEndId + "\"></span><br />";
   content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:60px;margin-top:10px;\" onclick=\"return true;\">Save</button> ";
   content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:10px;margin-top:10px;\" onclick=\"canceleditseason(); return false;\">Cancel</button>";
+  content += "    </form>";
+  content += "    <form action=\"demo.php\" method=\"post\" class=\"form-inline\">";
+  content += "      <input type=\"hidden\" name=\"submitting\" value=\"deleteseason\" />";
+  content += "      <input type=\"hidden\" name=\"id\" value=\"" + id + "\" />";
+  content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:10px;margin-top:10px;\" onclick=\"return true;\">Delete</button>";
   content += "    </form>";
   content += "  </div>";
   content += "</div>";

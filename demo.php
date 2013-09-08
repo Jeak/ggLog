@@ -14,110 +14,11 @@
   <body style="width:100%;height:100%;" onLoad="demoload();">
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <div class="ggLog-hide" id="coverForNotices"></div>
-    <?php
-/*    $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-    if (!$dbhandle) die ($error);
-    sqlite_exec($dbhandle, "DELETE FROM workouts", $error);
-    sqlite_close($dbhandle);*/
+    <?php // deal with $_POST requests
+    require_once('workouts.php'); // adding/editing/deleting workouts
+    require_once('seasons.php');
 
-    function createsqldate($year, $month, $day)
-    {
-      $rundate="$year-";
-      if($month < 10)
-        $rundate.="0";
-      $rundate.="$month-";
-      if($day < 10)
-        $rundate.="0";
-      $rundate.="$day";
-      if(!checkdate($month, $day, $year))
-        return false;
-      return $rundate;
-    }
-
-    function createsqltime($hours, $minutes, $seconds)
-    {
-      $runtime="$hours:";
-      if($minutes < 10)
-        $runtime.="0";
-      $runtime.="$minutes:";
-      if($seconds < 10)
-        $runtime.="0";
-      $runtime.="$seconds";
-      return $runtime;
-    }
-
-    function decodeseasonid($enc)
-    {  // if id=32, encoded id = 'seas32'
-      $asstring = substr($enc, 4);
-      return intval($asstring);
-    }
-
-    function encodeseasonid($id)
-    {
-      return "seas" . $id;
-    }
-
-    function addseason($PID = -1, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday)
-    {
-      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-      if (!$dbhandle) die ($error);
-      
-      $begindate = createsqldate($beginyear, $beginmonth, $beginday);
-      $enddate = createsqldate($endyear, $endmonth, $endday);
-      
-      if($begindate != false && $enddate != false)
-      {
-        $command = "";
-        if($PID == -1)
-        {
-          $command = "INSERT INTO seasons(name, begindate, enddate) ".
-            "VALUES('$name', '$begindate', '$enddate');";
-        }
-        else if($PID != -1)
-        {
-          $command = "UPDATE seasons ".
-            "SET name='$name', begindate='$begindate', enddate='$enddate' WHERE PID=$PID";
-        }
-        sqlite_exec($dbhandle, $command, $error);
-      }
-      else
-        echo "Incorrect dates $beginyear, $beginmonth, $beginday; $endyear, $endmonth, $endday";
-      sqlite_close($dbhandle);
-    }
-    
-    function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes)
-    {
-      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-      if (!$dbhandle) die ($error);
-      
-      $works = true;
-      
-      $rundate = createsqldate($year, $month, $day);
-      if($rundate == false)
-        $works = false;
-      
-      $runtime = createsqltime($h, $m, $s);
-
-      if($works == true)
-      {
-        if($PID < 0)
-        {
-          $stm = "INSERT INTO workouts(rundate, title, distance, runtime, notes, PID) ". // pass NULL to PID to make it auto increment
-          "VALUES('$rundate', '$title', $distance, '$runtime', '$notes', NULL)";
-          sqlite_exec($dbhandle, $stm, $error);
-        }
-        else
-        {
-          $stm = "UPDATE workouts ".
-          "SET rundate='$rundate', title='$title', distance=$distance, runtime='$runtime', notes='$notes' ".
-          "WHERE PID=$PID";
-          sqlite_exec($dbhandle, $stm, $error);
-        }
-      }
-      sqlite_close($dbhandle);
-    }
-
-    if($_POST['submitting'] == "editworkout")
+    if($_POST['submitting'] == "newworkout")
     {
       $day= floatval(sqlite_escape_string($_POST['day']));
       $month= floatval(sqlite_escape_string($_POST['month']));
@@ -128,45 +29,14 @@
       $m= intval(sqlite_escape_string($_POST['minutes']));
       $s= intval(sqlite_escape_string($_POST['seconds']));
       $notes= sqlite_escape_string($_POST['notes']);
-      addworkout(intval($_POST['PID']), $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
+      if($_POST['PID'] != "") // editing
+        addworkout(intval($_POST['PID']), $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
+      else // adding new workout
+        addworkout(-1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
     }
     else if($_POST['submitting'] == "deleteworkout")
     {
-      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-      if (!$dbhandle) die ($error);
-      
-      $results = sqlite_query($dbhandle, "SELECT PID FROM workouts");
-      $found = false;
-      while ($row = sqlite_fetch_array($results, SQLITE_NUM)) // keep this?  it probably uses time & resources
-      {
-        if(intval($_POST['PID']) == intval($row[0]))
-        {
-          $found = true;
-          break;
-        }
-      }
-
-      $stm = "DELETE FROM workouts WHERE PID=" . $_POST['PID'];
-      if($found == true)
-      {
-        sqlite_exec($dbhandle, $stm, $error);
-      }
-      //[RELEASE] for the release, replace with @sqlite_exec() to surpress errors
-      
-      sqlite_close($dbhandle);
-    }
-    else if($_POST['submitting'] == "newworkout")
-    {
-      $day= floatval(sqlite_escape_string($_POST['day']));
-      $month= floatval(sqlite_escape_string($_POST['month']));
-      $year= floatval(sqlite_escape_string($_POST['year']));
-      $title= sqlite_escape_string($_POST['title']);
-      $distance= floatval(sqlite_escape_string($_POST['distance']));
-      $h= intval(sqlite_escape_string($_POST['hours']));
-      $m= intval(sqlite_escape_string($_POST['minutes']));
-      $s= intval(sqlite_escape_string($_POST['seconds']));
-      $notes= sqlite_escape_string($_POST['notes']);
-      addworkout(-1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
+      deleteworkout($_POST['PID']);
     }
     else if($_POST['submitting'] == "season")
     {
@@ -177,15 +47,18 @@
       $endmonth = intval(sqlite_escape_string($_POST['end-month']));
       $endyear = intval(sqlite_escape_string($_POST['end-year']));
       $name = sqlite_escape_string($_POST['seasonname']);
-      if($_POST['id'] != "")
+      if($_POST['id'] != "") // editing
       {
         $PID = decodeseasonid($_POST['id']);
         addseason($PID, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday);
       }
-      else
-      {
+      else //new
         addseason(-1, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday);
-      }
+    }
+    else if($_POST['submitting'] == "deleteseason")
+    {
+      $PID = decodeseasonid($_POST['id']);
+      deleteseason($PID);
     }
     ?>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
@@ -197,41 +70,12 @@
     <div class="ggLog-newworkout" id="editseasons">
       <div class="ggLog-center" style="background-color:#FFF;">
         <a href="javascript:editseason('new');" style="margin-left:30px;">New season</a>
-        <ul class="list-group" style="margin-top:15px;width:475px;max-height:350px;overflow:auto;">
-          <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');">Summer Training (Example) <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
-          <?php
-          $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-          if (!$dbhandle) die ($error);
-
-//          sqlite_exec($dbhandle, "UPDATE seasons SET begindate = '2013-05-17', enddate='2013-08-18' WHERE name='Summer Training 2013'");
+        <ul class="list-group" style="margin-top:15px;width:489px;max-height:350px;overflow:auto;">
+          <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');">Summer Training (nonfunctional Example) <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
+          <?php // listing seasons
+          require_once("seasons.php");
           
-          $results = sqlite_query($dbhandle, "SELECT PID, name, begindate, enddate FROM seasons");
-          while($row = sqlite_fetch_array($results, SQLITE_NUM))
-          {
-            $pid = $row[0];
-            $idval = "seas" . $pid;
-            $out = "";
-            $out .= "<a href=\"javascript:editseason('edit','$idval')\" class=\"none\">";
-  
-            $out .= "  <li class=\"list-group-item\" id=\"" . $idval .  "\" onmouseover=\"mouseoverseason('" . $idval . "');\""; 
-              $out .= " onmouseout=\"mouseoffseason('" . $idval . "');\">";
-            $out .= stripslashes($row[1]) . " ";
-            
-            $out .= "<span class=\"badge\">";
-            $out .= date('M j Y', strtotime($row[2]));
-            $out .= " to ";
-            $out .= date('M j Y', strtotime($row[3]));
-            $out .= "</span>";
-  
-            $out .= "<span class=\"ggLog-hide\" id=\"$idval-edit\"></span>";
-            
-            $out .= "  </li>";
-            $out .= "</a>";
-            
-            echo $out;
-          }
-          
-          sqlite_close($dbhandle);
+          echo listseasons(false);
           ?>
         </ul>
       </div>
