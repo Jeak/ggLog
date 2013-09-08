@@ -19,27 +19,9 @@
     if (!$dbhandle) die ($error);
     sqlite_exec($dbhandle, "DELETE FROM workouts", $error);
     sqlite_close($dbhandle);*/
-    
-    function addworkout($PID = -1)
+
+    function createsqldate($year, $month, $day)
     {
-      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-      if (!$dbhandle) die ($error);
-
-      $day= floatval(sqlite_escape_string($_POST['day']));
-      $month= floatval(sqlite_escape_string($_POST['month']));
-      $year= floatval(sqlite_escape_string($_POST['year']));
-      $title= sqlite_escape_string($_POST['title']);
-      $distance= floatval(sqlite_escape_string($_POST['distance']));
-      $h= intval(sqlite_escape_string($_POST['hours']));
-      $m= intval(sqlite_escape_string($_POST['minutes']));
-      $s= intval(sqlite_escape_string($_POST['seconds']));
-      $notes= sqlite_escape_string($_POST['notes']);
-      
-      $works = true;
-      
-      if(!checkdate($month, $day, $year))
-        $works = false;
-
       $rundate="$year-";
       if($month < 10)
         $rundate.="0";
@@ -47,14 +29,74 @@
       if($day < 10)
         $rundate.="0";
       $rundate.="$day";
+      if(!checkdate($month, $day, $year))
+        return false;
+      return $rundate;
+    }
 
-      $runtime="$h:";
-      if($m < 10)
+    function createsqltime($hours, $minutes, $seconds)
+    {
+      $runtime="$hours:";
+      if($minutes < 10)
         $runtime.="0";
-      $runtime.="$m:";
-      if($s < 10)
+      $runtime.="$minutes:";
+      if($seconds < 10)
         $runtime.="0";
-      $runtime.="$s";
+      $runtime.="$seconds";
+      return $runtime;
+    }
+
+    function decodeseasonid($enc)
+    {  // if id=32, encoded id = 'seas32'
+      $asstring = substr($enc, 4);
+      return intval($asstring);
+    }
+
+    function encodeseasonid($id)
+    {
+      return "seas" . $id;
+    }
+
+    function addseason($PID = -1, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday)
+    {
+      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+      if (!$dbhandle) die ($error);
+      
+      $begindate = createsqldate($beginyear, $beginmonth, $beginday);
+      $enddate = createsqldate($endyear, $endmonth, $endday);
+      
+      if($begindate != false && $enddate != false)
+      {
+        $command = "";
+        if($PID == -1)
+        {
+          $command = "INSERT INTO seasons(name, begindate, enddate) ".
+            "VALUES('$name', '$begindate', '$enddate');";
+        }
+        else if($PID != -1)
+        {
+          $command = "UPDATE seasons ".
+            "SET name='$name', begindate='$begindate', enddate='$enddate' WHERE PID=$PID";
+        }
+        sqlite_exec($dbhandle, $command, $error);
+      }
+      else
+        echo "Incorrect dates $beginyear, $beginmonth, $beginday; $endyear, $endmonth, $endday";
+      sqlite_close($dbhandle);
+    }
+    
+    function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes)
+    {
+      $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+      if (!$dbhandle) die ($error);
+      
+      $works = true;
+      
+      $rundate = createsqldate($year, $month, $day);
+      if($rundate == false)
+        $works = false;
+      
+      $runtime = createsqltime($h, $m, $s);
 
       if($works == true)
       {
@@ -75,10 +117,18 @@
       sqlite_close($dbhandle);
     }
 
-
     if($_POST['submitting'] == "editworkout")
     {
-      addworkout(intval($_POST['PID']));
+      $day= floatval(sqlite_escape_string($_POST['day']));
+      $month= floatval(sqlite_escape_string($_POST['month']));
+      $year= floatval(sqlite_escape_string($_POST['year']));
+      $title= sqlite_escape_string($_POST['title']);
+      $distance= floatval(sqlite_escape_string($_POST['distance']));
+      $h= intval(sqlite_escape_string($_POST['hours']));
+      $m= intval(sqlite_escape_string($_POST['minutes']));
+      $s= intval(sqlite_escape_string($_POST['seconds']));
+      $notes= sqlite_escape_string($_POST['notes']);
+      addworkout(intval($_POST['PID']), $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
     }
     else if($_POST['submitting'] == "deleteworkout")
     {
@@ -107,7 +157,35 @@
     }
     else if($_POST['submitting'] == "newworkout")
     {
-      addworkout();
+      $day= floatval(sqlite_escape_string($_POST['day']));
+      $month= floatval(sqlite_escape_string($_POST['month']));
+      $year= floatval(sqlite_escape_string($_POST['year']));
+      $title= sqlite_escape_string($_POST['title']);
+      $distance= floatval(sqlite_escape_string($_POST['distance']));
+      $h= intval(sqlite_escape_string($_POST['hours']));
+      $m= intval(sqlite_escape_string($_POST['minutes']));
+      $s= intval(sqlite_escape_string($_POST['seconds']));
+      $notes= sqlite_escape_string($_POST['notes']);
+      addworkout(-1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
+    }
+    else if($_POST['submitting'] == "season")
+    {
+      $beginday = intval(sqlite_escape_string($_POST['begin-day']));
+      $beginmonth = intval(sqlite_escape_string($_POST['begin-month']));
+      $beginyear = intval(sqlite_escape_string($_POST['begin-year']));
+      $endday = intval(sqlite_escape_string($_POST['end-day']));
+      $endmonth = intval(sqlite_escape_string($_POST['end-month']));
+      $endyear = intval(sqlite_escape_string($_POST['end-year']));
+      $name = sqlite_escape_string($_POST['seasonname']);
+      if($_POST['id'] != "")
+      {
+        $PID = decodeseasonid($_POST['id']);
+        addseason($PID, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday);
+      }
+      else
+      {
+        addseason(-1, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday);
+      }
     }
     ?>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">

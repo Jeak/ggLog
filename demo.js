@@ -198,7 +198,11 @@ function editseason(type, id)
   content += "  <div class=\"ggLog-centernewseason\">";
   content += "    <p class=\"text-center\"><b>" + title + "</b></p>";
   content += "    <form action=\"demo.php\" method=\"post\" class=\"form-inline\">";
-  content += "      <input type=\"hidden\" name=\"submitting\" value=\"newseason\" />";
+  content += "      <input type=\"hidden\" name=\"submitting\" value=\"season\" />";
+  if(type == 'edit')
+  {
+    content += "      <input type=\"hidden\" name=\"id\" value=\"" + id + "\" />";
+  }
   content += "      <label>Season Name:</label> <input type=\"text\" name=\"seasonname\" value=\"" + sn + "\" style=\"width:300px;\" class=\"form-control\" /><br />";
   content += "      <label>Begins:</label> <span id=\"" + NewSeasonBeginId + "\"></span><br />";
   content += "      <label>Ends:</label> <span id=\"" + NewSeasonEndId + "\"></span><br />";
@@ -227,7 +231,7 @@ function editseason(type, id)
     var endday = decodeseasondates(info, 5);
     var endyear = decodeseasondates(info, 6);
     SetDateDropdown(NewSeasonBeginId, "begin-", false, beginyear, beginmonth, beginday);
-    SetDateDropdown(NewSeasonEndId, "end-", false, endyear, endmonth, endyear);
+    SetDateDropdown(NewSeasonEndId, "end-", false, endyear, endmonth, endday);
   }
   
 }

@@ -20,7 +20,16 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
 
 ## Todo + Ideas
 
-* Re-design so it appears the same on all browsers
+* __Auto-add total mileage__
+* __Set seasons with auto-adding mileage (Summer Training, Track season, Winter Training, Cross Country)__ __dev__
+    + Order by week
+    + SQLite database/table for seasons
+    + UI for editing seasons 
+    + Remove seasons
+    + auto add mileage
+* __Modularize (so you don't have a single 25kb php file containing all html, css, php, javascript, sql, etc)__
+* Mobile version / Redesign to appear the same on all browsers
+    + boostrap seems to change based on your browser
     + sometimes the words on buttons get cut off on some browsers
     + the save, cancel, delete buttons while editing sometimes roll over to a new line [ iphone ]
     + fluid layout (w. percentages) ?
@@ -34,21 +43,19 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
     + PRs (also add PRs on distances)
     + Allow creation of routes
     + Auto-distances for routes using Javascript
-* don't load everything at once - only show 30 or so workouts at a time
+* don't load everything at once - only show 30 or so workouts at a time ??
     + revamp to have ajax
-* Mobile version
+* Use JQuery instead of javascript?
 * Add functionality for **users** (however, it would probably be better to get the demo working first before switching everything over to users)
-* __Auto-add total mileage__
-* __Set seasons with auto-adding mileage (Summer Training, Track season, Winter Training, Cross Country)__
-    + Order by week
-    + SQLite database/table for seasons __easy__ __dev__
-    + UI for editing seasons
 * Set goals (daily, weekly, season-ly, yearly)
     + update primary SQLite database to include a location for goals
     + distance goal
     + time goal
     + goal notes
-* Coach account? (with the ability to view all & send out goals)
+* Coach account?
+    + can view all student accounts
+    + students can type in code to become a coach's student
+    + can send out goals
 * Rankings between users (distance, speed, improvement)
     + Also with routes
 * Specify races vs workouts
@@ -62,5 +69,6 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
 * Perhaps some kind of auto-loading weather
 * Set location
 * Set weight
-    + calculate calories burned
+    + calculate calories burned (0.8 &#42; lbs &#42; miles)
 * Configure page
+* Remember date that workout was submitted
