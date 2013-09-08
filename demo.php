@@ -113,29 +113,48 @@
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
       <div class="btn-group" style="display:block;width:400px;margin-left:auto;margin-right:auto;">
         <button type="button" class="btn btn-default" style="" onclick="javascript:newworkout();">New Workout</button>
-        <button type="button" class="btn btn-default" onclick="">Edit seasons</button>
+        <button type="button" class="btn btn-default" onclick="">Seasons</button>
       </div>
     </div>
     <div class="ggLog-newworkout" id="editseasons">
       <div class="ggLog-center" style="background-color:#FFF;">
         <a href="javascript:editseason('new');" style="margin-left:30px;">New season</a>
         <ul class="list-group" style="margin-top:15px;width:475px;max-height:350px;overflow:auto;">
-          <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');">Summer Training <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
-          <li class="list-group-item">Summer Training <span class="badge">Jun 23 to Sep 17</span></li>
+          <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');">Summer Training (Example) <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
+          <?php
+          $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+          if (!$dbhandle) die ($error);
+
+//          sqlite_exec($dbhandle, "UPDATE seasons SET begindate = '2013-05-17', enddate='2013-08-18' WHERE name='Summer Training 2013'");
+          
+          $results = sqlite_query($dbhandle, "SELECT PID, name, begindate, enddate FROM seasons");
+          while($row = sqlite_fetch_array($results, SQLITE_NUM))
+          {
+            $pid = $row[0];
+            $idval = "seas" . $pid;
+            $out = "";
+            $out .= "<a href=\"javascript:editseason('edit','$idval')\" class=\"none\">";
+  
+            $out .= "  <li class=\"list-group-item\" id=\"" . $idval .  "\" onmouseover=\"mouseoverseason('" . $idval . "');\""; 
+              $out .= " onmouseout=\"mouseoffseason('" . $idval . "');\">";
+            $out .= stripslashes($row[1]) . " ";
+            
+            $out .= "<span class=\"badge\">";
+            $out .= date('M j Y', strtotime($row[2]));
+            $out .= " to ";
+            $out .= date('M j Y', strtotime($row[3]));
+            $out .= "</span>";
+  
+            $out .= "<span class=\"ggLog-hide\" id=\"$idval-edit\"></span>";
+            
+            $out .= "  </li>";
+            $out .= "</a>";
+            
+            echo $out;
+          }
+          
+          sqlite_close($dbhandle);
+          ?>
         </ul>
       </div>
     </div>

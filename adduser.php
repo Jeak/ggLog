@@ -12,7 +12,7 @@ function adduser($username)
   
   $stms = array();
   $stms[] = "CREATE TABLE workouts(".
-  "PID INT AUTO_INCREMENT,".
+  "PID INTEGER AUTO_INCREMENT,".
   "rundate DATE NOT NULL,".
   "title TINYTEXT,".
   "distance DOUBLE,".
@@ -21,6 +21,17 @@ function adduser($username)
   "PRIMARY KEY (PID)".
   ")";
   sqlite_exec($dbhandle, $stms[0], $error);
+
+
+  $command = <<<_SQL_
+  CREATE TABLE seasons
+  (
+  PID INTEGER AUTO_INCREMENT, 
+  name TINYTEXT,
+  begindate DATE NOT NULL,
+  enddate DATE NOT NULL,
+  PRIMARY_KEY(PID)
+  );
 
   sqlite_close($dbhandle);
 
