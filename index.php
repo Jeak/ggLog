@@ -18,7 +18,7 @@
     <?php require_once("navbar.php"); navbar("index.php"); ?>
     <h1 class="text-center">ggLog</h1>
     <p class="text-center"><b>A running log for the rest of us.</b></p>
-	<a href="http://pastehtml.com/view/dg0vqgaa5.html"><strong>IMPORTANT ANNOUNCEMENT</strong></a>
+	<a class="text-center"; href="http://pastehtml.com/view/dg0vqgaa5.html"><strong>IMPORTANT ANNOUNCEMENT</strong></a>
     <p class="text-center">ggLog is an online running log for those of us who simply:<br></p>
     <p></p>
     <ul>
