@@ -23,6 +23,16 @@ div.ggLog-center
   margin-left:auto;
   margin-right:auto;
 }
+div.ggLog-centerseasons
+{
+  border-radius:15px; 
+  padding:0px;
+  background-color:#FFF;
+  width:600px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
 div.ggLog-cover
 {
   position:fixed;

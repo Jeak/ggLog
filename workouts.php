@@ -70,7 +70,7 @@ function deleteworkout($PID) // $PID as a string
 require_once("datetime.php");
 
 function displayworkouts()
-  {
+{
   $preface="      ";
   $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
   if (!$dbhandle) die ($error);

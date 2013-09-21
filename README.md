@@ -12,22 +12,26 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
 * [David Berard](https://github.com/davidberard98)
 * [John Nover](https://www.facebook.com/john.nover.7)
 
+
 ## Current functions
 * Add workouts
 * Edit workouts
 * Delete workouts
 * Weekly Mileage
+* <span style="color:#F33;">Seasons</span> (incomplete)
+    + Order by week
+    + SQLite database/table for seasons
+    + Remove seasons
+    + Seasons are week-based!
 
 ## Todo + Ideas
 
 * __Auto-add total mileage__
 * __Set seasons with auto-adding mileage (Summer Training, Track season, Winter Training, Cross Country)__ __dev__
-    + Order by week
-    + SQLite database/table for seasons
     + UI for editing seasons 
-    + Remove seasons
     + auto add mileage
     + Perhaps a larger interface for editing
+    + JS shorten title so it won't overflow in the list
 * __Modularize (so you don't have a single 25kb php file containing all html, css, php, javascript, sql, etc)__
 * Mobile version / Redesign to appear the same on all browsers
     + boostrap seems to change based on your browser
@@ -74,3 +78,5 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
 * Configure page
 * Remember date that workout was submitted
 * Holidays?
+* Color coding mileages
+* MySQL version

@@ -68,10 +68,10 @@
       </div>
     </div>
     <div class="ggLog-hide" id="editseasons">
-      <div class="ggLog-center" style="background-color:#FFF;">
+      <div class="ggLog-centerseasons">
         <a href="javascript:editseason('new');" style="margin-left:30px;">New season</a>
-        <ul class="list-group" style="margin-top:15px;width:489px;max-height:350px;overflow:auto;">
-          <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');">Summer Training (nonfunctional Example) <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
+        <ul class="list-group" style="margin-top:15px;width:519px;max-height:350px;overflow:auto;">
+          <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');"><span style="color:#00F">450mi</span> Summer Training (nonfunctional Example) <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
           <?php // listing seasons
           require_once("seasons.php");
           

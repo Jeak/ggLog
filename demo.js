@@ -199,8 +199,9 @@ function editseason(type, id)
   if(type == 'edit')
   {
     sn = document.getElementById(id).innerHTML;
-    var loc = sn.indexOf("<span");
-    sn = sn.substr(0, loc);
+    var startloc = sn.indexOf("</span>")+7;
+    var endloc = sn.indexOf("<span",5);
+    sn = sn.substr(startloc, (endloc-startloc));
     sn = sn.trim();
     title="Edit '" + sn + "'";
   }
@@ -239,7 +240,18 @@ function editseason(type, id)
   }
   else if(type == 'edit')
   {
-    var dateinfo = document.getElementById(id).getElementsByTagName('span')[0];
+    
+    var allspans = document.getElementById(id).getElementsByTagName('span');
+    var dateinfo;
+    for(var i=0;i<allspans.length;++i)
+    {
+      if(allspans[i].className == "badge")
+      {
+        dateinfo = allspans[i];
+        break;
+      }
+    }
+    
     var info = dateinfo.innerHTML;
     var beginmonth = decodeseasondates(info, 1);
     var beginday = decodeseasondates(info, 2);

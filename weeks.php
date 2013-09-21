@@ -81,11 +81,51 @@ class singleWeek
 class weekManage
 {
   public $weeks;
-  public $weekbegin; // week begin
+  public $weekbegin; // week begin date (Sun, Mon, etc);
+  public $constrained;
+  public $constraints;
 
-  function __construct($weekbegin = 1)
+  function __construct($weekbegin = 1, $constrained = false, $earliest = 0, $latest = 0)
   {
     $this->weekbegin = $weekbegin;
+    $this->constrained = $constrained;
+    if($constrained == true)
+    {
+      $this->constrain($earliest, $latest);
+    }
+  }
+
+  function constrain($earliest, $latest)
+  {
+    $this->constrained = true;
+    if($latest < $earliest) // make sure that $earliest is before $latest
+    {
+      $ne = $latest;
+      $latest = $earliest;
+      $earliest = $ne;
+    }
+    
+    $counter = $earliest;
+    while(true)
+    {
+      $newweek = new singleWeek($counter, $this->weekbegin);
+      $this->constraints[] = $newweek;
+      if($newweek->isPartOfWeek($latest))
+        break;
+      $counter += (60*60*24*7);
+    }
+  }
+ 
+  function isPartOf($newdate)
+  {
+    if($this->constrained == false)
+      return true;
+    foreach($this->constraints as $legalweek)
+    {
+      if($legalweek->isPartOfWeek($newdate))
+        return true;
+    }
+    return false;
   }
 
   function createweek($newdate)
@@ -102,19 +142,28 @@ class weekManage
 
   function addmiles($newdate, $dist)
   {
-    $loc = $this->createweek($newdate);
-    $this->weeks[$loc]->addmiles($dist);
+    if($this->isPartOf($newdate))
+    {
+      $loc = $this->createweek($newdate);
+      $this->weeks[$loc]->addmiles($dist);
+    }
   }
 
   function addtime($newdate, $time)
   {
+    if($this->isPartOf($newdate))
+    {
     $loc = $this->createweek($newdate);
     $this->weeks[$loc]->addtime($time);
+    }
   }
 
   function adddate($newdate)
   {
+    if($this->isPartOf($newdate))
+    {
     $loc = $this->createweek($newdate);
+    }
   }
 
   function get($date)
@@ -124,6 +173,16 @@ class weekManage
       if($week->isPartOfWeek($date))
         return $week;
     }
+  }
+
+  function totaldistance()
+  {
+    $tdist = 0;
+    for($i=0;$i<count($this->weeks);++$i)
+    {
+      $tdist += $this->weeks[$i]->distance;
+    }
+    return $tdist;
   }
 
 }
