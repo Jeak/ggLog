@@ -184,6 +184,15 @@ class weekManage
     }
     return $tdist;
   }
+  function totaltime()
+  {
+    $ttime = 0;
+    for($i=0;$i<count($this->weeks);++$i)
+    {
+      $ttime += $this->weeks[$i]->time;
+    }
+    return $ttime;
+  }
 
 }
 

@@ -23,16 +23,18 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
     + SQLite database/table for seasons
     + Remove seasons
     + Seasons are week-based!
+    + auto add mileage
 
 ## Todo + Ideas
 
 * __Auto-add total mileage__
 * __Set seasons with auto-adding mileage (Summer Training, Track season, Winter Training, Cross Country)__ __dev__
     + UI for editing seasons 
-    + auto add mileage
     + Perhaps a larger interface for editing
     + JS shorten title so it won't overflow in the list
 * __Modularize (so you don't have a single 25kb php file containing all html, css, php, javascript, sql, etc)__
+* Weekly Mileage
+    + Sort by distance, time, avg. pace, date, etc.
 * Mobile version / Redesign to appear the same on all browsers
     + boostrap seems to change based on your browser
     + sometimes the words on buttons get cut off on some browsers

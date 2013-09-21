@@ -117,6 +117,13 @@ function displayworkouts()
   }
   sortbydate($orderedweeks);
   echo "<div style=\"width:700px;display:block;margin-left:auto;margin-right:auto;\">\n";
+  if(true)
+  {
+    $tdist = $wm->totaldistance();
+    $ttime = $wm->totaltime();
+    echo "<span style=\"color:#7A7;font-size:1.5em;\"> All Time: " . $tdist .  " miles in ";
+    echo secondstotime($ttime) . " (" . speed($ttime, $tdist) .  " pace)</span><br /><br />";
+  }
   foreach($orderedweeks as $thisweek)
   {
     echo "<span style=\"color:#999;font-size:1.5em;\">";
