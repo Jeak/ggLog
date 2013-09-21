@@ -165,6 +165,18 @@ function canceleditworkout(id)
   document.getElementById(idval).innerHTML = unescape(val);
 }
 
+function viewseasons()
+{
+//  alert("bc");
+  var current = document.getElementById("editseasons").className;
+  
+  if(current == "ggLog-hide") // now change it to viewable
+    document.getElementById("editseasons").className = "ggLog-newworkout";
+  else
+    document.getElementById("editseasons").className = "ggLog-hide";
+  
+}
+
 function mouseoverseason(id)
 {
   var idval = id + "-edit";

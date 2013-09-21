@@ -27,6 +27,7 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
     + UI for editing seasons 
     + Remove seasons
     + auto add mileage
+    + Perhaps a larger interface for editing
 * __Modularize (so you don't have a single 25kb php file containing all html, css, php, javascript, sql, etc)__
 * Mobile version / Redesign to appear the same on all browsers
     + boostrap seems to change based on your browser
@@ -72,3 +73,4 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
     + calculate calories burned (0.8 &#42; lbs &#42; miles)
 * Configure page
 * Remember date that workout was submitted
+* Holidays?
