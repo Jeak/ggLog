@@ -35,6 +35,11 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
 * __Modularize (so you don't have a single 25kb php file containing all html, css, php, javascript, sql, etc)__
 * Weekly Mileage
     + Sort by distance, time, avg. pace, date, etc.
+* Daily Mileage
+    + Group workouts that happen on the same day, so you can input your 3 mile tempo seperately from the 5 miles of easy running.
+* Date auto-fill:
+    + Allow future dates, or allow inputting dates.
+    + Calendars?
 * Mobile version / Redesign to appear the same on all browsers
     + boostrap seems to change based on your browser
     + sometimes the words on buttons get cut off on some browsers

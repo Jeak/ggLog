@@ -42,13 +42,16 @@ function deleteseason($PID)
 }
     
 function decodeseasonid($enc)
-{  // if id=32, encoded id = 'seas32'
+{ 
+  //season IDs are differentiated from workout IDs with the prefix, "seas".
+  // if $enc="seas32", it returns int(32)
   $asstring = substr($enc, 4);
   return intval($asstring);
 }
 
 function encodeseasonid($id)
 {
+  //season IDs are differentiated from workout IDs with the prefix, "seas".
   return "seas" . $id;
 }
 

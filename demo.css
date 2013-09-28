@@ -148,3 +148,11 @@ a.none:link {text-decoration:none;color:inherit;}
 a.none:visited {text-decoration:none;color:inherit;}
 a.none:hover {text-decoration:none;color:inherit;}
 a.none:active {text-decoration:none;color:inherit;}
+span.workoutdate
+{
+  padding-left:25px;
+}
+span.workouttitle
+{
+  padding-left:40px;
+}

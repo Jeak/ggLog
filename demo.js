@@ -103,7 +103,8 @@ function editworkout(id)
   //parse the current one
   var idval = "PID-" + id;
   var staticHTML = document.getElementById(idval).innerHTML; // so you don't have to rewrite the code when you cancel
-  var date = document.getElementById(idval + "date").value;
+  var datest = document.getElementById(idval + "date").value;
+  var date = new Date(datest);
   var title = document.getElementById(idval + "title").value;
   var notes = removebr(document.getElementById(idval + "notes").innerHTML);
   var distance = document.getElementById(idval + "distance").innerHTML;
@@ -154,7 +155,12 @@ function editworkout(id)
   content += "  </form>";
   
   document.getElementById(idval).innerHTML = content;
-  SetDateDropdown(idval + "drop");
+  
+  var day = date.getUTCDate();
+  var month = date.getUTCMonth();
+  var year = date.getUTCFullYear();
+  // SetDateDropdown from ggLogEssentials.js
+  SetDateDropdown(idval + "drop", "", true, year, month, day);
   
 }
 

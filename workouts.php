@@ -151,11 +151,11 @@ function displayworkouts()
   //<a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a>
     echo "$preface  <a href=\"javascript:editworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>\n";
     echo "$preface  <a href=\"javascript:deleteworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
-    echo " &nbsp; &nbsp; ";
+    echo "<span class=\"workoutdate\">";
     echo date("D M j Y", strtotime($data[$i][0])); // date
-    echo "&nbsp; &nbsp; &nbsp; &nbsp; ";
+    echo "</span><span class=\"workouttitle\">";
     echo stripslashes($data[$i][1]); // title
-    echo "</div>\n";
+    echo "</span></div>\n";
   
     echo "$preface  <div style=\"position:relative;top:0;left:0;width:100%;\">\n";
     

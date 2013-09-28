@@ -18,7 +18,9 @@
     require_once('workouts.php'); // adding/editing/deleting workouts
     require_once('seasons.php');
 
-    if($_POST['submitting'] == "newworkout")
+    // each html form has a <input type="hidden" name="submitting" value="__" />
+    // which specifies what is happening
+    if($_POST['submitting'] == "newworkout") // for editing or creating a workout
     {
       $day= floatval(sqlite_escape_string($_POST['day']));
       $month= floatval(sqlite_escape_string($_POST['month']));
@@ -29,6 +31,8 @@
       $m= intval(sqlite_escape_string($_POST['minutes']));
       $s= intval(sqlite_escape_string($_POST['seconds']));
       $notes= sqlite_escape_string($_POST['notes']);
+      //if we are editing a workout, it must pass a PID to specify which workout.
+      //  If no PID is specified, a new one is created.
       if($_POST['PID'] != "") // editing
         addworkout(intval($_POST['PID']), $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
       else // adding new workout
@@ -36,7 +40,7 @@
     }
     else if($_POST['submitting'] == "deleteworkout")
     {
-      deleteworkout($_POST['PID']);
+      deleteworkout($_POST['PID']); // from workouts.php
     }
     else if($_POST['submitting'] == "season")
     {
@@ -57,7 +61,9 @@
     }
     else if($_POST['submitting'] == "deleteseason")
     {
-      $PID = decodeseasonid($_POST['id']);
+      // $_POST['id'] is in the format "seas12", so $PID = int(12)
+      // done to differentiate from workout IDs
+      $PID = decodeseasonid($_POST['id']); // seasons.php
       deleteseason($PID);
     }
     ?>
@@ -125,7 +131,7 @@
       <h1 class="text-center">Recent Workouts</h1>
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
-        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a> &nbsp; &nbsp; Jun 24 2013 &nbsp; &nbsp; &nbsp; &nbsp; Feel free to post a workout!</div>
+        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a><span style="padding-left:25px;">Jun 24 2013</span><span style="padding-left:35px;">Feel free to post a workout!</span></div>
         <div style="position:relative;top:0;left:0;width:100%;">
           <div style="float:left;width:500px;margin-bottom:25px;">Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion.</div>
           <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
