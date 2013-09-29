@@ -1,6 +1,6 @@
 <?php
 
-$iploc = "./";
+$iploc = "../58/";
 
 require_once($iploc . "IPmanage.php");
 
@@ -23,7 +23,7 @@ function navbar($activepage)
   $navpages[] = new navitem("demo.php","Logs");
   $navpages[] = new navitem("about.php","About");
 
-  echo "<div class=\"container\" >";
+  echo "<div style=\"position:relative;width:90%;margin-left:5%;z-index:-1;\" >";
   echo "<div class=\"navbar\"></div>";
   echo "<ul class=\"nav nav-tabs\">";
   for($i=0;$i<count($navpages);++$i)

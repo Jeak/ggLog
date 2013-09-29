@@ -97,6 +97,7 @@ function demoload()
 {
   SetDateDropdown('datesdrop');
   SetDateDropdown('PID--1drop');
+  $('#useralerts').popover();
 }
 function editworkout(id)
 {

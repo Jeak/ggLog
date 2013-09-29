@@ -10,8 +10,14 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="ggLogEssentials.js"></script>
     <script type="text/javascript" src="demo.js"></script>
+    <script type="text/javascript" src="loginstuff.js"></script>
   </head>
   <body style="width:100%;height:100%;" onLoad="demoload();">
+    <div style="display:block;top:0;right:0;text-align:right;margin-bottom:-30px;z-index:1;padding-right:10px;" id="userstuff">
+      <span class="badge" style="font-weight:900;background-color:#a00;" id="useralerts" data-toggle="tooltip" data-placement="bottom" data-trigger="hover" title="Warnings" data-content="Get more sleep.">1</span>
+      <span id="userinfo"> Logged on as <a style="position:relative;" href="javascript:switchuser();">David B.</a> | <a href="javascript:switchuser();">Switch user</a></span>
+    </div> 
+    <input type="hidden" id="usernumber" value="0" />
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <div class="ggLog-hide" id="coverForNotices"></div>
     <?php // deal with $_POST requests
@@ -124,7 +130,7 @@
       </div>
     </div>
     <div class="ggLog-hide" id="addworkoutmobile">
-      Mobile version under construction...
+      Mobile version under construction...</span>
       <!-- Probably would be better if the mobile site was at a different url -->
     </div>
     <div style="position:relative;height:20px;top:0;width:100%;">
@@ -133,7 +139,7 @@
       <div class="ggLog-center-90">
         <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a><span style="padding-left:25px;">Jun 24 2013</span><span style="padding-left:35px;">Feel free to post a workout!</span></div>
         <div style="position:relative;top:0;left:0;width:100%;">
-          <div style="float:left;width:500px;margin-bottom:25px;">Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion.</div>
+          <div style="float:left;width:500px;margin-bottom:25px;">Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion. </div>
           <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
             <div class="runspecs">
               <span id="idnumber-distance" style="font-size:1.3em;color:#888">5</span> miles
