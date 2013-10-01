@@ -5,9 +5,9 @@ function alerthi()
 function switchuser()
 {
   var users = new Array();
-  users.push(new Array("David B.", "1", "Quick Strides Quick Strides.."));
-  users.push(new Array("Jack G.", "1", "Work on your form"));
-  users.push(new Array("John N.", "1", "Get your eyes up! Stop looking at the ground."));
+  users.push(new Array("David B.", "0", "You currently have no notifications."));
+  users.push(new Array("Jack G.", "69,420", "Coach says: Work on your form!  You look like a marathon runner.  Your classmates say: You know you're not going to get anywhere with computer science.  You're doing calf raisers wrong.  Why do you only do crunchy frogs?  You know you're not funny, right?  That's not how you do obliques!  Your arms flail around when you're running.  *knee-grab*.  Why do you make that noise when we grab your knees?  It doesn't even hurt you when we grab your knees.  You're doing life wrong.  Why do y... [view profile for all notifications]"));
+  users.push(new Array("John N.", "1", "Coach says: Get your eyes up! Stop looking at the ground."));
 
   var currentnumber = parseInt(document.getElementById("usernumber").value);
   var cnm = currentnumber%users.length;
