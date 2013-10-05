@@ -5,6 +5,7 @@ Demo at [http://ko.kooia.info/ggLog/](http://ko.kooia.info/ggLog/)
 Concept video available at: [http://youtu.be/I5KrViMpEa4](http://youtu.be/I5KrViMpEa4)  
 Many of the files are for storing IP addresses, requiring SQLite.  
 Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/](http://glyphicons.com/)  
+Charts used [Chart.js](http://www.chartjs.org/)
 
 ## Contributors
 
@@ -27,6 +28,7 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
 
 ## Todo + Ideas
 
+* Emoticons
 * __Auto-add total mileage__
 * __Set seasons with auto-adding mileage (Summer Training, Track season, Winter Training, Cross Country)__ __dev__
     + UI for editing seasons 
@@ -35,6 +37,9 @@ Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/]
 * __Modularize (so you don't have a single 25kb php file containing all html, css, php, javascript, sql, etc)__
 * Weekly Mileage
     + Sort by distance, time, avg. pace, date, etc.
+    + something like [this](http://bl.ocks.org/mbostock/4063318) for displaying mileage per day
+    + bar charts for miles run on mon, tues, wed, etc.
+    + charts for miles etc.
 * Daily Mileage
     + Group workouts that happen on the same day, so you can input your 3 mile tempo seperately from the 5 miles of easy running.
 * Date auto-fill:

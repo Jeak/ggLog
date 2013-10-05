@@ -21,10 +21,11 @@ function navbar($activepage)
   IPadd();
   $navpages = array(new navitem("index.php", "Home")); //adding the pages
   $navpages[] = new navitem("demo.php","Logs");
+//  $navpages[] = new navitem("people.php","People");
   $navpages[] = new navitem("about.php","About");
 
-  echo "<div style=\"position:relative;width:90%;margin-left:5%;z-index:-1;\" >";
-  echo "<div class=\"navbar\"></div>";
+  echo "<div style=\"position:relative;width:90%;margin-left:5%;\" >";
+  echo "<div class=\"navbar\" style=\"margin-top:0;\"></div>";
   echo "<ul class=\"nav nav-tabs\">";
   for($i=0;$i<count($navpages);++$i)
   {

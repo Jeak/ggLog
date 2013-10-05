@@ -13,7 +13,7 @@
     <script type="text/javascript" src="loginstuff.js"></script>
   </head>
   <body style="width:100%;height:100%;" onLoad="demoload();">
-    <div style="display:block;top:0;right:0;text-align:right;margin-bottom:-30px;z-index:1;padding-right:10px;" id="userstuff">
+    <div style="display:block;top:0;right:0;text-align:right;padding-bottom:0;z-index:1;padding-right:10px;" id="userstuff">
       <span class="badge" style="font-weight:900;background-color:#a00;" id="useralerts" data-toggle="tooltip" data-placement="bottom" data-trigger="hover" title="Warnings" data-content="Get more sleep.">1</span>
       <span id="userinfo"> Logged on as <a style="position:relative;" href="javascript:switchuser();">David B.</a> | <a href="javascript:switchuser();">Switch user</a></span>
     </div> 
@@ -81,7 +81,7 @@
     </div>
     <div class="ggLog-hide" id="editseasons">
       <div class="ggLog-centerseasons">
-        <a href="javascript:editseason('new');" style="margin-left:30px;">New season</a>
+        <a href="manageseasons.php" style="margin-left:30px;">Manage seasons</a>
         <ul class="list-group" style="margin-top:15px;width:519px;max-height:350px;overflow:auto;">
           <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');"><span style="color:#00F">450mi</span> Summer Training (nonfunctional Example) <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
           <?php // listing seasons
