@@ -30,3 +30,27 @@ function clearseason()
 {
   $("li.active.list-group-item").remove();
 }
+function DoAnalyze()
+{
+  var data = [ ["Mon", 34], ["Tues", 37], ["Wed", 25], ["Thu", 38], ["Fri", 31], ["Sat", 41], ["Sun", 23] ];
+
+  $.plot("#chartloc", [ data ], {
+    series: {
+      bars: {
+        show: true,
+        barWidth: 0.6,
+        align: "center"
+      }
+    },
+  xaxis: {
+    mode: "categories",
+    tickLength: 0
+    }
+  });
+
+  // Add the Flot version string to the footer
+
+  $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+}
+
+$(function() {DoAnalyze();});

@@ -5,7 +5,7 @@ Demo at [http://ko.kooia.info/ggLog/](http://ko.kooia.info/ggLog/)
 Concept video available at: [http://youtu.be/I5KrViMpEa4](http://youtu.be/I5KrViMpEa4)  
 Many of the files are for storing IP addresses, requiring SQLite.  
 Icons from Glyphicons, as integrated into Bootstrap 3.0 [http://glyphicons.com/](http://glyphicons.com/)  
-Charts used [Chart.js](http://www.chartjs.org/)
+Charts: Used Flotcharts
 
 ## Contributors
 
@@ -39,7 +39,7 @@ Charts used [Chart.js](http://www.chartjs.org/)
     + Sort by distance, time, avg. pace, date, etc.
     + something like [this](http://bl.ocks.org/mbostock/4063318) for displaying mileage per day
     + bar charts for miles run on mon, tues, wed, etc.
-    + charts for miles etc.
+    + charts for miles etc.  Include seasons in it?
 * Daily Mileage
     + Group workouts that happen on the same day, so you can input your 3 mile tempo seperately from the 5 miles of easy running.
 * Date auto-fill:
