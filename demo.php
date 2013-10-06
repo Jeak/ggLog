@@ -180,8 +180,12 @@
         <hr class="ggLog-partial" style="clear:both;" />
         <?php
         require_once("workouts.php");
-        displayworkouts();
+        require_once("seasons.php");
+        displayWeeklyDistances(true);
+        displayworkouts(true, 0, 20);
         ?>
+        <button class="btn btn-default" style="display:block;margin-left:auto;margin-right:auto;margin-bottom:15px;" onclick="loadmore();" id="loadmorebutton">Load More</button>
+        <input type="hidden" id="numberloaded" value="20" />
     </div>
   </body>
 </html>

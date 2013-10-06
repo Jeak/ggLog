@@ -25,6 +25,7 @@ Charts: Used Flotcharts
     + Remove seasons
     + Seasons are week-based!
     + auto add mileage
+* Incomplete Ajax loading
 
 ## Todo + Ideas
 
@@ -61,7 +62,7 @@ Charts: Used Flotcharts
     + Allow creation of routes
     + Auto-distances for routes using Javascript
 * don't load everything at once - only show 30 or so workouts at a time ??
-    + revamp to have ajax
+    + revamp to have ajax - and autoscroll stuff, so you don't have to press the button every time
 * Use JQuery instead of javascript?
 * Add functionality for **users** (however, it would probably be better to get the demo working first before switching everything over to users)
 * Set goals (daily, weekly, season-ly, yearly)

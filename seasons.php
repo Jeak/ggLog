@@ -138,5 +138,65 @@ function listseasons($echoResults = false) // if true, will also echo seasons
   
   return $fulllist;
 }
+function displayWeeklyDistances($echoResults = true)
+{
+  $output;
+  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+  if (!$dbhandle) die ($error);
+
+  $result = sqlite_query($dbhandle, "SELECT rundate, title, distance, runtime, notes, PID FROM workouts");
+  $data = array();
+  while ($row = sqlite_fetch_array($result, SQLITE_NUM))
+  {
+    $data[] = $row;
+  }
+
+  sqlite_close($dbhandle);
+  
+  require_once('weeks.php');
+  $wm = new weekManage();
+  foreach($data as $workout)
+  {
+    $day = strtotime($workout[0]);
+    $time = timetoseconds($workout[3]);
+    $distance = $workout[2];
+    $wm->addtime($day, $time);
+    $wm->addmiles($day, $distance);
+  }
+  //        $thisweek = $wm->get(time());
+  $orderedweeks;
+  foreach($wm->weeks as $week)
+  {
+    $orderedweeks[] = array($week->beginday, $week->endday, $week->distance, $week->time);
+  }
+  sortbydate($orderedweeks);
+  $output .= "<div style=\"width:700px;display:block;margin-left:auto;margin-right:auto;\">\n";
+  if(true)
+  {
+    $tdist = $wm->totaldistance();
+    $ttime = $wm->totaltime();
+    $output .= "<span style=\"color:#7A7;font-size:1.5em;\"> All Time: " . $tdist .  " miles in ";
+    $output .= secondstotime($ttime) . " (" . speed($ttime, $tdist) .  " pace)</span><br /><br />";
+  }
+  foreach($orderedweeks as $thisweek)
+  {
+    $output .= "<span style=\"color:#999;font-size:1.5em;\">";
+    $output .= date('M j Y', $thisweek[0]) . " to ";
+    $output .= date('M j Y', $thisweek[1]);
+    $output .= " with " . $thisweek[2];
+    $output .= " miles in " . secondstotime($thisweek[3]);
+    $output .= " (avg " . speed($thisweek[3], $thisweek[2]) . ")";
+    $output .= "</span><br />\n";
+  }
+  $output .= "</div>\n";
+  $output .= "<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
+
+  if($echoResults == true)
+  {
+    echo $output;
+  }
+  
+  return $output;
+}
 
 ?>

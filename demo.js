@@ -279,8 +279,25 @@ function canceleditseason()
 
 function addbr(inhtml)
 {
-inhtml = inhtml.replace(new RegExp('\n', 'g'), '<br />\n');
-return inhtml;
+  inhtml = inhtml.replace(new RegExp('\n', 'g'), '<br />\n');
+  return inhtml;
+}
+
+function loadmore()
+{
+  var beginningl = $("#numberloaded").val();
+  var request = $.post(
+    "fetchworkouts.php", 
+    {begin: beginningl, number: "20"},
+    function( data ) {
+      var locOfPipe = data.indexOf("|");
+      var content = data.substr(locOfPipe+1);
+      $("#loadmorebutton").before(content);
+      $("#numberloaded").val(parseInt(beginningl)+20);
+      if(locOfPipe == 1) // means that it has reached the end
+        $("#loadmorebutton").remove();
+    }
+  );
 }
 
 function removebr(inhtml)

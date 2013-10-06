@@ -32,7 +32,13 @@ function clearseason()
 }
 function DoAnalyze()
 {
-  var data = [ ["Mon", 34], ["Tues", 37], ["Wed", 25], ["Thu", 38], ["Fri", 31], ["Sat", 41], ["Sun", 23] ];
+  var datapoints = [ ["Mon", 34], ["Tues", 37], ["Wed", 25], ["Thu", 38], ["Fri", 31], ["Sat", 41], ["Sun", 23] ];
+  var data = {
+    color: "#1A1",
+    bars: {fillColor: {colors: [ {opacity: 0.8}, {opacity: 0.5} ] } },
+    hoverable: true,
+    data: datapoints
+  };
 
   $.plot("#chartloc", [ data ], {
     series: {
@@ -51,6 +57,11 @@ function DoAnalyze()
   // Add the Flot version string to the footer
 
   $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+}
+
+function Hovering()
+{
+
 }
 
 $(function() {DoAnalyze();});
