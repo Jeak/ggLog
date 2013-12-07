@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /ggLog/
+RewriteCond %{HTTP_HOST} ko\. [NC]
+RewriteRule ^astext\.txt$ astext.php
+RewriteBase /ko/ggLog/
+RewriteCond %{HTTP_HOST} kooia\. [NC]
+RewriteRule ^astext\.txt$ astext.php

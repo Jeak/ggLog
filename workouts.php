@@ -6,6 +6,30 @@ require_once('datetime.php');
      ADDING WORKOUTS
 *//////////////////////
 
+function workoutsAsArray()
+{
+  /* $data[workout #][_attribute__]
+  *        Attributes:
+  * 0. date
+  * 1. title
+  * 2. distance
+  * 3. time
+  * 4, notes
+  * 5. PID
+  */
+  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
+  if (!$dbhandle) die ($error);
+
+  $result = sqlite_query($dbhandle, "SELECT rundate, title, distance, runtime, notes, PID FROM workouts");
+  $data = array();
+  while ($row = sqlite_fetch_array($result, SQLITE_NUM))
+  {
+    $data[] = $row;
+  }
+  sqlite_close($dbhandle);
+  return $data;
+}
+
 function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes)
 {
   $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
@@ -111,7 +135,7 @@ function displayworkouts($echoResults = true, $wheretobegin = -1, $numbertodispl
   return $output;
 }
 
-function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = false)
+function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = false) // why is $isFinished in variables?
 {
   $preface = "";
   $output = "";
@@ -149,7 +173,7 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
     $output .= "$preface  </div>\n";
   
     $output .= "$preface  <div style=\"float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px\">\n";
-    $output .= "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "distance\">";
+    $output .= "$preface    )div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "distance\">";
     $output .= $data[$i][2]; // distance
     $output .= "</span> miles</div>\n";
     $output .= "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
@@ -172,6 +196,53 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
     $isFinished = true;
   
 return $output;
+}
+
+//                       bool     date   date
+function convertToText($alltime, $begin, $end) // inclusive
+{
+  $when;
+  if($alltime == true)
+    $when = "All Time";
+  else
+  {
+    $begins = date("D M j Y", $begin);
+    $ends = date("D M j Y", $end);
+    $when = $begins . " to " . $ends;
+  }
+
+  $title = "First Last's Running Logs From " . $when;
+  
+  $output;
+  for($i=0;$i<8;++$i) $output .= " ";
+  $output .= $title . "\n";
+  for($i=0;$i<8;++$i) $output .= " ";
+  for($i=0;$i<strlen($title);++$i) $output .= "=";
+  $output .= "\n\n";
+
+  $allworkouts = workoutsAsArray();
+  for($i = 0;$i<count($allworkouts);++$i)
+  {
+    for($j=0;$j<20;++$j) $output .= "~";
+    $output .= "\n";
+    $output .= Date("D M j Y", strtotime($allworkouts[$i][0]));
+    $output .= "  \"" . $allworkouts[$i][1] . "\"\n";
+    $distance = $allworkouts[$i][2] . " mi";
+    $spaces = 10;
+    $diff = $spaces - strlen($distance);
+    $output .= $distance;
+    for($j=0;$j<$diff;++$j) $output .= " ";
+    $output .= $allworkouts[$i][3] . "\n";
+    for($j=0;$j<$spaces;++$j) $output .= " ";
+    $output .= speed($allworkouts[$i][3],$allworkouts[$i][2]) . "\n\n";
+    $output .= $allworkouts[$i][4] . "\n\n";
+  }
+
+  $output .= "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+  $output .= "\nExported from ggLog (currently at http://ko.kooia.info/ggLog/) on " . date("D M j Y", time());
+  $output .= "\n\n";
+
+  return $output;
 }
 
 ?>

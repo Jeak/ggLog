@@ -178,6 +178,8 @@
         </div></form>
       </div>
         <hr class="ggLog-partial" style="clear:both;" />
+        <a href="astext.txt" style="text-align:center;display:block;width:100%;">Download my workouts as a text file.</a>
+        <hr class="ggLog-partial" style="clear:both;" />
         <?php
         require_once("workouts.php");
         require_once("seasons.php");
