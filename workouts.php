@@ -173,7 +173,7 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
     $output .= "$preface  </div>\n";
   
     $output .= "$preface  <div style=\"float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px\">\n";
-    $output .= "$preface    )div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "distance\">";
+    $output .= "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "distance\">";
     $output .= $data[$i][2]; // distance
     $output .= "</span> miles</div>\n";
     $output .= "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
