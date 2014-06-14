@@ -4,6 +4,9 @@ require_once('datetime.php');
 require_once("weeks.php");
 
 function addseason($PID = -1, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday)
+ // note that addseason can also edit seasons
+ // If $PID == -1, then it will add a season
+ // If a valid $PID is given, then it will edit the season with the corresponding $PID.
 {
   $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
   if (!$dbhandle) die ($error);
@@ -45,6 +48,8 @@ function decodeseasonid($enc)
 { 
   //season IDs are differentiated from workout IDs with the prefix, "seas".
   // if $enc="seas32", it returns int(32)
+
+  //Used because a javascript id will have "seas32" for example, while a PHP/SQL id will have only int(32)
   $asstring = substr($enc, 4);
   return intval($asstring);
 }
@@ -52,6 +57,7 @@ function decodeseasonid($enc)
 function encodeseasonid($id)
 {
   //season IDs are differentiated from workout IDs with the prefix, "seas".
+  //See decodeseasonid($enc)
   return "seas" . $id;
 }
 
@@ -111,7 +117,7 @@ function listseasons($echoResults = false) // if true, will also echo seasons
     $pid = $allseasons[$i][0];
     $idval = "seas" . $pid;
     $out = "";
-    $out .= "<a href=\"javascript:editseason('edit','$idval')\" class=\"none\">";
+    $out .= "<a href=\"javascript:expandseason('edit','$idval')\" class=\"none\">";
 
     $out .= "  <li class=\"list-group-item\" id=\"" . $idval .  "\" onmouseover=\"mouseoverseason('" . $idval . "');\""; 
       $out .= " onmouseout=\"mouseoffseason('" . $idval . "');\">";

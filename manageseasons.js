@@ -8,7 +8,7 @@ function mouseoffseason(id)
   var idval = id + "-edit";
   document.getElementById(idval).className = "ggLog-hide";
 }
-function editseason(type, id)
+function expandseason(type, id)
 {
   if($("li.active.list-group-item").length == 0)
   {

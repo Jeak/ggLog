@@ -21,11 +21,13 @@
       require_once("seasons.php");
       
       echo listseasons(false);
-      ?>
+      ?>   
+
+      <li class="list-group-item" style="background-color:#EEFFEE"><a href="#">Add a season</a></li>
+    </ul>
     <h2 class = "text-center">Analysis test</h2>
     <h4 class = "text-center">Day-of-the-week analysis</h4>
     <div id="chartloc" style="display:block;margin-left:auto;margin-right:auto;width:750px;background-color:#eef;height:200px;"></div>
     
-    </ul>
   </body>
 </html>
