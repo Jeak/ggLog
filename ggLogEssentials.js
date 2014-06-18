@@ -14,7 +14,6 @@ function SetDateDropdown(idname, prefix, showlabel, year, month, date)
   {
     showlabel = true;
   }
-//  alert(idname);
   var today = new Date();
   var todayyear = today.getUTCFullYear();
   if(typeof date === "undefined")

@@ -69,27 +69,32 @@ function seasondistances($workouts, $seasons)
   $dateloc = 0;
   $distloc = 1;
 
-  $seasonweeks = array();
-  foreach($seasons as $season) // create new (weekManage)s which are constrained to the dates within the corresponding season
+  $seasondists = array();
+  foreach($seasons as $season)
   {
     $begin = strtotime($season[$beginloc]);
     $end = strtotime($season[$endloc]);
-    $seasonmanage = new weekManage();
-    $seasonmanage->constrain($begin, $end);
-    $seasonweeks[] = $seasonmanage;
-  }
-
-  $seasondists = array();
-  foreach($seasonweeks as $seasonweek)
-  {
-    foreach($workouts as $workout) // input every single workout into every single seasonweeks (weekManage)
-    {                              //   and it will automatically have to check to see whether it's within range
+    $thisSeasonDist = 0;
+    foreach($workouts as $workout)
+    {
       $day = strtotime($workout[$dateloc]);
-      $seasonweek->addmiles($day, $workout[$distloc]);
+      if(inrange($day, $begin, $end))
+        $thisSeasonDist += $workout[$distloc];
     }
-    $seasondists[] = $seasonweek->totaldistance();
+    $seasondists[] = $thisSeasonDist;
   }
+  
   return $seasondists;
+}
+
+function inrange($day, $begin, $end) {
+  if($day < $end && $day > $begin)
+    return true;
+  if(date('z Y', $day) == date('z Y', $begin))
+    return true;
+  if(date('z Y', $day) == date('z Y', $end))
+    return true;
+  return false;
 }
 
 function listseasons($echoResults = false) // if true, will also echo seasons
