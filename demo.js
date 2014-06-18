@@ -309,47 +309,6 @@ function removebr(inhtml)
   return inhtml;
 }
 
-function decodeseasondates(str, type)
-{
-  var parts = str.split(' to ');
-  for(var i=0;i<parts.length;++i)
-  {
-    parts[i] = parts[i].split(" ");
-    var datevar = new Date(parts[i][0] + " 13 2013");
-    parts[i][0] = datevar.getMonth();
-    parts[i][1] = parseInt(parts[i][1]);
-    parts[i][2] = parseInt(parts[i][2]);
-  }
-  switch (type)
-  {
-    case 1: return parts[0][0]; break;
-    case 2: return parts[0][1]; break;
-    case 3: return parts[0][2]; break;
-    case 4: return parts[1][0]; break;
-    case 5: return parts[1][1]; break;
-    case 6: return parts[1][2]; break;
-  }
-  return parts[0][0];
-}
-
-function decodetime(str, type)
-           //    '1:24:41', 'h' would return 1; (--, 'm') would return 24;
-{
-  var parts = str.split(':');
-  if(type == 'h' || type == 0)
-  {
-    return parseInt(parts[0]);
-  }
-  if(type == 'm' || type == 1)
-  {
-    return parseInt(parts[1]);
-  }
-  if(type == 's' || type == 2)
-  {
-    return parseInt(parts[2]);
-  }
-  return -1;
-}
 
 function encodetime(h, m, s)
 {

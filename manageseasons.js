@@ -14,7 +14,7 @@ function expandseason(type, id)
   {
     $("#" + id).parent().after("<li class=\"list-group-item active\" style=\"margin-left:30px;border-color:white;\" onclick=\"analyze()\">Display Workouts</li>");
     $("#" + id).parent().after("<li class=\"list-group-item active\" style=\"margin-left:30px;border-color:white;\">Analysis</li>");
-    $("#" + id).parent().after("<li class=\"list-group-item active\" style=\"margin-left:30px;border-color:white;\">Edit</li>");
+    $("#" + id).parent().after("<li class=\"list-group-item active\" style=\"margin-left:30px;border-color:white;\" onclick=\"editseason('edit', '" + id + "')\">Edit</li>");
   }
   else
   {
@@ -30,6 +30,132 @@ function clearseason()
 {
   $("li.active.list-group-item").remove();
 }
+function editseason(type, id)
+{
+  var NewSeasonBeginId = "newseason-bd";
+  var NewSeasonEndId = "newseason-ed";
+  var sn = "";
+  var title = "New Season";
+
+  if(type == 'edit')
+  {
+    sn = document.getElementById(id).innerHTML;
+    var startloc = sn.indexOf("</span>")+7;
+    var endloc = sn.indexOf("<span",5);
+    sn = sn.substr(startloc, (endloc-startloc));
+    sn = sn.trim();
+    title="Edit '" + sn + "'";
+  }
+
+  var content = "";
+  content += "<div class=\"colorcover\" onclick=\"canceleditseason(); return false;\"></div>";
+  content += "  <div class=\"ggLog-centernewseason\">";
+  content += "    <p class=\"text-center\"><b>" + title + "</b></p>";
+  content += "    <form action=\"#\" method=\"post\" id=\"editseason\" class=\"form-inline\">";
+  content += "      <input type=\"hidden\" name=\"submitting\" value=\"season\" />";
+  if(type == 'edit')
+  {
+    content += "      <input type=\"hidden\" name=\"id\" value=\"" + id + "\" />";
+  }
+  content += "      <label>Season Name:</label> <input type=\"text\" name=\"seasonname\" value=\"" + sn + "\" style=\"width:300px;\" class=\"form-control\" /><br />";
+  content += "      <label>Begins:</label> <span id=\"" + NewSeasonBeginId + "\"></span><br />";
+  content += "      <label>Ends:</label> <span id=\"" + NewSeasonEndId + "\"></span><br />";
+  content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:60px;margin-top:10px;\" onclick=\"submitSeason(); return false;\">Save</button> ";
+  content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:10px;margin-top:10px;\" onclick=\"canceleditseason(); return false;\">Cancel</button>";
+  content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:10px;margin-top:10px;\" onclick=\"deleteseason('" + id + "'); return false;\">Delete</button>";
+  content += "    </form>";
+//  content += "    <form action=\"demo.php\" method=\"post\" class=\"form-inline\">";
+//  content += "      <input type=\"hidden\" name=\"submitting\" value=\"deleteseason\" />";
+//  content += "      <input type=\"hidden\" name=\"id\" value=\"" + id + "\" />";
+//  content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:10px;margin-top:10px;\" onclick=\"return true;\">Delete</button>";
+//  content += "    </form>";
+  content += "  </div>";
+  content += "</div>";
+
+  document.getElementById('coverForNotices').innerHTML=content;
+  document.getElementById('coverForNotices').className="ggLog-cover";
+
+  if(type == 'new')
+  {
+    SetDateDropdown(NewSeasonBeginId, "begin-", false);
+    SetDateDropdown(NewSeasonEndId, "end-", false);
+  }
+  else if(type == 'edit')
+  {
+    
+    var allspans = document.getElementById(id).getElementsByTagName('span');
+    var dateinfo;
+    for(var i=0;i<allspans.length;++i)
+    {
+      if(allspans[i].className == "badge")
+      {
+        dateinfo = allspans[i];
+        break;
+      }
+    }
+    
+    var info = dateinfo.innerHTML;
+    var beginmonth = decodeseasondates(info, 1);
+    var beginday = decodeseasondates(info, 2);
+    var beginyear = decodeseasondates(info, 3);
+    var endmonth = decodeseasondates(info, 4);
+    var endday = decodeseasondates(info, 5);
+    var endyear = decodeseasondates(info, 6);
+    SetDateDropdown(NewSeasonBeginId, "begin-", false, beginyear, beginmonth, beginday);
+    SetDateDropdown(NewSeasonEndId, "end-", false, endyear, endmonth, endday);
+  }
+
+}
+
+function deleteseason(id) {
+  var dataString = "submitting=deleteseason&id=" + id;
+//  alert("deleteseason!");
+//  $("#editseason").ajaxSubmit({url: 'accept.php', type: 'post'});
+  $.ajax({
+  type: "POST",
+  url: "accept.php",
+  data: dataString
+  }) 
+    .done(function() {
+    canceleditseason(); 
+    clearseason();
+    listseasons();
+  });
+}
+
+function canceleditseason()
+{
+  document.getElementById('coverForNotices').className="ggLog-hide";
+}
+  
+function listseasons()
+{
+  $("#seasonlist").html("");
+  $.ajax({
+  type: "POST",
+  url: "accept.php",
+  data: "submitting=seasonlist" })
+    .done (function ( data ) {
+    $("#seasonlist").html(data);
+  });
+}
+
+function submitSeason() {
+  var dataString = $("#editseason").serialize();
+  //$("#editseason").ajaxSubmit({url: 'accept.php', type: 'post'});
+  $.ajax({
+  type: "POST",
+  url: "accept.php",
+  data: dataString
+  })
+    .done(function() {
+    canceleditseason(); 
+    clearseason();
+    listseasons();
+  });
+}
+
+
 function DoAnalyze()
 {
   var datapoints = [ ["Mon", 34], ["Tues", 37], ["Wed", 25], ["Thu", 38], ["Fri", 31], ["Sat", 41], ["Sun", 23] ];

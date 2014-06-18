@@ -15,15 +15,17 @@
   
   <body>
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
+    <div class="ggLog-hide" id="coverForNotices"></div>
     <h1 class="text-center">Seasons</h1>
     <ul class="list-group" style="max-width:800px;display:block;margin-left:auto;margin-right:auto;">
+      <span id="seasonlist">
       <?php
       require_once("seasons.php");
       
       echo listseasons(false);
       ?>   
-
-      <li class="list-group-item" style="background-color:#EEFFEE"><a href="#">Add a season</a></li>
+      </span>
+      <li class="list-group-item" style="background-color:#EEFFEE"><a href="javascript:editseason('new', 1)">Add a season</a></li>
     </ul>
     <h2 class = "text-center">Analysis test</h2>
     <h4 class = "text-center">Day-of-the-week analysis</h4>
