@@ -1,5 +1,6 @@
 function mouseoverseason(id)
 {
+  //shows the pencil icon when mousing over a season
   var idval = id + "-edit";
   document.getElementById(idval).className = "glyphicon glyphicon-resize-full";
 }
@@ -10,6 +11,7 @@ function mouseoffseason(id)
 }
 function expandseason(type, id)
 {
+  //when you click on a season: it shows or hides Display Workouts, Analysis, and Edit for that season.
   if($("li.active.list-group-item").length == 0)
   {
     $("#" + id).parent().after("<li class=\"list-group-item active\" style=\"margin-left:30px;border-color:white;\" onclick=\"analyze()\">Display Workouts</li>");
@@ -28,10 +30,12 @@ function analyze()
 }
 function clearseason()
 {
+  //Hides the Display Workouts, Analysis, and Edit dropdown thing
   $("li.active.list-group-item").remove();
 }
 function editseason(type, id)
 {
+  // Edits a season with ajax, a form; Also responsible for new seasons
   var NewSeasonBeginId = "newseason-bd";
   var NewSeasonEndId = "newseason-ed";
   var sn = "";
@@ -64,11 +68,6 @@ function editseason(type, id)
   content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:10px;margin-top:10px;\" onclick=\"canceleditseason(); return false;\">Cancel</button>";
   content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:10px;margin-top:10px;\" onclick=\"deleteseason('" + id + "'); return false;\">Delete</button>";
   content += "    </form>";
-//  content += "    <form action=\"demo.php\" method=\"post\" class=\"form-inline\">";
-//  content += "      <input type=\"hidden\" name=\"submitting\" value=\"deleteseason\" />";
-//  content += "      <input type=\"hidden\" name=\"id\" value=\"" + id + "\" />";
-//  content += "      <button class=\"btn btn-default\" style=\"float:left;margin-left:10px;margin-top:10px;\" onclick=\"return true;\">Delete</button>";
-//  content += "    </form>";
   content += "  </div>";
   content += "</div>";
 
@@ -108,9 +107,8 @@ function editseason(type, id)
 }
 
 function deleteseason(id) {
+  // AJAX for deleting a season
   var dataString = "submitting=deleteseason&id=" + id;
-//  alert("deleteseason!");
-//  $("#editseason").ajaxSubmit({url: 'accept.php', type: 'post'});
   $.ajax({
   type: "POST",
   url: "accept.php",
@@ -130,6 +128,10 @@ function canceleditseason()
   
 function listseasons()
 {
+  //update seasons from the SQL database.
+  //remember, before calling this from a previous ajax event, have it occur in the
+  // .done() area, to prevent it loading before the new info is put
+  // into the SQL database.
   $("#seasonlist").html("");
   $.ajax({
   type: "POST",
@@ -142,7 +144,6 @@ function listseasons()
 
 function submitSeason() {
   var dataString = $("#editseason").serialize();
-  //$("#editseason").ajaxSubmit({url: 'accept.php', type: 'post'});
   $.ajax({
   type: "POST",
   url: "accept.php",

@@ -54,6 +54,8 @@ require_once('seasons.php');
     }
     else if($_POST['submitting'] == "seasonlist")
     {
+      //for updating lists of seasons in manageseasons.php and stuff
+      // usually an AJAX request
       echo listseasons(false);
     }
 
