@@ -103,3 +103,4 @@ Bold indicates that an item is being worked on.
 * Color coding mileages
 * miles/km, lbs/kg
 * MySQL version
+* No stray escape characters when editing a post with quotation marks.

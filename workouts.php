@@ -221,6 +221,7 @@ function convertToText($alltime, $begin, $end) // inclusive
   $output .= "\n\n";
 
   $allworkouts = workoutsAsArray();
+  sortbydate($allworkouts);
   for($i = 0;$i<count($allworkouts);++$i)
   {
     for($j=0;$j<20;++$j) $output .= "~";
