@@ -1,0 +1,31 @@
+h1, h2, h3, h4, h5, h6
+{
+  text-align:center; font-weight:900;
+}
+img.donBoscoDesktop
+{
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+img.donBoscoMobile
+{
+  display:block;
+  width:100%;
+  margin-left:auto;
+  margin-right:auto;
+}
+div.bugnoteDesktop
+{
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  width:900px;
+}
+div.bugnoteMobile
+{
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  width:85%;
+}
