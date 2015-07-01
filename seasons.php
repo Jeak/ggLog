@@ -150,7 +150,7 @@ function listseasons($echoResults = false) // if true, will also echo seasons
 }
 function displayWeeklyDistances($echoResults = true)
 {
-  $output;
+  $output = "";
   $pdo = gg_get_pdo();
 
   $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_TABLE);
@@ -166,9 +166,9 @@ function displayWeeklyDistances($echoResults = true)
   $wm = new weekManage();
   foreach($data as $workout)
   {
-    $day = strtotime($workout[0]);
-    $time = timetoseconds($workout[3]);
-    $distance = $workout[2];
+    $day = strtotime($workout["rundate"]);
+    $time = timetoseconds($workout["runtime"]);
+    $distance = $workout["distance"];
     $wm->addtime($day, $time);
     $wm->addmiles($day, $distance);
   }
@@ -178,7 +178,7 @@ function displayWeeklyDistances($echoResults = true)
   {
     $orderedweeks[] = array($week->beginday, $week->endday, $week->distance, $week->time);
   }
-  sortbydate($orderedweeks);
+  sortbydate($orderedweeks, 0);
   $output .= "<div style=\"width:700px;display:block;margin-left:auto;margin-right:auto;\">\n";
   if(true)
   {

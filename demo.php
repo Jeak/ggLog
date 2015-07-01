@@ -29,23 +29,22 @@
   {
     if($_POST['submitting'] == "newworkout") // for editing or creating a workout
     {
-      $day= floatval(sqlite_escape_string($_POST['day']));
-      $month= floatval(sqlite_escape_string($_POST['month']));
-      $year= floatval(sqlite_escape_string($_POST['year']));
-      $title= sqlite_escape_string($_POST['title']);
-      $distance= floatval(sqlite_escape_string($_POST['distance']));
-      $h= intval(sqlite_escape_string($_POST['hours']));
-      $m= intval(sqlite_escape_string($_POST['minutes']));
-      $s= intval(sqlite_escape_string($_POST['seconds']));
-      $notes= sqlite_escape_string($_POST['notes']);
+      $day= floatval($_POST['day']);
+      $month= floatval($_POST['month']);
+      $year= floatval($_POST['year']);
+      $title= $_POST['title'];
+      $distance= floatval($_POST['distance']);
+      $h= intval($_POST['hours']);
+      $m= intval($_POST['minutes']);
+      $s= intval($_POST['seconds']);
+      $notes= $_POST['notes'];
       //if we are editing a workout, it must pass a PID to specify which workout.
       //  If no PID is specified, a new one is created.
-      echo "$day $month $year $title $distance $h $m $s $notes";
-/*
-      if($_POST['PID'] != "") // editing
+
+      if(isset($_POST['PID']) && $_POST['PID'] != "") // editing
         addworkout(intval($_POST['PID']), $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
       else // adding new workout
-        addworkout(-1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes); */
+        addworkout(-1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
     }
     else if($_POST['submitting'] == "deleteworkout")
     {
@@ -53,14 +52,14 @@
     }
     else if($_POST['submitting'] == "season")
     {
-      $beginday = intval(sqlite_escape_string($_POST['begin-day']));
-      $beginmonth = intval(sqlite_escape_string($_POST['begin-month']));
-      $beginyear = intval(sqlite_escape_string($_POST['begin-year']));
-      $endday = intval(sqlite_escape_string($_POST['end-day']));
-      $endmonth = intval(sqlite_escape_string($_POST['end-month']));
-      $endyear = intval(sqlite_escape_string($_POST['end-year']));
-      $name = sqlite_escape_string($_POST['seasonname']);
-      if($_POST['id'] != "") // editing
+      $beginday = intval($_POST['begin-day']);
+      $beginmonth = intval($_POST['begin-month']);
+      $beginyear = intval($_POST['begin-year']);
+      $endday = intval($_POST['end-day']);
+      $endmonth = intval($_POST['end-month']);
+      $endyear = intval($_POST['end-year']);
+      $name = $_POST['seasonname'];
+      if(isset($POST_['id'] && $_POST['id'] != "") // editing
       {
         $PID = decodeseasonid($_POST['id']);
         addseason($PID, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday);

@@ -86,7 +86,7 @@ function htmlnewline($in)
 }
 
 
-function sortbydate(&$workouts, $location=0)
+function sortbydate(&$workouts, $location="rundate")
 {
   // Earliest workout goes first; latest workout goes last.
   $dates = array();

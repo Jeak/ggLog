@@ -49,17 +49,18 @@ function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $
   {
     if($PID < 0)
     {
-      $stm = "INSERT INTO " . GG_TABLE . "(rundate, title, distance, runtime, notes, PID) ". // pass NULL to PID to make it auto increment
-      "VALUES('$rundate', '$title', $distance, '$runtime', '$notes', NULL)";
-      $pdo->exec($stm);
+      $stm = "INSERT INTO " . GG_TABLE . "(rundate, title, distance, runtime, notes, PID) ". 
+      "VALUES(?,?,?,?,?, NULL)"; // pass NULL to PID to make it auto increment
+      $stmt = $pdo->prepare($stm);
+      $stmt->execute(array($rundate, $title, $distance, $runtime, $notes));
       //sqlite_exec($dbhandle, $stm, $error);
     }
     else
     {
       $stm = "UPDATE " . GG_TABLE . " ".
-      "SET rundate='$rundate', title='$title', distance=$distance, runtime='$runtime', notes='$notes' ".
-      "WHERE PID=$PID";
-      $pdo->exec($stm);
+      "SET rundate=?, title=?, distance=?, runtime=?, notes=? WHERE PID=?";
+      $stmt = $pdo->prepare($stm);
+      $stmt->execute(array($rundate, $title, $distance, $runtime, $notes, $PID));
     }
   }
   $pdo = null;
@@ -73,7 +74,7 @@ function deleteworkout($PID) // $PID as a string
   $found = false;
   while ($row = $results->fetch(PDO::FETCH_ASSOC))
   {
-    if(intval($PID == intval($row[0])))
+    if(intval($PID == intval($row['PID'])))
     {
       $found = true;
       break;
@@ -83,7 +84,7 @@ function deleteworkout($PID) // $PID as a string
   $stm = "DELETE FROM " . GG_TABLE . " WHERE PID=" . $PID;
   if($found == true)
   {
-    $pdo->exec($dbhandle, $stm, $error);
+    $pdo->exec($stm);
   }
   //[RELEASE] for the release, replace with @sqlite_exec() to surpress errors
   
@@ -149,43 +150,43 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
   }
   for($i=count($data)-1-$beginloc;$i>=0 && $i>=(count($data)-$beginloc-$numberToDisplay);--$i, ++$numberofworkouts)
   {
-    $PID = $data[$i][5];
+    $PID = $data[$i]["PID"];
   //          echo $PID;
     $output .= "$preface<div class=\"ggLog-center-90\" id=\"PID-" . $PID . "\">\n";
     
   //          store hard-to-access data in hidden inputs
-    $output .= "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "date\" value=\"" . $data[$i][0] . "\" />\n";
-    $output .= "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "title\" value=\"" . $data[$i][1] . "\" />\n";
+    $output .= "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "date\" value=\"" . $data[$i]["rundate"] . "\" />\n";
+    $output .= "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "title\" value=\"" . $data[$i]["title"] . "\" />\n";
   
     $output .= "$preface  <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">\n";
   //<a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a>
     $output .= "$preface  <a href=\"javascript:editworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>\n";
     $output .= "$preface  <a href=\"javascript:deleteworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
     $output .= "<span class=\"workoutdate\">";
-    $output .= date("D M j Y", strtotime($data[$i][0])); // date
+    $output .= date("D M j Y", strtotime($data[$i]["rundate"])); // date
     $output .= "</span><span class=\"workouttitle\">";
-    $output .= stripslashes($data[$i][1]); // title
+    $output .= stripslashes($data[$i]["title"]); // title
     $output .= "</span></div>\n";
   
     $output .= "$preface  <div style=\"position:relative;top:0;left:0;width:100%;\">\n";
     
     $output .= "$preface    <div style=\"float:left;width:500px;margin-bottom:25px;\" id=\"PID-" . $PID . "notes\">";
-    $output .= htmlnewline(stripslashes($data[$i][4])); // notes?
+    $output .= htmlnewline(stripslashes($data[$i]["notes"])); // notes?
     $output .= "</div>\n";
     $output .= "$preface  </div>\n";
   
     $output .= "$preface  <div style=\"float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px\">\n";
     $output .= "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "distance\">";
-    $output .= $data[$i][2]; // distance
+    $output .= $data[$i]["distance"]; // distance
     $output .= "</span> miles</div>\n";
     $output .= "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
-    $output .= speed($data[$i][3], $data[$i][2]);
+    $output .= speed($data[$i]["runtime"], $data[$i]["distance"]);
     $output .= "</span> min/mi</div>\n";
     $output .= "$preface  </div>\n";
             
     $output .= "$preface  <div style=\"float:left;width:120px;\">";
     $output .= "<div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "time\">";
-    $output .= $data[$i][3];  // time
+    $output .= $data[$i]["runtime"];  // time
     $output .= "</span></div>";
     $output .= "$preface  </div>\n";
   
@@ -215,7 +216,7 @@ function convertToText($alltime, $begin, $end) // inclusive
 
   $title = "First Last's Running Logs From " . $when;
   
-  $output;
+  $output = "";
   for($i=0;$i<8;++$i) $output .= " ";
   $output .= $title . "\n";
   for($i=0;$i<8;++$i) $output .= " ";
@@ -228,17 +229,17 @@ function convertToText($alltime, $begin, $end) // inclusive
   {
     for($j=0;$j<20;++$j) $output .= "~";
     $output .= "\n";
-    $output .= Date("D M j Y", strtotime($allworkouts[$i][0]));
-    $output .= "  \"" . $allworkouts[$i][1] . "\"\n";
-    $distance = $allworkouts[$i][2] . " mi";
+    $output .= Date("D M j Y", strtotime($allworkouts[$i]["rundate"]));
+    $output .= "  \"" . $allworkouts[$i]["title"] . "\"\n";
+    $distance = $allworkouts[$i]["distance"] . " mi";
     $spaces = 10;
     $diff = $spaces - strlen($distance);
     $output .= $distance;
     for($j=0;$j<$diff;++$j) $output .= " ";
-    $output .= $allworkouts[$i][3] . "\n";
+    $output .= $allworkouts[$i]["runtime"] . "\n";
     for($j=0;$j<$spaces;++$j) $output .= " ";
-    $output .= speed($allworkouts[$i][3],$allworkouts[$i][2]) . "\n\n";
-    $output .= $allworkouts[$i][4] . "\n\n";
+    $output .= speed($allworkouts[$i]["runtime"],$allworkouts[$i]["distance"]) . "\n\n";
+    $output .= $allworkouts[$i]["notes"] . "\n\n";
   }
 
   $output .= "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
