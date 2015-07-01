@@ -22,6 +22,7 @@
     <?php // deal with $_POST requests
     require_once('workouts.php'); // adding/editing/deleting workouts
     require_once('seasons.php');
+    require_once('datetime.php');
 
     // each html form has a <input type="hidden" name="submitting" value="__" />
     // which specifies what is happening
@@ -32,12 +33,12 @@
       $day= floatval($_POST['day']);
       $month= floatval($_POST['month']);
       $year= floatval($_POST['year']);
-      $title= $_POST['title'];
+      $title= sanitize($_POST['title']);
       $distance= floatval($_POST['distance']);
       $h= intval($_POST['hours']);
       $m= intval($_POST['minutes']);
       $s= intval($_POST['seconds']);
-      $notes= $_POST['notes'];
+      $notes= sanitize($_POST['notes']);
       //if we are editing a workout, it must pass a PID to specify which workout.
       //  If no PID is specified, a new one is created.
 
@@ -58,8 +59,8 @@
       $endday = intval($_POST['end-day']);
       $endmonth = intval($_POST['end-month']);
       $endyear = intval($_POST['end-year']);
-      $name = $_POST['seasonname'];
-      if(isset($POST_['id'] && $_POST['id'] != "") // editing
+      $name = sanitize($_POST['seasonname']);
+      if(isset($POST_['id']) && $_POST['id'] != "") // editing
       {
         $PID = decodeseasonid($_POST['id']);
         addseason($PID, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday);
@@ -157,31 +158,7 @@
         </div>
       </div>
       <hr class="ggLog-partial" style="clear:both;" />
-      <div class="ggLog-center-90"><form class="form-inline">
-        <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#000;font-size:1em;"> <div style = "position:absolute;top:0;left:40px;" id="PID--1drop">-----</div> <div style="position:absolute;top:0;left:350px;"><label>Title: </label><input type="text" value="Feel free to post a workout!" class="form-control" style="width:200px" name="title" /></div></div>
-        <div style="position:relative;top:0;left:0;width:100%;">
-          <div style="float:left;width:500px;margin-bottom:25px;"><textarea class="form-control" style="margin-top:20px;width:480px;height:120px;">Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion.</textarea></div>
-          <div style="float:left;width:120px;margin-bottom:25px;margin-left:10px">
-            <div class="runspecs">
-              <input type="text" class="form-control" style="margin-top:5px;padding-left:3px;padding-right:3px;width:40px;" name="distance" value="5"> miles
-            </div>
-          </div>
-          <div style="float:left;width:120px;">
-            <div class="runspecs">
-                <input type="text" name="hours" value="1" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h"/> :
-                <input type="text" name="minutes" value="04" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" /> :
-                <input type="text" name="seconds" value="24" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s"/>
-            </div>
-          </div>
-            <div style="float:left;width:230px;padding-left:10px;">
-              <button class="form-control" style="width:55px;">save</button>
-              <button class="form-control" style="width:55px;">cancel</button>
-              <button class="form-control" style="width:55px;">delete</button>
-            </div>
-        </div></form>
-      </div>
-        <hr class="ggLog-partial" style="clear:both;" />
-        <a href="astext.txt" style="text-align:center;display:block;width:100%;">Download my workouts as a text file.</a>
+        <a href="astext.txt" style="text-align:center;display:block;width:100%;" download>Download my workouts as a text file.</a>
         <hr class="ggLog-partial" style="clear:both;" />
         <?php
         require_once("workouts.php");

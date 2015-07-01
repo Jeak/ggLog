@@ -85,6 +85,17 @@ function htmlnewline($in)
   return str_replace("\n", "<br />\n", $in);
 }
 
+function sanitize($in)
+{
+  $in = str_replace("<", "&lt;", $in);
+  $in = str_replace(">", "&gt;", $in);
+  $in = str_replace("\"", "&quot;", $in);
+  $in = str_replace("'", "&x27;", $in);
+  $in = str_replace("/", "&#x2F;", $in);
+  $in = str_replace("&", "&amp;", $in);
+  return $in;
+}
+
 
 function sortbydate(&$workouts, $location="rundate")
 {
