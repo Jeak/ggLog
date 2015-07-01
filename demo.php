@@ -23,7 +23,7 @@
     <?php // deal with $_POST requests
     require_once('workouts.php'); // adding/editing/deleting workouts
     require_once('seasons.php');
-
+/*
     // each html form has a <input type="hidden" name="submitting" value="__" />
     // which specifies what is happening
     if($_POST['submitting'] == "newworkout") // for editing or creating a workout
@@ -71,10 +71,11 @@
       // done to differentiate from workout IDs
       $PID = decodeseasonid($_POST['id']); // seasons.php
       deleteseason($PID);
-    }
+    } */
     ?>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
-      <div class="btn-group" style="display:block;width:400px;margin-left:auto;margin-right:auto;">
+<!--      <div class="btn-group" style="display:block;width:400px;margin-left:auto;margin-right:auto;">   -->
+      <div class="ggLog-buttonholder btn-group" id="buttonholder">
         <button type="button" class="btn btn-default" style="" onclick="javascript:newworkout();">New Workout</button>
         <button type="button" class="btn btn-default" onclick="viewseasons();">Seasons</button>
       </div>
@@ -85,55 +86,54 @@
         <ul class="list-group" style="margin-top:15px;width:519px;max-height:350px;overflow:auto;">
           <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');"><span style="color:#00F">450mi</span> Summer Training (nonfunctional Example) <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
           <?php // listing seasons
-          require_once("seasons.php");
+//          require_once("seasons.php");
           
-          echo listseasons(false);
+//          echo listseasons(false);
           ?>
         </ul>
       </div>
     </div>
     <div class="ggLog-hide" id="addworkoutdesktop">
-      <div class="ggLog-center">
-        <form action="demo.php" method="post" class="form-inline">
-          <input type="hidden" name="submitting" value="newworkout" />
-          <p class="text-center"><b><span style="color:red">New</span> <span id="workoutname">Untitled Workout</span></b></p>
-          <div style="position:relative;height:35px;width:100%;">
-            <div style="position:absolute;top:0;left:0;"><label>Title:</label> <input type="text" style="width:250px;" class="form-control" name="title" id="ggLogwn" onkeyup="changewn();"  value="" /></div>
-            <div style="position:absolute;top:0;right:0;" id="datesdrop">
-            </div>
-          </div>
-          <div style="position:relative;width:100%;height:170px;top:0">
-            <div style="position:absolute;top:0;left:0;width:420px;">
-              <p class="text-center"><b>Workout notes:</b></p>
-              <textarea style="width:400px;height:120px;" class="form-control" name="notes"></textarea>
-            </div>
-            <div style="position:absolute;top:0;right:0;width:160px;height:170px">
-              <div style="position:relative;top:35px;right:0;width:160px;height:35px;">
-                <label> Distance:</label>
-                <input type="text" class="form-control" name="distance" style="width:90px" placeholder="Distance" />
-              </div>
-              <div style="position:relative;top:50px;right:0;width:160px;height:35px;">
-                <label>Time:</label>
-                <input type="text" name="hours" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h"/> :
-                <input type="text" name="minutes" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" /> :
-                <input type="text" name="seconds" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s"/>
-              </div>
-            </div>
-          </div>
-          <div style="position:relative;width:100%;height:35px;top:0">
-            <div style="display:block;margin-left:auto;margin-right:auto;width:200px" >
-              <input type="submit" class="form-control" value="save" style="width:60px;" />
-              <button onClick="closenewworkout(); return false;" class="form-control" style="width:60px;" >cancel</button>
-            </div>
-          </div>
-        </form>
-      </div>
     </div>
     <div class="ggLog-hide" id="addworkoutmobile">
-      Mobile version under construction...</span>
-      <!-- Probably would be better if the mobile site was at a different url -->
+      <form action="demo.php" method="post" class="form-inline">
+        <input type="hidden" name="submitting" value="newworkout" />
+        <div style="width:100%;top:0;display:block;text-align:center;font-weight:900;"> <span style="color:red">New</span> <span id="workoutname-mobile">Untitled Workout</span> </div>
+        <div class="ggLog-leftinputmobile">
+          <label>Title/Loc:</label> <input type="text" class="form-control mblil" style="width:70%;" name="title" id="ggLogwn-mobile" placeholder="Title/Location" onkeyup = "changewnMobile();" value="" />
+        </div>
+        <div class="ggLog-leftinputmobile">
+          <label>Distance:</label> <input type="text" class="form-control mblil" style="width:50%" name="distance" placeholder="Distance" />
+        </div>
+        <div class="ggLog-leftinputmobile" id="datesdrop-mobile"></div>
+        <div class="ggLog-leftinputmobile">
+          <div class="ggLog-lefttimewords">
+            <label>Time:</label>
+          </div>
+          <div class="ggLog-inputhour">
+            <input type="text" name="hours" class="ggLog-inputpad form-control" placeholder="h" />
+          </div>
+          <div class="ggLog-lefttimewords"> : </div>
+          <div class="ggLog-inputms">
+            <input type="text" name="minutes" class="ggLog-inputpad form-control" placeholder="m" />
+          </div>
+          <div class="ggLog-lefttimewords"> : </div>
+          <div class="ggLog-inputms">
+            <input type="text" name="seconds" class="ggLog-inputpad form-control" placeholder="s" />
+          </div>
+        </div>
+         <br style="clear:both;" />
+        <div class="ggLog-leftinputmobile" style="font-weight:900;">Notes:</div>
+        <textarea style="width:90%;height:200px;display:block;margin-left:auto;margin-right:auto;" class="form-control" name="notes"></textarea>
+        <br />
+        <div class="ggLog-leftinputmobile">
+          <input type="submit" class="mblil form-control" style="width:30%;" value="save" />&nbsp; &nbsp; &nbsp;
+          <button onClick="closenewworkout(); return false;" style="width:40%;" class="mblil form-control">cancel</button>
+        </div>
+      </form>
     </div>
-    <div style="position:relative;height:20px;top:0;width:100%;">
+    <hr class="ggLog-partial" style="clear:both;" />
+    <div class="ggLog-containrecentworkouts" id="recentworkouts-desktop">
       <h1 class="text-center">Recent Workouts</h1>
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
@@ -153,7 +153,10 @@
           </div>
         </div>
       </div>
+
       <hr class="ggLog-partial" style="clear:both;" />
+<?php
+/*
       <div class="ggLog-center-90"><form class="form-inline">
         <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#000;font-size:1em;"> <div style = "position:absolute;top:0;left:40px;" id="PID--1drop">-----</div> <div style="position:absolute;top:0;left:350px;"><label>Title: </label><input type="text" value="Feel free to post a workout!" class="form-control" style="width:200px" name="title" /></div></div>
         <div style="position:relative;top:0;left:0;width:100%;">
@@ -176,18 +179,58 @@
               <button class="form-control" style="width:55px;">delete</button>
             </div>
         </div></form>
-      </div>
+      </div> */ ?>
+    <hr class="ggLog-partial" style="clear:both;" />
         <hr class="ggLog-partial" style="clear:both;" />
         <a href="astext.txt" style="text-align:center;display:block;width:100%;">Download my workouts as a text file.</a>
         <hr class="ggLog-partial" style="clear:both;" />
         <?php
         require_once("workouts.php");
         require_once("seasons.php");
-        displayWeeklyDistances(true);
-        displayworkouts(true, 0, 20);
+//        displayWeeklyDistances(true);
+//        displayworkouts(true, 0, 20);
         ?>
         <button class="btn btn-default" style="display:block;margin-left:auto;margin-right:auto;margin-bottom:15px;" onclick="loadmore();" id="loadmorebutton">Load More</button>
         <input type="hidden" id="numberloaded" value="20" />
     </div>
+    <hr class="ggLog-partial" style="clear:both;" />
+    <div class="ggLog-containrecentworkouts" id="recentworkouts-mobile">
+      <h3 class="text-center">Recent Workouts</h3>
+      <hr class="ggLog-partial" style="clear:both;" />
+      <div class="ggLog-centerinputmobile">
+        <span style="color:#AAAAAA;font-size:1.3em;margin-right:15px;">Jun 24 2013</span>
+        <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a>
+      </div>
+      <div class="ggLog-centerinputmobile">
+        <span style="color:#558855;font-size:1.3em;">Title! Title! Title! This could probably be a pretty long title!</span></div>
+      </div>
+      <div class="ggLog-centerinputmobile">
+        <span class="ggLog-biggraytext">15</span> miles &nbsp; &nbsp; &nbsp; <span class="ggLog-biggraytext">1:49:02</span>
+      </div>
+      <div class="ggLog-centerinputmobile">
+        <span class="ggLog-biggraytext">5:58</span> min/mi
+      </div>
+      <div class="ggLog-centerinputmobile">
+      Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion.
+      </div>
+      <hr class="ggLog-partial" style="clear:both;" />
+      <div class="ggLog-centerinputmobile">
+        <span style="color:#AAAAAA;font-size:1.3em;margin-right:15px;">Jun 23 2013</span>
+        <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a>
+      </div>
+      <div class="ggLog-centerinputmobile">
+        <span style="color:#558855;font-size:1.3em;">Previous log</span></div>
+      </div>
+      <div class="ggLog-centerinputmobile">
+        <span class="ggLog-biggraytext">21</span> miles &nbsp; &nbsp; &nbsp; <span class="ggLog-biggraytext">1:30:02</span>
+      </div>
+      <div class="ggLog-centerinputmobile">
+        <span class="ggLog-biggraytext">3:42</span> min/mi
+      </div>
+      <div class="ggLog-centerinputmobile">
+        I just set world records in every distance longer than a mile and up to 21 miles!  I'm very happy with my training, and hopefully this will help me break 2:00:00 in the marathon.  Feeling some shin splints but hopefully that goes away soon.
+      </div>
+    </div>
+    <br /><br />
   </body>
 </html>

@@ -28,7 +28,7 @@ function SetDateDropdown(idname, prefix, showlabel, year, month, date)
   {
     contents += "Date: ";
   }
-  contents +="<select name=\"" + prefix + "month\" style=\"width:70px;padding-left:3px;padding-right:3px;\" class=\"form-control\"> ";
+  contents +="<select name=\"" + prefix + "month\" style=\"width:70px;padding-left:3px;padding-right:3px;\" class=\"mblil form-control\"> ";
   for(var i=0;i<12;++i)
   {
   var j = i+1; // javascript dates are 0-11, while php dates are 1-12
@@ -44,7 +44,7 @@ function SetDateDropdown(idname, prefix, showlabel, year, month, date)
   
 //  var contents ="Date: <select name=\"month\" style=\"width:70px;\">  <option value=\"1\">Jan</option>  <option value=\"2\">Feb</option>  <option value=\"3\">Mar</option>  <option value=\"4\">Apr</option>  <option value=\"5\">May</option>  <option value=\"6\">Jun</option>  <option value=\"7\">Jul</option>  <option value=\"8\">Aug</option>  <option value=\"9\">Sep</option>  <option value=\"10\">Oct</option>  <option value=\"11\">Nov</option>  <option value=\"12\">Dec</option></select> ";
   contents += "</select>"
-  contents += "<select name=\"" + prefix + "day\" style=\"width:60px;padding-left:3px;padding-right:3px;\" class=\"form-control\">";
+  contents += "<select name=\"" + prefix + "day\" style=\"width:60px;padding-left:3px;padding-right:3px;\" class=\"mblil form-control\">";
   for(var i=1;i<32;i++)
   {
     if(i == date)
@@ -57,7 +57,7 @@ function SetDateDropdown(idname, prefix, showlabel, year, month, date)
     }
   }
   contents += "</select> ";
-  contents += "<select name=\"" + prefix + "year\" style=\"width:70px;padding-left:3px;padding-right:3px;\" class=\"form-control\">";
+  contents += "<select name=\"" + prefix + "year\" style=\"width:70px;padding-left:3px;padding-right:3px;\" class=\"mblil form-control\">";
   var diff = Math.abs(todayyear - year) +1;
   if(diff < 7)
   {
