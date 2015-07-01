@@ -2,7 +2,7 @@
 
 $iploc = "../58/";
 
-require_once($iploc . "IPmanage.php");
+#require_once($iploc . "IPmanage.php");
 
 class navitem
 {
@@ -18,7 +18,7 @@ class navitem
 
 function navbar($activepage)
 {
-  IPadd();
+#  IPadd();
   $navpages = array(new navitem("index.php", "Home")); //adding the pages
   $navpages[] = new navitem("demo.php","Logs");
 //  $navpages[] = new navitem("people.php","People");

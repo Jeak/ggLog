@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html style="width:100%;height:100%">
   <head>
@@ -26,6 +25,8 @@
 
     // each html form has a <input type="hidden" name="submitting" value="__" />
     // which specifies what is happening
+  if(isset($_POST['submitting']))
+  {
     if($_POST['submitting'] == "newworkout") // for editing or creating a workout
     {
       $day= floatval(sqlite_escape_string($_POST['day']));
@@ -39,10 +40,12 @@
       $notes= sqlite_escape_string($_POST['notes']);
       //if we are editing a workout, it must pass a PID to specify which workout.
       //  If no PID is specified, a new one is created.
+      echo "$day $month $year $title $distance $h $m $s $notes";
+/*
       if($_POST['PID'] != "") // editing
         addworkout(intval($_POST['PID']), $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
       else // adding new workout
-        addworkout(-1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes);
+        addworkout(-1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes); */
     }
     else if($_POST['submitting'] == "deleteworkout")
     {
@@ -72,6 +75,7 @@
       $PID = decodeseasonid($_POST['id']); // seasons.php
       deleteseason($PID);
     }
+  }
     ?>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
       <div class="btn-group" style="display:block;width:400px;margin-left:auto;margin-right:auto;">

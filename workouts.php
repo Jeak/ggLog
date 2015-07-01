@@ -1,6 +1,7 @@
 <?php
 
 require_once('datetime.php');
+require_once('config.php');
 
 /*/////////////////////
      ADDING WORKOUTS
@@ -17,59 +18,60 @@ function workoutsAsArray()
   * 4, notes
   * 5. PID
   */
-  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-  if (!$dbhandle) die ($error);
+  $pdo = gg_get_pdo();
 
-  $result = sqlite_query($dbhandle, "SELECT rundate, title, distance, runtime, notes, PID FROM workouts");
+  $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_TABLE);
   $data = array();
-  while ($row = sqlite_fetch_array($result, SQLITE_NUM))
+ 
+  while($row = $result->fetch(PDO::FETCH_ASSOC))
   {
     $data[] = $row;
   }
-  sqlite_close($dbhandle);
+  // Close connection
+  $pdo = null;
   return $data;
 }
 
+// Actually EDITS a workout but creates one if not found
 function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes)
 {
-  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-  if (!$dbhandle) die ($error);
+  $pdo = gg_get_pdo();
   
   $works = true;
   
   $rundate = createsqldate($year, $month, $day);
   if($rundate == false)
     $works = false;
-  
+
   $runtime = createsqltime($h, $m, $s);
 
   if($works == true)
   {
     if($PID < 0)
     {
-      $stm = "INSERT INTO workouts(rundate, title, distance, runtime, notes, PID) ". // pass NULL to PID to make it auto increment
+      $stm = "INSERT INTO " . GG_TABLE . "(rundate, title, distance, runtime, notes, PID) ". // pass NULL to PID to make it auto increment
       "VALUES('$rundate', '$title', $distance, '$runtime', '$notes', NULL)";
-      sqlite_exec($dbhandle, $stm, $error);
+      $pdo->exec($stm);
+      //sqlite_exec($dbhandle, $stm, $error);
     }
     else
     {
-      $stm = "UPDATE workouts ".
+      $stm = "UPDATE " . GG_TABLE . " ".
       "SET rundate='$rundate', title='$title', distance=$distance, runtime='$runtime', notes='$notes' ".
       "WHERE PID=$PID";
-      sqlite_exec($dbhandle, $stm, $error);
+      $pdo->exec($stm);
     }
   }
-  sqlite_close($dbhandle);
+  $pdo = null;
 }
 
 function deleteworkout($PID) // $PID as a string
 {
-  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-  if (!$dbhandle) die ($error);
+  $pdo = gg_get_pdo();
   
-  $results = sqlite_query($dbhandle, "SELECT PID FROM workouts");
+  $results = $pdo->query("SELECT PID FROM " . GG_TABLE);
   $found = false;
-  while ($row = sqlite_fetch_array($results, SQLITE_NUM)) // keep this?  it probably uses time & resources
+  while ($row = $results->fetch(PDO::FETCH_ASSOC))
   {
     if(intval($PID == intval($row[0])))
     {
@@ -78,14 +80,14 @@ function deleteworkout($PID) // $PID as a string
     }
   }
 
-  $stm = "DELETE FROM workouts WHERE PID=" . $PID;
+  $stm = "DELETE FROM " . GG_TABLE . " WHERE PID=" . $PID;
   if($found == true)
   {
-    sqlite_exec($dbhandle, $stm, $error);
+    $pdo->exec($dbhandle, $stm, $error);
   }
   //[RELEASE] for the release, replace with @sqlite_exec() to surpress errors
   
-  sqlite_close($dbhandle);
+  $pdo = null;
 }
 
 /*//////////////////////////////////////////
@@ -97,12 +99,11 @@ function displayworkouts($echoResults = true, $wheretobegin = -1, $numbertodispl
 {
   $output = "";
   $preface="      ";
-  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-  if (!$dbhandle) die ($error);
+  $pdo = gg_get_pdo();
   
   /*            //  UNCOMMENT THIS TO DISPLAY ALL VALUES IN A TABLE
                 // -------------------------------------------------
-  $result = sqlite_query($dbhandle, "SELECT * FROM workouts");
+  $result = sqlite_query($dbhandle, "SELECT * FROM " . GG_TABLE);
   echo "<table style=\"border:2px solid black;\">";
   while( $row = sqlite_fetch_array($result, SQLITE_NUM))
   {
@@ -116,13 +117,14 @@ function displayworkouts($echoResults = true, $wheretobegin = -1, $numbertodispl
   echo "</table><br /><br /><br />";
   */
 
-  $result = sqlite_query($dbhandle, "SELECT rundate, title, distance, runtime, notes, PID FROM workouts");
+  $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_TABLE);
   $data = array();
-  while ($row = sqlite_fetch_array($result, SQLITE_NUM))
+  while ($row = $result->fetch(PDO::FETCH_ASSOC))
   {
     $data[] = $row;
   }
-  sqlite_close($dbhandle);
+  $pdo = null;
+
   sortbydate($data); // function above
 
   $output .= displayOnlyWorkouts($data, $wheretobegin, $numbertodisplay, $finished); // function below

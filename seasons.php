@@ -1,5 +1,6 @@
 <?php
 
+require_once('config.php');
 require_once('datetime.php');
 require_once("weeks.php");
 
@@ -8,8 +9,7 @@ function addseason($PID = -1, $name, $beginyear, $beginmonth, $beginday, $endyea
  // If $PID == -1, then it will add a season
  // If a valid $PID is given, then it will edit the season with the corresponding $PID.
 {
-  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-  if (!$dbhandle) die ($error);
+  $pdo = gg_get_pdo();
   
   $begindate = createsqldate($beginyear, $beginmonth, $beginday);
   $enddate = createsqldate($endyear, $endmonth, $endday);
@@ -19,29 +19,28 @@ function addseason($PID = -1, $name, $beginyear, $beginmonth, $beginday, $endyea
     $command = "";
     if($PID == -1)
     {
-      $command = "INSERT INTO seasons(name, begindate, enddate) ".
+      $command = "INSERT INTO " . GG_SEASONS . "(name, begindate, enddate) ".
         "VALUES('$name', '$begindate', '$enddate');";
     }
     else if($PID != -1)
     {
-      $command = "UPDATE seasons ".
+      $command = "UPDATE " . GG_SEASONS . " ".
         "SET name='$name', begindate='$begindate', enddate='$enddate' WHERE PID=$PID";
     }
-    sqlite_exec($dbhandle, $command, $error);
+    $pdo->exec($command);
   }
   else
     echo "Incorrect dates $beginyear, $beginmonth, $beginday; $endyear, $endmonth, $endday";
-  sqlite_close($dbhandle);
+  $pdo = null;
 }
 
 function deleteseason($PID)
 {
-  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-  if (!$dbhandle) die ($error);
+  $pdo = gg_get_pdo();
   
-  sqlite_exec($dbhandle, "DELETE FROM seasons WHERE PID=$PID");
+  $pdo->exec("DELETE FROM " . GG_SEASONS . " WHERE PID=$PID");
   
-  sqlite_close($dbhandle);
+  $pdo = null;
 }
     
 function decodeseasonid($enc)
@@ -99,20 +98,20 @@ function inrange($day, $begin, $end) {
 
 function listseasons($echoResults = false) // if true, will also echo seasons
 {
-  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-  if (!$dbhandle) die ($error);
+  $pdo = gg_get_pdo();
   $fulllist = "";
 
   $allworkouts;
-  $results = sqlite_query($dbhandle, "SELECT rundate, distance, runtime, PID FROM workouts");
-  while($row = sqlite_fetch_array($results, SQLITE_NUM))
+  $results = $pdo->query("SELECT rundate, distance, runtime, PID FROM " . GG_TABLE);
+  while($row = $results->fetch(PDO::FETCH_ASSOC))
   {
     $allworkouts[] = $row;
   }
   
-  $allseasons;
-  $results = sqlite_query($dbhandle, "SELECT PID, name, begindate, enddate FROM seasons");
-  while($row = sqlite_fetch_array($results, SQLITE_NUM))
+  $allseasons = array();
+  $results = $pdo->query("SELECT PID, name, begindate, enddate FROM " . GG_SEASONS);
+
+  while($row = $results->fetch(PDO::FETCH_ASSOC))
     $allseasons[] = $row;
 
   $distances = seasondistances($allworkouts, $allseasons);
@@ -142,7 +141,7 @@ function listseasons($echoResults = false) // if true, will also echo seasons
     
     $fulllist .= $out;
   }
-  sqlite_close($dbhandle);
+  $pdo = null;
   
   if($echoResults == true)
     echo $fulllist;
@@ -152,17 +151,16 @@ function listseasons($echoResults = false) // if true, will also echo seasons
 function displayWeeklyDistances($echoResults = true)
 {
   $output;
-  $dbhandle = sqlite_open("data/user_test.db", 0666, $error);
-  if (!$dbhandle) die ($error);
+  $pdo = gg_get_pdo();
 
-  $result = sqlite_query($dbhandle, "SELECT rundate, title, distance, runtime, notes, PID FROM workouts");
+  $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_TABLE);
   $data = array();
-  while ($row = sqlite_fetch_array($result, SQLITE_NUM))
+  while ($row = $result->fetch(PDO::FETCH_ASSOC))
   {
     $data[] = $row;
   }
 
-  sqlite_close($dbhandle);
+  $pdo = null;
   
   require_once('weeks.php');
   $wm = new weekManage();
