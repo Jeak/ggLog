@@ -102,25 +102,26 @@
           <input type="hidden" name="submitting" value="newworkout" />
           <p class="text-center"><b><span style="color:red">New</span> <span id="workoutname">Untitled Workout</span></b></p>
           <div style="position:relative;height:35px;width:100%;">
-            <div style="position:absolute;top:0;left:0;"><label>Title:</label> <input type="text" style="width:250px;" class="form-control" name="title" id="ggLogwn" onkeyup="changewn();"  value="" /></div>
+            <div style="position:absolute;top:0;left:0;"><label>Title:</label> 
+			<input type="text" style="width:250px;" class="form-control" name="title" maxlength="39" id="ggLogwn" onkeyup="changewn();"  value="" /></div>
             <div style="position:absolute;top:0;right:0;" id="datesdrop">
             </div>
           </div>
           <div style="position:relative;width:100%;height:170px;top:0">
             <div style="position:absolute;top:0;left:0;width:420px;">
               <p class="text-center"><b>Workout notes:</b></p>
-              <textarea style="width:400px;height:120px;" class="form-control" name="notes"></textarea>
+              <textarea style="width:400px;height:120px;" class="form-control" name="notes" maxlength="250" ></textarea>
             </div>
             <div style="position:absolute;top:0;right:0;width:160px;height:170px">
               <div style="position:relative;top:35px;right:0;width:160px;height:35px;">
                 <label> Distance:</label>
-                <input type="text" class="form-control" name="distance" style="width:90px" placeholder="Distance" />
+                <input type="text" class="form-control" name="distance" maxlength = "3" style="width:90px" placeholder="Distance" />
               </div>
               <div style="position:relative;top:50px;right:0;width:160px;height:35px;">
                 <label>Time:</label>
-                <input type="text" name="hours" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h"/> :
-                <input type="text" name="minutes" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" /> :
-                <input type="text" name="seconds" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s"/>
+                <input type="text" name="hours" maxlength = "2" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h"/> :
+                <input type="text" name="minutes" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" /> :
+                <input type="text" name="seconds" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s"/>
               </div>
             </div>
           </div>
