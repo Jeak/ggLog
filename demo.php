@@ -110,7 +110,7 @@
           <div style="position:relative;width:100%;height:170px;top:0">
             <div style="position:absolute;top:0;left:0;width:420px;">
               <p class="text-center"><b>Workout notes:</b></p>
-              <textarea style="width:400px;height:120px;" class="form-control" name="notes" maxlength="250" ></textarea>
+              <textarea style="width:400px;height:120px;" class="form-control" name="notes" maxlength="5000" ></textarea>
             </div>
             <div style="position:absolute;top:0;right:0;width:160px;height:170px">
               <div style="position:relative;top:35px;right:0;width:160px;height:35px;">
