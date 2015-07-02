@@ -2,10 +2,13 @@ function newworkout()
 {
 /*
   if(IsMobileBrowser() == true)
-  {
-    document.getElementById("addworkoutmobile").className = "ggLog-newworkoutmobile";
-    SetDateDropdown("AddWorkoutMobileDate");
-  }
+  { */
+    if(document.getElementById("addworkoutmobile").className == "ggLog-newworkoutmobile")
+      closenewworkout();
+    else
+      document.getElementById("addworkoutmobile").className = "ggLog-newworkoutmobile";
+//    SetDateDropdown("AddWorkoutMobileDate");
+/*  }
   else
   {
     if(document.getElementById("addworkoutdesktop").className == "ggLog-newworkout")
@@ -27,7 +30,6 @@ function newworkout()
     }
   }
   document.getElementById("ggLogwn").value = "";*/
-  document.getElementById("addworkoutmobile").className = "ggLog-newworkoutmobile";
 }
 function closenewworkout()
 {

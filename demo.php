@@ -2,8 +2,9 @@
 <!doctype html>
 <html style="width:100%;height:100%">
   <head>
-    <title>Running Logs</title>
-    <meta name="viewport" content="width=device-width" />
+    <title>Running Logs: NOTE: OLD MOBILE TEST VERSION</title>
+    <!--meta name="viewport" content="width=device-width" /-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
     <link rel="stylesheet" href="demo.css" />
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
@@ -201,16 +202,16 @@
         <span style="color:#AAAAAA;font-size:1.3em;margin-right:15px;">Jun 24 2013</span>
         <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a>
       </div>
-      <div class="ggLog-centerinputmobile">
+      <div class="ggLog-leftinputmobile">
         <span style="color:#558855;font-size:1.3em;">Title! Title! Title! This could probably be a pretty long title!</span></div>
       </div>
-      <div class="ggLog-centerinputmobile">
+      <div class="ggLog-leftinputmobile">
         <span class="ggLog-biggraytext">15</span> miles &nbsp; &nbsp; &nbsp; <span class="ggLog-biggraytext">1:49:02</span>
       </div>
-      <div class="ggLog-centerinputmobile">
+      <div class="ggLog-leftinputmobile">
         <span class="ggLog-biggraytext">5:58</span> min/mi
       </div>
-      <div class="ggLog-centerinputmobile">
+      <div class="ggLog-leftinputmobile">
       Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion.
       </div>
       <hr class="ggLog-partial" style="clear:both;" />
@@ -218,16 +219,16 @@
         <span style="color:#AAAAAA;font-size:1.3em;margin-right:15px;">Jun 23 2013</span>
         <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a>
       </div>
-      <div class="ggLog-centerinputmobile">
+      <div class="ggLog-leftinputmobile">
         <span style="color:#558855;font-size:1.3em;">Previous log</span></div>
       </div>
-      <div class="ggLog-centerinputmobile">
+      <div class="ggLog-leftinputmobile">
         <span class="ggLog-biggraytext">21</span> miles &nbsp; &nbsp; &nbsp; <span class="ggLog-biggraytext">1:30:02</span>
       </div>
-      <div class="ggLog-centerinputmobile">
+      <div class="ggLog-leftinputmobile">
         <span class="ggLog-biggraytext">3:42</span> min/mi
       </div>
-      <div class="ggLog-centerinputmobile">
+      <div class="ggLog-leftinputmobile">
         I just set world records in every distance longer than a mile and up to 21 miles!  I'm very happy with my training, and hopefully this will help me break 2:00:00 in the marathon.  Feeling some shin splints but hopefully that goes away soon.
       </div>
     </div>
