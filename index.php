@@ -63,15 +63,59 @@
           }
         }
         if($errors==false)
+        { // check for file-writing permissions
+          if(!is_writable("index.php"))
+          {
+            echo "index.php not writable.<br />";
+            $errors = true;
+          }
+          if(!is_writable("index-later.php"))
+          {
+            echo "index-later.php not writable.<br />";
+            $errors = true;
+          }
+          if(!is_writable("config.php"))
+          {
+            echo "config.php not writable.<br />";
+            $errors = true;
+          }
+          if($errors == true)
+            echo "<a href=\"index.php\"><b>Go back</b></a>";
+        }
+        if($errors==false)
         {
+          //Things we need in the user database (perhaps):
+          //   Username/password/salt
+          //   Real name
+          //   Total mileage
+          //   Weight (for calories)
+          //   fluxBB user info
+          //   Profile pic?
           $prfx = $_POST['dbprfx'];
           $stm = "CREATE TABLE $prfx" . "users(" .
           "PID INTEGER AUTO_INCREMENT PRIMARY KEY, " . 
           "username TINYTEXT, " . 
-          "password TINYTEXT" . 
+          "salt TINYTEXT, " . 
+          "password TINYTEXT, " . 
+          "screenname TINYTEXT" . 
           ")";
           echo $stm;
           $pdo->exec($stm);
+
+          $configphp = "<?php\n\n";
+          $configphp .= "define(\"GG_HOST\",\"" . $_POST['dbhost'] . "\");\n";
+          $configphp .= "define(\"GG_DATABASE\",\"" . $_POST['dbname'] . "\");\n";
+          $configphp .= "define(\"GG_USERNAME\",\"" . $_POST['dbuser'] . "\");\n";
+          $configphp .= "define(\"GG_PASSWORD\",\"" . $_POST['dbpass'] . "\");\n";
+          $configphp .= "define(\"GG_PREFIX\",\"" . $_POST['dbprfx'] . "\");\n\n";
+          $configphp .= "function gg_get_pdo()\n{\n";
+          $configphp .= "return new PDO(\"mysql:host=\" . GG_HOST . \";dbname=\" . GG_DATABASE, GG_USERNAME, GG_PASSWORD );\n";
+          $configphp .= "}\n\n?>";
+
+          file_put_contents("config.php", $configphp);
+          $replacecont = file_get_contents("index-later.php");
+          file_put_contents("index.php", $replacecont);
+          unlink("index-later.php");
         }
       }
     }
@@ -91,7 +135,7 @@
       echo "<div style=\"float;width:300px;\"><input type=\"text\" name=\"dbuser\" class=\"form-control\" /></div>";
       clearboth();
       echo "<div style=\"float:left;\">Database password: </div>";
-      echo "<div style=\"float;width:300px;\"><input type=\"text\" name=\"dbpass\" class=\"form-control\" /></div>";
+      echo "<div style=\"float;width:300px;\"><input type=\"text\" name=\"dbpass\" autocomplete=\"off\" class=\"form-control\" /></div>";
       clearboth();
       echo "<div style=\"float:left;\">Table prefix for this installation: </div>";
       echo "<div style=\"float;width:300px;\"><input type=\"text\" name=\"dbprfx\" value=\"gg_\" class=\"form-control\" /></div>";
