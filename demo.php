@@ -115,13 +115,13 @@
             <div style="position:absolute;top:0;right:0;width:160px;height:170px">
               <div style="position:relative;top:35px;right:0;width:160px;height:35px;">
                 <label> Distance:</label>
-                <input type="text" class="form-control" name="distance" maxlength = "3" style="width:90px" placeholder="Distance" />
+                <input type="text" class="form-control" name="distance" maxlength = "3" style="width:90px" placeholder="Distance" required />
               </div>
               <div style="position:relative;top:50px;right:0;width:160px;height:35px;">
                 <label>Time:</label>
-                <input type="text" name="hours" maxlength = "2" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h"/> :
-                <input type="text" name="minutes" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" /> :
-                <input type="text" name="seconds" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s"/>
+                <input type="text" name="hours" maxlength = "2" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h" required /> :
+                <input type="text" name="minutes" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" required /> :
+                <input type="text" name="seconds" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s" required />
               </div>
             </div>
           </div>
