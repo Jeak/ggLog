@@ -22,6 +22,7 @@
   
   <body onLoad="bload()">
     <?php require_once("navbar.php"); navbar("index.php"); ?>
+  <div style="display:block;max-width:850px;margin-left:auto;margin-right:auto;">
     <h1 class="text-center">ggLog</h1>
     <p class="text-center"><b>A running log for the rest of us.</b></p>
 	<a class="text-center"; href="http://pastehtml.com/view/dg0vqgaa5.html"><strong>IMPORTANT ANNOUNCEMENT</strong></a>
@@ -38,5 +39,6 @@
     <a class="btn btn-link" href="https://github.com/Jeak/ggLog">our Github :D</a>
     <p>Powered by <a href="http://twitter.github.io/bootstrap/">#Bootstrap</a></p>
     <div style="width:100%;"><a href="http://imgur.com/AYamMmn"><img class="donBoscoDesktop" src="http://i.imgur.com/AYamMmn.png" title="Hosted by imgur.com" id="donbosco" /></a></div>
+  </div>
   </body>
 </html>

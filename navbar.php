@@ -24,8 +24,8 @@ function navbar($activepage)
 //  $navpages[] = new navitem("people.php","People");
   $navpages[] = new navitem("about.php","About");
 
-  echo "<div style=\"position:relative;width:90%;margin-left:5%;\" >";
-  echo "<div class=\"navbar\" style=\"margin-top:0;\"></div>";
+  echo "<div style=\"position:fixed;z-index:10;background-image:url('fade.png');top:0;width:100%;padding-left:5%;padding-top:10px;border-bottom-style:solid;border-width:3px;border-color:#557c48;height:60px;\" ><img style=\"float:left;height:39px;margin-right:15px;\" src=\"logo.png\">";
+  echo "<div class=\"navbar\" style=\"margin-top:0;float:left;\">";
   echo "<ul class=\"nav nav-tabs\">";
   for($i=0;$i<count($navpages);++$i)
   {
@@ -37,7 +37,7 @@ function navbar($activepage)
     echo "</li>";
   }
   echo "</ul>";
-  echo "</div>\n";
+  echo "</div></div><div style=\"clear:both;position:block;height:70px;width:100%;\" /></div>\n";
 }
 /*  
    <div class="container">

@@ -243,7 +243,7 @@ function convertToText($alltime, $begin, $end) // inclusive
   }
 
   $output .= "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-  $output .= "\nExported from ggLog (currently at http://ko.kooia.info/ggLog/) on " . date("D M j Y", time());
+  $output .= "\nExported from ggLog (currently at http://www.gglog.xyz/ggLog/) on " . date("D M j Y", time());
   $output .= "\n\n";
 
   return $output;

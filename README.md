@@ -17,6 +17,23 @@ Charts: Used Flotcharts
 
 * There's some REALLY weird things to do with .htaccess files in order to rewrite "astext.__php__" as "astext.__txt__".  Config will need to address that; it's currently just optimized for our current location.
 
+When using, create a __config.php__ file which includes this:
+
+```php
+define("GG_HOST", "your mysql host");
+define("GG_DATABASE", "your mysql database");
+define("GG_TABLE", "your mysql table containing workouts");
+define("GG_SEASONS", "your mysql table containing season info");
+define("GG_PREFIX", "gg_ (or similar)");
+define("GG_USERNAME", "username to your mysql database");
+define("GG_PASSWORD", "password to your mysql database");
+
+function gg_get_pdo()
+{
+  return new PDO("mysql:host=" . GG_HOST . ";dbname=" . GG_DATABASE, GG_USERNAME, GG_PASSWORD );
+}
+```
+
 ## Current functions
 * Add workouts
 * Edit workouts

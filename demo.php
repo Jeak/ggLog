@@ -12,10 +12,10 @@
     <script type="text/javascript" src="loginstuff.js"></script>
   </head>
   <body style="width:100%;height:100%;" onLoad="demoload();">
-    <div style="display:block;top:0;right:0;text-align:right;padding-bottom:0;z-index:1;padding-right:10px;" id="userstuff">
+    <!--div style="display:block;top:0;right:0;text-align:right;padding-bottom:0;z-index:1;padding-right:10px;" id="userstuff">
       <span class="badge" style="font-weight:900;background-color:#a00;" id="useralerts" data-toggle="tooltip" data-placement="bottom" data-trigger="hover" title="Warnings" data-content="Get more sleep.">1</span>
       <span id="userinfo"> Logged on as <a style="position:relative;" href="javascript:switchuser();">David B.</a> | <a href="javascript:switchuser();">Switch user</a></span>
-    </div> 
+    </div--> 
     <input type="hidden" id="usernumber" value="0" />
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <div class="ggLog-hide" id="coverForNotices"></div>
@@ -77,6 +77,7 @@
     }
   }
     ?>
+    <h1 class="text-center">Your Workouts</h1>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
       <div class="btn-group" style="display:block;width:400px;margin-left:auto;margin-right:auto;">
         <button type="button" class="btn btn-default" style="" onclick="javascript:newworkout();">New Workout</button>
@@ -115,13 +116,13 @@
             <div style="position:absolute;top:0;right:0;width:160px;height:170px">
               <div style="position:relative;top:35px;right:0;width:160px;height:35px;">
                 <label> Distance:</label>
-                <input type="text" class="form-control" name="distance" maxlength = "3" style="width:90px" placeholder="Distance" />
+                <input type="text" class="form-control" name="distance" maxlength = "3" style="width:90px" placeholder="Distance" required />
               </div>
               <div style="position:relative;top:50px;right:0;width:160px;height:35px;">
                 <label>Time:</label>
-                <input type="text" name="hours" maxlength = "2" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h"/> :
-                <input type="text" name="minutes" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" /> :
-                <input type="text" name="seconds" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s"/>
+                <input type="text" name="hours" maxlength = "2" style="width:20px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="h" required /> :
+                <input type="text" name="minutes" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="m" required /> :
+                <input type="text" name="seconds" maxlength = "2" style="width:25px;padding-left:3px;padding-right:3px;" class="form-control" placeholder="s" required />
               </div>
             </div>
           </div>
@@ -139,7 +140,6 @@
       <!-- Probably would be better if the mobile site was at a different url -->
     </div>
     <div style="position:relative;height:20px;top:0;width:100%;">
-      <h1 class="text-center">Recent Workouts</h1>
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
         <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a><span style="padding-left:25px;">Jun 24 2013</span><span style="padding-left:35px;">Feel free to post a workout!</span></div>
@@ -165,6 +165,7 @@
         require_once("workouts.php");
         require_once("seasons.php");
         displayWeeklyDistances(true);
+        echo "<h3 class=\"text-center\">Recent Workouts</h3>";
         displayworkouts(true, 0, 20);
         ?>
         <button class="btn btn-default" style="display:block;margin-left:auto;margin-right:auto;margin-bottom:15px;" onclick="loadmore();" id="loadmorebutton">Load More</button>
