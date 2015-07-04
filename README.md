@@ -11,7 +11,7 @@ Charts: Used Flotcharts
 
 * [Jack Gallegos](https://github.com/Jeak)
 * [David Berard](https://github.com/davidberard98)
-* [John Nover](https://www.facebook.com/john.nover.7)
+* [John Nover](https://gglog.xyz/special.php)
 
 ## Misc. Notes
 
