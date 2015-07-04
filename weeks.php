@@ -29,7 +29,7 @@ class ggDay
   }
   public static function intrp_z($dayNum)
   {
-    $val = ($dayNum)%1461;
+    $val = ($dayNum+365)%1461;
     //echo "intrp_z $dayNum $val " . gettype($val) . "  ";
     if($val == 1460)
       return 365;
@@ -41,6 +41,7 @@ class ggDay
     $offset = 0;
     if(ggDay::intrp_L($dayNum))
       ++$offset;
+
     if($doy >= 334+$offset)
       return 12;
     if($doy >= 304+$offset)
@@ -257,11 +258,12 @@ class weekManage
 
   function createweek($newdate)
   {
+  /*
     for($i=0;$i<count($this->weeks);++$i)
     {
       if($this->weeks[$i]->isPartOfWeek($newdate))
         return $i;
-    }
+    } */
     $loc = count($this->weeks);
     $this->weeks[] = new singleWeek($newdate, $this->weekbegin);
     return $loc;
@@ -322,7 +324,6 @@ class weekManage
   }
 
 }
-
 /*$wm = new weekManage();
 $wm->addmiles(time(), 5);
 $wm->addtime(time(), 555);
