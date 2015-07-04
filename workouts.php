@@ -22,7 +22,7 @@ function workoutsAsArray()
 
   $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_TABLE);
   $data = array();
- 
+
   while($row = $result->fetch(PDO::FETCH_ASSOC))
   {
     $data[] = $row;
@@ -36,9 +36,9 @@ function workoutsAsArray()
 function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes)
 {
   $pdo = gg_get_pdo();
-  
+
   $works = true;
-  
+
   $rundate = createsqldate($year, $month, $day);
   if($rundate == false)
     $works = false;
@@ -49,7 +49,7 @@ function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $
   {
     if($PID < 0)
     {
-      $stm = "INSERT INTO " . GG_TABLE . "(rundate, title, distance, runtime, notes, PID) ". 
+      $stm = "INSERT INTO " . GG_TABLE . "(rundate, title, distance, runtime, notes, PID) ".
       "VALUES(?,?,?,?,?, NULL)"; // pass NULL to PID to make it auto increment
       $stmt = $pdo->prepare($stm);
       $stmt->execute(array($rundate, $title, $distance, $runtime, $notes));
@@ -69,7 +69,7 @@ function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $
 function deleteworkout($PID) // $PID as a string
 {
   $pdo = gg_get_pdo();
-  
+
   $results = $pdo->query("SELECT PID FROM " . GG_TABLE);
   $found = false;
   while ($row = $results->fetch(PDO::FETCH_ASSOC))
@@ -87,7 +87,7 @@ function deleteworkout($PID) // $PID as a string
     $pdo->exec($stm);
   }
   //[RELEASE] for the release, replace with @sqlite_exec() to surpress errors
-  
+
   $pdo = null;
 }
 
@@ -101,7 +101,7 @@ function displayworkouts($echoResults = true, $wheretobegin = -1, $numbertodispl
   $output = "";
   $preface="      ";
   $pdo = gg_get_pdo();
-  
+
   /*            //  UNCOMMENT THIS TO DISPLAY ALL VALUES IN A TABLE
                 // -------------------------------------------------
   $result = sqlite_query($dbhandle, "SELECT * FROM " . GG_TABLE);
@@ -153,11 +153,11 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
     $PID = $data[$i]["PID"];
   //          echo $PID;
     $output .= "$preface<div class=\"ggLog-center-90\" id=\"PID-" . $PID . "\">\n";
-    
+
   //          store hard-to-access data in hidden inputs
     $output .= "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "date\" value=\"" . $data[$i]["rundate"] . "\" />\n";
     $output .= "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "title\" value=\"" . $data[$i]["title"] . "\" />\n";
-  
+
     $output .= "$preface  <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">\n";
   //<a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a>
     $output .= "$preface  <a href=\"javascript:editworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>\n";
@@ -167,14 +167,14 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
     $output .= "</span><span class=\"workouttitle\">";
     $output .= stripslashes($data[$i]["title"]); // title
     $output .= "</span></div>\n";
-  
+
     $output .= "$preface  <div style=\"position:relative;top:0;left:0;width:100%;\">\n";
-    
+
     $output .= "$preface    <div style=\"float:left;width:500px;margin-bottom:25px;\" id=\"PID-" . $PID . "notes\">";
     $output .= htmlnewline(stripslashes($data[$i]["notes"])); // notes?
     $output .= "</div>\n";
     $output .= "$preface  </div>\n";
-  
+
     $output .= "$preface  <div style=\"float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px\">\n";
     $output .= "$preface    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "distance\">";
     $output .= $data[$i]["distance"]; // distance
@@ -183,13 +183,13 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
     $output .= speed($data[$i]["runtime"], $data[$i]["distance"]);
     $output .= "</span> min/mi</div>\n";
     $output .= "$preface  </div>\n";
-            
+
     $output .= "$preface  <div style=\"float:left;width:120px;\">";
     $output .= "<div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" . $PID . "time\">";
     $output .= $data[$i]["runtime"];  // time
     $output .= "</span></div>";
     $output .= "$preface  </div>\n";
-  
+
     $output .= "$preface</div>\n";
     $output .= "$preface<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
   }
@@ -197,7 +197,7 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
     $isFinished = false;
   else
     $isFinished = true;
-  
+
 return $output;
 }
 
@@ -215,7 +215,7 @@ function convertToText($alltime, $begin, $end) // inclusive
   }
 
   $title = "First Last's Running Logs From " . $when;
-  
+
   $output = "";
   for($i=0;$i<8;++$i) $output .= " ";
   $output .= $title . "\n";

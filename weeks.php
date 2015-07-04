@@ -1,5 +1,132 @@
 <?php
 
+class ggDay
+{
+  // An attempt at making things faster: date() is slow
+  // Pass things around as an integer: # days since 1 Jan 1970.
+  // 1 Jan 1970 = 0; 2 Jan 1970 = 1; etc.
+  public $dayInt; // days since 1 Jan 1970.
+  public static function intrp($type, $dayNum)
+  {
+    if($type == 'w')
+      return intrp_w($dayNum);
+    if($type == 'Y')
+      return intrp_Y($dayNum);
+  }
+  public static function intrp_w($dayNum)
+  {
+    return ($dayNum+4)%7;
+  }
+  public static function intrp_L($dayNum)
+  {
+    if(ggDay::intrp_Y($dayNum)%4 == 0)
+      return true;
+    return false;
+  }
+  public static function intrp_Y($dayNum)
+  {
+    return intval(($dayNum-intval(($dayNum+365)/1461))/365)+1970;
+  }
+  public static function intrp_z($dayNum)
+  {
+    $val = ($dayNum)%1461;
+    //echo "intrp_z $dayNum $val " . gettype($val) . "  ";
+    if($val == 1460)
+      return 365;
+    return $val%365;
+  }
+  public static function intrp_m(&$dayNum)
+  {
+    $doy = ggDay::intrp_z($dayNum);
+    $offset = 0;
+    if(ggDay::intrp_L($dayNum))
+      ++$offset;
+    if($doy >= 334+$offset)
+      return 12;
+    if($doy >= 304+$offset)
+      return 11;
+    if($doy >= 273+$offset)
+      return 10;
+    if($doy >= 243+$offset)
+      return 9;
+    if($doy >= 212+$offset)
+      return 8;
+    if($doy >= 181+$offset)
+      return 7;
+    if($doy >= 151+$offset)
+      return 6;
+    if($doy >= 120+$offset)
+      return 5;
+    if($doy >= 90+$offset)
+      return 4;
+    if($doy >= 59+$offset)
+      return 3;
+    if($doy >= 31)
+      return 2;
+    return 1;
+  }
+  public static function intrp_j($dayNum)
+  {
+    $doy = ggDay::intrp_z($dayNum);
+    $offset = 0;
+    if(ggDay::intrp_L($dayNum))
+      ++$offset;
+    if($doy >= 334+$offset)
+      return (1+$doy-334-$offset);
+    if($doy >= 304+$offset)
+      return (1+$doy-304-$offset);
+    if($doy >= 273+$offset)
+      return (1+$doy-273-$offset);
+    if($doy >= 243+$offset)
+      return (1+$doy-243-$offset);
+    if($doy >= 212+$offset)
+      return (1+$doy-212-$offset);
+    if($doy >= 181+$offset)
+      return (1+$doy-181-$offset);
+    if($doy >= 151+$offset)
+      return (1+$doy-151-$offset);
+    if($doy >= 120+$offset)
+      return (1+$doy-120-$offset);
+    if($doy >= 90+$offset)
+      return (1+$doy-90-$offset);
+    if($doy >= 59+$offset)
+      return (1+$doy-59-$offset);
+    if($doy >= 31)
+      return (1+$doy-31);
+    return (1+$doy);
+  }
+  public static function monthOffset($month)
+  {
+    // for a non-leap year
+    if($month > 12 || $month < 1)
+      return false;
+    $arr = array(null, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334);
+    return $arr[$month];
+  }
+  public static function readSQLdate($input)
+  {
+    $parts = explode("-", $input);
+    if(count($parts) != 3)
+      return false;
+    $year =intval($parts[0]);
+    $month =intval($parts[1]);
+    $day =intval($parts[2]);
+
+    // For leapyears, note that Jan 1 still occurs on the expected date
+    //  value because the extra day does not occur until Feb.
+    $output = ($year-1970)*365;
+    $output += floor(($year-1969)/4); // add one for every previous leapyear.
+
+    $output += ggDay::monthOffset($month);
+    if($year%4 == 0 && $month > 2) // add 1 if is > Feb of leapyear
+      ++$output;
+
+    $output += $day -1;
+    return $output;
+  }
+  // Perhaps create non-static functions.
+}
+
 class singleWeek
 {
   public $beginday;
@@ -21,7 +148,7 @@ class singleWeek
     $this->beginday = singleWeek::weekBeginning($newday, $beginning);
     $this->endday = $this->beginday + 6*60*60*24;
   }
-  
+
   function isPartOfWeek($newday)
   {
     $dow = intval(date('w', $newday));
@@ -55,7 +182,7 @@ class singleWeek
   {
     $dow = intval(date('w', $newday)); // day of week
     $diff = $dow - $beginning; // $dow = Tuesday [2]; $beginning = Monday [1];  $diff = 1
-    if($dow < $beginning) // $dow = 0; $beginning = 1; will change $dow to be +1 day, 
+    if($dow < $beginning) // $dow = 0; $beginning = 1; will change $dow to be +1 day,
     {                     //   but that's the next week, so -1 week;
       $diff +=7;
     }
@@ -75,15 +202,15 @@ class singleWeek
     $out .=" seconds.";
     return $out;
   }
-  
+
 }
 
 class weekManage
 {
   public $weeks;
   public $weekbegin; // week begin date (Sun, Mon, etc);
-  public $constrained;
-  public $constraints;
+  public $constrained; // boolean: is it limited to certain timespan?
+  public $constraints;  // array of singleWeek
 
   function __construct($weekbegin = 1, $constrained = false, $earliest = 0, $latest = 0)
   {
@@ -104,7 +231,7 @@ class weekManage
       $latest = $earliest;
       $earliest = $ne;
     }
-    
+
     $counter = $earliest;
     while(true)
     {
@@ -115,7 +242,7 @@ class weekManage
       $counter += (60*60*24*7);
     }
   }
- 
+
   function isPartOf($newdate)
   {
     if($this->constrained == false)
@@ -153,8 +280,8 @@ class weekManage
   {
     if($this->isPartOf($newdate))
     {
-    $loc = $this->createweek($newdate);
-    $this->weeks[$loc]->addtime($time);
+      $loc = $this->createweek($newdate);
+      $this->weeks[$loc]->addtime($time);
     }
   }
 
@@ -162,7 +289,7 @@ class weekManage
   {
     if($this->isPartOf($newdate))
     {
-    $loc = $this->createweek($newdate);
+      $loc = $this->createweek($newdate);
     }
   }
 
