@@ -1,10 +1,80 @@
+body, html
+{
+width:100%;
+height:100%;
+}
 div.ggLog-hide
 {
   display:none;
 }
+.mblil
+{
+  display:inline !important;
+}
+div.ggLog-leftinputmobile
+{
+  width:100%;
+  display:block;
+  text-align:left;
+  padding-left:5%;
+  margin-top:4px;
+  margin-bottom:4px;
+}
+div.ggLog-centerinputmobile
+{
+  width:100%;
+  display:block;
+  text-align:center;
+  margin-top:4px;
+  margin-bottom:4px;
+  padding: 0 5%;
+}
+.ggLog-biggraytext
+{
+  color:#AAAAAA;
+  font-size:1.3em;
+}
+.ggLog-inputpad
+{
+  padding-left:3px !important;
+  padding-right:3px !important;
+}
+.ggLog-inputhour
+{
+  float:left;
+  width:20px;
+  margin:0;
+  padding:0;
+}
+.ggLog-inputms
+{
+  float:left;
+  width:25px;
+  margin:0;
+  padding:0;
+}
+.ggLog-lefttimewords
+{
+  float:left;
+  padding:4px 7px;
+}
 div.ggLog-newworkoutmobile
 {
   display:block;
+  width:100%;
+}
+div.ggLog-buttonholder
+{
+  display:block;
+  width:400px;
+  margin-left:auto;
+  margin-right:auto;
+}
+div.ggLog-buttonholdermobile
+{
+  display:block;
+  width:100%;
+  padding-left:10%;
 }
 div.ggLog-newworkout
 {
@@ -119,7 +189,13 @@ div.ggLog-centermobile
   margin-left:auto;
   margin-right:auto;
 }
-
+div.ggLog-containrecentworkouts
+{
+  position:relative;
+  height:20px;
+  top:0;
+  width:100%;
+}
 a.editworkoutlink:link
 {
   text-decoration:none;

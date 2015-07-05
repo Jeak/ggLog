@@ -1,10 +1,14 @@
 function newworkout()
 {
+/*
   if(IsMobileBrowser() == true)
-  {
-    document.getElementById("addworkoutmobile").className = "ggLog-newworkoutmobile";
-    SetDateDropdown("AddWorkoutMobileDate");
-  }
+  { */
+    if(document.getElementById("addworkoutmobile").className == "ggLog-newworkoutmobile")
+      closenewworkout();
+    else
+      document.getElementById("addworkoutmobile").className = "ggLog-newworkoutmobile";
+//    SetDateDropdown("AddWorkoutMobileDate");
+/*  }
   else
   {
     document.getElementById("editseasons").className = "ggLog-hide";
@@ -26,12 +30,12 @@ function newworkout()
       }
     }
   }
-  document.getElementById("ggLogwn").value = "";
+  document.getElementById("ggLogwn").value = "";*/
 }
 function closenewworkout()
 {
   document.getElementById("addworkoutdesktop").className = "ggLog-hide";
-//  document.getElementById("addworkoutmobile").className = "ggLog-hide";
+  document.getElementById("addworkoutmobile").className = "ggLog-hide";
 }
 function submitnewworkout()
 {
@@ -55,6 +59,13 @@ function changewn()
     document.getElementById("workoutname").innerHTML = "Untitled Workout";
   else
     document.getElementById("workoutname").innerHTML =  document.getElementById("ggLogwn").value;
+}
+function changewnMobile()
+{
+  if(document.getElementById("ggLogwn-mobile").value == "")
+    document.getElementById("workoutname-mobile").innerHTML = "Untitled Workout";
+  else
+    document.getElementById("workoutname-mobile").innerHTML =  document.getElementById("ggLogwn-mobile").value;
 }
 function coverscreen(id)
 {
@@ -112,8 +123,15 @@ function dwswitchbutton(evt) // this function allows for switching between the y
 }
 function demoload()
 {
-  SetDateDropdown('datesdrop');
-  SetDateDropdown('PID--1drop');
+//  if(IsMobileBrowser())
+//  {
+    SetDateDropdown('datesdrop-mobile');
+    document.getElementById('buttonholder').className = "ggLog-buttonholdermobile btn-group";
+    document.getElementById('recentworkouts-desktop').className = "ggLog-hide";
+    document.getElementById('recentworkouts-mobile').className = "ggLog-containrecentworkouts-mobile";
+//  }
+//  else
+//    SetDateDropdown('datesdrop');
   $('#useralerts').popover();
 }
 function editworkout(id)
