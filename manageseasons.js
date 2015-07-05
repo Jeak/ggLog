@@ -22,7 +22,7 @@ function expandseason(type, id)
   {
     clearseason();
   }
-  
+
 }
 function analyze()
 {
@@ -81,7 +81,7 @@ function editseason(type, id)
   }
   else if(type == 'edit')
   {
-    
+
     var allspans = document.getElementById(id).getElementsByTagName('span');
     var dateinfo;
     for(var i=0;i<allspans.length;++i)
@@ -92,7 +92,7 @@ function editseason(type, id)
         break;
       }
     }
-    
+
     var info = dateinfo.innerHTML;
     var beginmonth = decodeseasondates(info, 1);
     var beginday = decodeseasondates(info, 2);
@@ -113,9 +113,9 @@ function deleteseason(id) {
   type: "POST",
   url: "accept.php",
   data: dataString
-  }) 
+  })
     .done(function() {
-    canceleditseason(); 
+    canceleditseason();
     clearseason();
     listseasons();
   });
@@ -125,7 +125,7 @@ function canceleditseason()
 {
   document.getElementById('coverForNotices').className="ggLog-hide";
 }
-  
+
 function listseasons()
 {
   //update seasons from the SQL database.
@@ -149,8 +149,8 @@ function submitSeason() {
   url: "accept.php",
   data: dataString
   })
-    .done(function() {
-    canceleditseason(); 
+    .done(function(data) {
+    canceleditseason();
     clearseason();
     listseasons();
   });

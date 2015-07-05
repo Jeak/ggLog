@@ -7,6 +7,7 @@ function newworkout()
   }
   else
   {
+    document.getElementById("editseasons").className = "ggLog-hide";
     if(document.getElementById("addworkoutdesktop").className == "ggLog-newworkout")
     {
       closenewworkout();
@@ -191,6 +192,7 @@ function canceleditworkout(id)
 function viewseasons()
 {
 //  alert("bc");
+  closenewworkout();
   var current = document.getElementById("editseasons").className;
 
   if(current == "ggLog-hide") // now change it to viewable

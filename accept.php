@@ -2,6 +2,7 @@
 //This PHP file is for accepting ajax requests of all types.  Will be expanded later and more will use this.
 require_once('workouts.php'); // adding/editing/deleting workouts
 require_once('seasons.php');
+require_once('datetime.php');
 
     // each html form has a <input type="hidden" name="submitting" value="__" />
     // which specifies what is happening
@@ -36,8 +37,8 @@ require_once('seasons.php');
       $endday = intval($_POST['end-day']);
       $endmonth = intval($_POST['end-month']);
       $endyear = intval($_POST['end-year']);
-      $name = $_POST['seasonname'];
-      if(isset($_POST['id']) $_POST['id'] != "") // editing
+      $name = sanitize($_POST['seasonname']);
+      if(isset($_POST['id']) && $_POST['id'] != "") // editing
       {
         $PID = decodeseasonid($_POST['id']);
         addseason($PID, $name, $beginyear, $beginmonth, $beginday, $endyear, $endmonth, $endday);

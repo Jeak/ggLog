@@ -11,8 +11,8 @@ function addseason($PID = -1, $name, $beginyear, $beginmonth, $beginday, $endyea
 {
   $pdo = gg_get_pdo();
 
-  $begindate = createsqldate($beginyear, $beginmonth, $beginday);
-  $enddate = createsqldate($endyear, $endmonth, $endday);
+  $begindate = ggcreatedate($beginyear, $beginmonth, $beginday);
+  $enddate = ggcreatedate($endyear, $endmonth, $endday);
 
   if($begindate != false && $enddate != false)
   {
@@ -20,14 +20,17 @@ function addseason($PID = -1, $name, $beginyear, $beginmonth, $beginday, $endyea
     if($PID == -1)
     {
       $command = "INSERT INTO " . GG_SEASONS . "(name, begindate, enddate) ".
-        "VALUES('$name', '$begindate', '$enddate');";
+        "VALUES(?, ?, ?)";
+      $stmt = $pdo->prepare($command);
+      $stmt->execute(array($name, $begindate, $enddate));
     }
     else if($PID != -1)
     {
       $command = "UPDATE " . GG_SEASONS . " ".
-        "SET name='$name', begindate='$begindate', enddate='$enddate' WHERE PID=$PID";
+        "SET name=?, begindate=?, enddate=? WHERE PID=?";
+      $stmt = $pdo->prepare($command);
+      $stmt->execute(array($name, $begindate, $enddate, $PID));
     }
-    $pdo->exec($command);
   }
   else
     echo "Incorrect dates $beginyear, $beginmonth, $beginday; $endyear, $endmonth, $endday";
@@ -62,21 +65,21 @@ function encodeseasonid($id)
 
 function seasondistances($workouts, $seasons)
 {
-  $beginloc = 2;
-  $endloc = 3;
+  $beginloc = "begindate";
+  $endloc = "enddate";
 
-  $dateloc = 0;
-  $distloc = 1;
+  $dateloc = "rundate";
+  $distloc = "distance";
 
   $seasondists = array();
   foreach($seasons as $season)
   {
-    $begin = strtotime($season[$beginloc]);
-    $end = strtotime($season[$endloc]);
+    $begin = intval($season[$beginloc]);
+    $end = intval($season[$endloc]);
     $thisSeasonDist = 0;
     foreach($workouts as $workout)
     {
-      $day = strtotime($workout[$dateloc]);
+      $day = intval($workout[$dateloc]);
       if(inrange($day, $begin, $end))
         $thisSeasonDist += $workout[$distloc];
     }
@@ -104,6 +107,11 @@ function listseasons($echoResults = false) // if true, will also echo seasons
   $pdo = gg_get_pdo();
   $fulllist = "";
 
+  $PIDloc = 'PID';
+  $nameloc = 'name';
+  $beginloc = 'begindate';
+  $endloc = 'enddate';
+
   $allworkouts;
   $results = $pdo->query("SELECT rundate, distance, runtime, PID FROM " . GG_TABLE);
   while($row = $results->fetch(PDO::FETCH_ASSOC))
@@ -121,7 +129,7 @@ function listseasons($echoResults = false) // if true, will also echo seasons
 
   for($i=0;$i<count($allseasons);++$i)
   {
-    $pid = $allseasons[$i][0];
+    $pid = $allseasons[$i][$PIDloc];
     $idval = "seas" . $pid;
     $out = "";
     $out .= "<a href=\"javascript:expandseason('edit','$idval')\" class=\"none\">";
@@ -129,14 +137,14 @@ function listseasons($echoResults = false) // if true, will also echo seasons
     $out .= "  <li class=\"list-group-item\" id=\"" . $idval .  "\" onmouseover=\"mouseoverseason('" . $idval . "');\"";
       $out .= " onmouseout=\"mouseoffseason('" . $idval . "');\">";
     $out .= "<span style=\"color:#00F;\">" . $distances[$i] . "mi</span> ";
-    $out .= stripslashes($allseasons[$i][1]) . " ";
+    $out .= stripslashes($allseasons[$i][$nameloc]) . " ";
 
     $out .= "<span class=\"badge\">";
     //$out .= date('M j Y', strtotime($allseasons[$i][2]));
-    $out .=  intrp(intval($allseasons[$i][2]), array('M','j','Y'));
+    $out .=  intrp(intval($allseasons[$i][$beginloc]), array('M','j','Y'));
     $out .= " to ";
     //$out .= date('M j Y', strtotime($allseasons[$i][3]));
-    $out .= intrp(intval($allseasons[$i][3]), array('M', 'j', 'Y'));
+    $out .= intrp(intval($allseasons[$i][$endloc]), array('M', 'j', 'Y'));
     $out .= "</span>";
 
     $out .= "<span class=\"ggLog-hide\" id=\"$idval-edit\"></span>";
