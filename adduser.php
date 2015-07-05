@@ -9,11 +9,11 @@ function adduser($username)
   mkdir("./data/" . $username);
   $dbhandle = sqlite_open("data/" . $username . "/" . $username . "_test.db", 0666, $error);
   if (!$dbhandle) die ($error);
-  
+
   $stms = array();
   $stms[] = "CREATE TABLE workouts(".
   "PID INTEGER AUTO_INCREMENT,".
-  "rundate DATE NOT NULL,".
+  "rundate INTEGER NOT NULL,".
   "title TINYTEXT,".
   "distance DOUBLE,".
   "runtime TIME,".
@@ -26,7 +26,7 @@ function adduser($username)
   $command = <<<_SQL_
   CREATE TABLE seasons
   (
-  PID INTEGER AUTO_INCREMENT, 
+  PID INTEGER AUTO_INCREMENT,
   name TINYTEXT,
   begindate DATE NOT NULL,
   enddate DATE NOT NULL,

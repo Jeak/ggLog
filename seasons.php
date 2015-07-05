@@ -86,12 +86,15 @@ function seasondistances($workouts, $seasons)
   return $seasondists;
 }
 
+// These are dates as defined in 'weeks.php'.
 function inrange($day, $begin, $end) {
   if($day < $end && $day > $begin)
     return true;
-  if(date('z Y', $day) == date('z Y', $begin))
+  //if(date('z Y', $day) == date('z Y', $begin))
+  if($day == $begin)
     return true;
-  if(date('z Y', $day) == date('z Y', $end))
+  //if(date('z Y', $day) == date('z Y', $end))
+  if($day == $end)
     return true;
   return false;
 }
@@ -129,9 +132,11 @@ function listseasons($echoResults = false) // if true, will also echo seasons
     $out .= stripslashes($allseasons[$i][1]) . " ";
 
     $out .= "<span class=\"badge\">";
-    $out .= date('M j Y', strtotime($allseasons[$i][2]));
+    //$out .= date('M j Y', strtotime($allseasons[$i][2]));
+    $out .=  intrp(intval($allseasons[$i][2]), array('M','j','Y'));
     $out .= " to ";
-    $out .= date('M j Y', strtotime($allseasons[$i][3]));
+    //$out .= date('M j Y', strtotime($allseasons[$i][3]));
+    $out .= intrp(intval($allseasons[$i][3]), array('M', 'j', 'Y'));
     $out .= "</span>";
 
     $out .= "<span class=\"ggLog-hide\" id=\"$idval-edit\"></span>";
@@ -167,7 +172,7 @@ function displayWeeklyDistances($echoResults = true)
   foreach($data as $workout)
   {
     //$day = strtotime($workout["rundate"]);
-    $day = ggreadSQLdate($workout["rundate"]);
+    $day = intval($workout["rundate"]);
     $time = timetoseconds($workout["runtime"]);
     $distance = $workout["distance"];
     $wm->addtime($day, $time);
@@ -192,9 +197,9 @@ function displayWeeklyDistances($echoResults = true)
   {
     $output .= "<span style=\"color:#999;font-size:1.5em;\">";
     //$output .= date('M j Y', $thisweek[0]) . " to ";
-    $output .= intrp($thisweek[0], array('M', 'j', 'Y')) . " to ";
+    $output .= intrp(intval($thisweek[0]), array('M', 'j', 'Y')) . " to ";
     //$output .= date('M j Y', $thisweek[1]);
-    $output .= intrp($thisweek[1], array('M', 'j', 'Y'));
+    $output .= intrp(intval($thisweek[1]), array('M', 'j', 'Y'));
     $output .= " with " . $thisweek[2];
     $output .= " miles in " . secondstotime($thisweek[3]);
     $output .= " (avg " . speed($thisweek[3], $thisweek[2]) . ")";

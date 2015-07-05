@@ -34,6 +34,8 @@
         return intrp_j($dayNum);
       if($type == 'M')
         return intrp_capM($dayNum);
+      if($type == 'D')
+        return intrp_D($dayNum);
     }
     else // array of types
     {
@@ -48,6 +50,11 @@
   function intrp_w($dayNum)
   {
     return ($dayNum+4)%7;
+  }
+  function intrp_D($dayNum)
+  {
+    $dnar = array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+    return $dnar[intrp_w($dayNum)];
   }
   function intrp_L($dayNum)
   {
@@ -145,6 +152,22 @@
     $arr = array(null, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334);
     return $arr[$month];
   }
+  function ggcreatedate($year, $month, $date)
+  {
+    if(!checkdate($month, $date, $year))
+      return false;
+    // For leapyears, note that Jan 1 still occurs on the expected date
+    //  value because the extra day does not occur until Feb.
+    $output = ($year-1970)*365;
+    $output += floor(($year-1969)/4); // add one for every previous leapyear.
+
+    $output += monthOffset($month);
+    if($year%4 == 0 && $month > 2) // add 1 if is > Feb of leapyear
+      ++$output;
+
+    $output += $date -1;
+    return $output;
+  }
   function ggcreateSQLdate($dayNum)
   {
     $month = intrp_m($dayNum);
@@ -152,7 +175,7 @@
     $output = intrp_Y($dayNum) . "-";
     if($month < 10)
       $output .= "0";
-    $output .= $month;
+    $output .= $month . "-";
     if($date < 10)
       $output .= "0";
     $output .= $date;

@@ -51,7 +51,7 @@ function uncoverscreen()
 function deleteworkout(id)
 {
   var message = "Are you sure you want to delete this workout?";
-  
+
   var content = "";
   content += "<div class=\"colorcover\" onclick=\"canceldeleteworkout(); return false;\"></div>";
   content += "  <div class=\"ggLog-centerquestion\">";
@@ -89,7 +89,7 @@ function dwswitchbutton(evt) // this function allows for switching between the y
     }
     else
     {
-      document.getElementById('coverForNotices').getElementsByTagName('button')[0].focus(); 
+      document.getElementById('coverForNotices').getElementsByTagName('button')[0].focus();
     }
   }
 }
@@ -113,7 +113,7 @@ function editworkout(id)
   var hours = decodetime(time, 'h');
   var minutes = decodetime(time, 'm');
   var seconds = decodetime(time, 's');
-  
+
   var content = "";
   content += "  <input type=\"hidden\" id=\"" + idval + "orig\" value=\"" + escape(staticHTML) + "\" />";
 
@@ -154,15 +154,15 @@ function editworkout(id)
   content += "      </div>";
   content += "    </div>";
   content += "  </form>";
-  
+
   document.getElementById(idval).innerHTML = content;
-  
+
   var day = date.getUTCDate();
   var month = date.getUTCMonth();
   var year = date.getUTCFullYear();
   // SetDateDropdown from ggLogEssentials.js
   SetDateDropdown(idval + "drop", "", true, year, month, day);
-  
+
 }
 
 function canceleditworkout(id)
@@ -176,12 +176,12 @@ function viewseasons()
 {
 //  alert("bc");
   var current = document.getElementById("editseasons").className;
-  
+
   if(current == "ggLog-hide") // now change it to viewable
     document.getElementById("editseasons").className = "ggLog-newworkout";
   else
     document.getElementById("editseasons").className = "ggLog-hide";
-  
+
 }
 
 function mouseoverseason(id)
@@ -247,7 +247,7 @@ function editseason(type, id)
   }
   else if(type == 'edit')
   {
-    
+
     var allspans = document.getElementById(id).getElementsByTagName('span');
     var dateinfo;
     for(var i=0;i<allspans.length;++i)
@@ -258,7 +258,7 @@ function editseason(type, id)
         break;
       }
     }
-    
+
     var info = dateinfo.innerHTML;
     var beginmonth = decodeseasondates(info, 1);
     var beginday = decodeseasondates(info, 2);
@@ -269,7 +269,7 @@ function editseason(type, id)
     SetDateDropdown(NewSeasonBeginId, "begin-", false, beginyear, beginmonth, beginday);
     SetDateDropdown(NewSeasonEndId, "end-", false, endyear, endmonth, endday);
   }
-  
+
 }
 
 function canceleditseason()
@@ -287,7 +287,7 @@ function loadmore()
 {
   var beginningl = $("#numberloaded").val();
   var request = $.post(
-    "fetchworkouts.php", 
+    "fetchworkouts.php",
     {begin: beginningl, number: "20"},
     function( data ) {
       var locOfPipe = data.indexOf("|");

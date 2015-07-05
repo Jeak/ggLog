@@ -164,9 +164,13 @@
         <?php
         require_once("workouts.php");
         require_once("seasons.php");
+        $start = microtime(true);
         displayWeeklyDistances(true);
+        echo (microtime(true) - $start) . " (Please do not mind these load times; they are temporary, for beta testing.)";
+        $start = microtime(true);
         echo "<h3 class=\"text-center\">Recent Workouts</h3>";
         displayworkouts(true, 0, 20);
+        echo microtime(true) - $start;
         ?>
         <button class="btn btn-default" style="display:block;margin-left:auto;margin-right:auto;margin-bottom:15px;" onclick="loadmore();" id="loadmorebutton">Load More</button>
         <input type="hidden" id="numberloaded" value="20" />

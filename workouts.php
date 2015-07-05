@@ -2,6 +2,7 @@
 
 require_once('datetime.php');
 require_once('config.php');
+require_once('weeks.php');
 
 /*/////////////////////
      ADDING WORKOUTS
@@ -39,7 +40,9 @@ function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $
 
   $works = true;
 
-  $rundate = createsqldate($year, $month, $day);
+  //$rundate = createsqldate($year, $month, $day);
+  $rundate = ggcreatedate($year, $month, $day);
+
   if($rundate == false)
     $works = false;
 
@@ -150,12 +153,13 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
   }
   for($i=count($data)-1-$beginloc;$i>=0 && $i>=(count($data)-$beginloc-$numberToDisplay);--$i, ++$numberofworkouts)
   {
+    //echo ":::" . gettype($data[$i]['rundate']) . $data[$i]['rundate'];
     $PID = $data[$i]["PID"];
   //          echo $PID;
     $output .= "$preface<div class=\"ggLog-center-90\" id=\"PID-" . $PID . "\">\n";
 
   //          store hard-to-access data in hidden inputs
-    $output .= "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "date\" value=\"" . $data[$i]["rundate"] . "\" />\n";
+    $output .= "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "date\" value=\"" . ggcreateSQLdate(intval($data[$i]["rundate"])) . "\" />\n";
     $output .= "$preface  <input type=\"hidden\" id=\"PID-" . $PID . "title\" value=\"" . $data[$i]["title"] . "\" />\n";
 
     $output .= "$preface  <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">\n";
@@ -163,7 +167,8 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
     $output .= "$preface  <a href=\"javascript:editworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>\n";
     $output .= "$preface  <a href=\"javascript:deleteworkout('$PID');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
     $output .= "<span class=\"workoutdate\">";
-    $output .= date("D M j Y", strtotime($data[$i]["rundate"])); // date
+    //$output .= date("D M j Y", strtotime($data[$i]["rundate"])); // date
+    $output .= intrp(intval($data[$i]["rundate"]), array('D', 'M', 'j', 'Y')); // date
     $output .= "</span><span class=\"workouttitle\">";
     $output .= stripslashes($data[$i]["title"]); // title
     $output .= "</span></div>\n";
@@ -209,8 +214,8 @@ function convertToText($alltime, $begin, $end) // inclusive
     $when = "All Time";
   else
   {
-    $begins = date("D M j Y", $begin);
-    $ends = date("D M j Y", $end);
+    $begins = intrp($begin, array('D', 'M', 'j', 'Y'));
+    $ends = intrp($end, array('D', 'M', 'j', 'Y'));
     $when = $begins . " to " . $ends;
   }
 
@@ -229,7 +234,9 @@ function convertToText($alltime, $begin, $end) // inclusive
   {
     for($j=0;$j<20;++$j) $output .= "~";
     $output .= "\n";
-    $output .= Date("D M j Y", strtotime($allworkouts[$i]["rundate"]));
+    //$output .= date("D M j Y", strtotime($allworkouts[$i]["rundate"]));
+    $output .= intrp(intval($allworkouts[$i]["rundate"]), array('D', 'M', 'j', 'Y'));
+
     $output .= "  \"" . $allworkouts[$i]["title"] . "\"\n";
     $distance = $allworkouts[$i]["distance"] . " mi";
     $spaces = 10;

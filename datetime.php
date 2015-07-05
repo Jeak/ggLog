@@ -87,12 +87,12 @@ function htmlnewline($in)
 
 function sanitize($in)
 {
+  $in = str_replace("&", "&amp;", $in);
   $in = str_replace("<", "&lt;", $in);
   $in = str_replace(">", "&gt;", $in);
   $in = str_replace("\"", "&quot;", $in);
-  $in = str_replace("'", "&x27;", $in);
-  $in = str_replace("/", "&#x2F;", $in);
-  $in = str_replace("&", "&amp;", $in);
+  $in = str_replace("'", "&#39;", $in);
+  $in = str_replace("/", "&#47;", $in);
   return $in;
 }
 
@@ -136,7 +136,7 @@ function sortbydate(&$workouts, $location="rundate")
   }
   $workouts = $newworkouts;
 }
- 
- 
- 
+
+
+
 ?>
