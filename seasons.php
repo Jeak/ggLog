@@ -10,10 +10,10 @@ function addseason($PID = -1, $name, $beginyear, $beginmonth, $beginday, $endyea
  // If a valid $PID is given, then it will edit the season with the corresponding $PID.
 {
   $pdo = gg_get_pdo();
-  
+
   $begindate = createsqldate($beginyear, $beginmonth, $beginday);
   $enddate = createsqldate($endyear, $endmonth, $endday);
-  
+
   if($begindate != false && $enddate != false)
   {
     $command = "";
@@ -37,14 +37,14 @@ function addseason($PID = -1, $name, $beginyear, $beginmonth, $beginday, $endyea
 function deleteseason($PID)
 {
   $pdo = gg_get_pdo();
-  
+
   $pdo->exec("DELETE FROM " . GG_SEASONS . " WHERE PID=$PID");
-  
+
   $pdo = null;
 }
-    
+
 function decodeseasonid($enc)
-{ 
+{
   //season IDs are differentiated from workout IDs with the prefix, "seas".
   // if $enc="seas32", it returns int(32)
 
@@ -82,7 +82,7 @@ function seasondistances($workouts, $seasons)
     }
     $seasondists[] = $thisSeasonDist;
   }
-  
+
   return $seasondists;
 }
 
@@ -107,7 +107,7 @@ function listseasons($echoResults = false) // if true, will also echo seasons
   {
     $allworkouts[] = $row;
   }
-  
+
   $allseasons = array();
   $results = $pdo->query("SELECT PID, name, begindate, enddate FROM " . GG_SEASONS);
 
@@ -115,7 +115,7 @@ function listseasons($echoResults = false) // if true, will also echo seasons
     $allseasons[] = $row;
 
   $distances = seasondistances($allworkouts, $allseasons);
-  
+
   for($i=0;$i<count($allseasons);++$i)
   {
     $pid = $allseasons[$i][0];
@@ -123,11 +123,11 @@ function listseasons($echoResults = false) // if true, will also echo seasons
     $out = "";
     $out .= "<a href=\"javascript:expandseason('edit','$idval')\" class=\"none\">";
 
-    $out .= "  <li class=\"list-group-item\" id=\"" . $idval .  "\" onmouseover=\"mouseoverseason('" . $idval . "');\""; 
+    $out .= "  <li class=\"list-group-item\" id=\"" . $idval .  "\" onmouseover=\"mouseoverseason('" . $idval . "');\"";
       $out .= " onmouseout=\"mouseoffseason('" . $idval . "');\">";
     $out .= "<span style=\"color:#00F;\">" . $distances[$i] . "mi</span> ";
     $out .= stripslashes($allseasons[$i][1]) . " ";
-    
+
     $out .= "<span class=\"badge\">";
     $out .= date('M j Y', strtotime($allseasons[$i][2]));
     $out .= " to ";
@@ -135,17 +135,17 @@ function listseasons($echoResults = false) // if true, will also echo seasons
     $out .= "</span>";
 
     $out .= "<span class=\"ggLog-hide\" id=\"$idval-edit\"></span>";
-    
+
     $out .= "  </li>";
     $out .= "</a>";
-    
+
     $fulllist .= $out;
   }
   $pdo = null;
-  
+
   if($echoResults == true)
     echo $fulllist;
-  
+
   return $fulllist;
 }
 function displayWeeklyDistances($echoResults = true)
@@ -161,37 +161,40 @@ function displayWeeklyDistances($echoResults = true)
   }
 
   $pdo = null;
-  
+
   require_once('weeks.php');
   $wm = new weekManage();
   foreach($data as $workout)
   {
-    $day = strtotime($workout["rundate"]);
+    //$day = strtotime($workout["rundate"]);
+    $day = ggreadSQLdate($workout["rundate"]);
     $time = timetoseconds($workout["runtime"]);
     $distance = $workout["distance"];
     $wm->addtime($day, $time);
     $wm->addmiles($day, $distance);
   }
   //        $thisweek = $wm->get(time());
-  $orderedweeks;
-  foreach($wm->weeks as $week)
+  $orderedweeks = $wm->weekArray();
+  /* foreach($wm->weeks as $week)
   {
-    $orderedweeks[] = array($week->beginday, $week->endday, $week->distance, $week->time);
-  }
+    //$orderedweeks[] = array($week->beginday, $week->endday, $week->distance, $week->time);
+  } */
   sortbydate($orderedweeks, 0);
   $output .= "<div style=\"width:700px;display:block;margin-left:auto;margin-right:auto;\">\n";
   if(true)
   {
-    $tdist = $wm->totaldistance();
-    $ttime = $wm->totaltime();
+    $tdist = $wm->totaldistance;
+    $ttime = $wm->totaltime;
     $output .= "<span style=\"color:#7A7;font-size:1.5em;\"> All Time: " . $tdist .  " miles in ";
     $output .= secondstotime($ttime) . " (" . speed($ttime, $tdist) .  " pace)</span><br /><br />";
   }
   foreach($orderedweeks as $thisweek)
   {
     $output .= "<span style=\"color:#999;font-size:1.5em;\">";
-    $output .= date('M j Y', $thisweek[0]) . " to ";
-    $output .= date('M j Y', $thisweek[1]);
+    //$output .= date('M j Y', $thisweek[0]) . " to ";
+    $output .= intrp($thisweek[0], array('M', 'j', 'Y')) . " to ";
+    //$output .= date('M j Y', $thisweek[1]);
+    $output .= intrp($thisweek[1], array('M', 'j', 'Y'));
     $output .= " with " . $thisweek[2];
     $output .= " miles in " . secondstotime($thisweek[3]);
     $output .= " (avg " . speed($thisweek[3], $thisweek[2]) . ")";
@@ -204,7 +207,7 @@ function displayWeeklyDistances($echoResults = true)
   {
     echo $output;
   }
-  
+
   return $output;
 }
 

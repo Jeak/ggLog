@@ -15,7 +15,7 @@
     <!--div style="display:block;top:0;right:0;text-align:right;padding-bottom:0;z-index:1;padding-right:10px;" id="userstuff">
       <span class="badge" style="font-weight:900;background-color:#a00;" id="useralerts" data-toggle="tooltip" data-placement="bottom" data-trigger="hover" title="Warnings" data-content="Get more sleep.">1</span>
       <span id="userinfo"> Logged on as <a style="position:relative;" href="javascript:switchuser();">David B.</a> | <a href="javascript:switchuser();">Switch user</a></span>
-    </div--> 
+    </div-->
     <input type="hidden" id="usernumber" value="0" />
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <div class="ggLog-hide" id="coverForNotices"></div>
@@ -91,7 +91,7 @@
           <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');"><span style="color:#00F">450mi</span> Summer Training (nonfunctional Example) <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
           <?php // listing seasons
           require_once("seasons.php");
-          
+
           echo listseasons(false);
           ?>
         </ul>
@@ -103,7 +103,7 @@
           <input type="hidden" name="submitting" value="newworkout" />
           <p class="text-center"><b><span style="color:red">New</span> <span id="workoutname">Untitled Workout</span></b></p>
           <div style="position:relative;height:35px;width:100%;">
-            <div style="position:absolute;top:0;left:0;"><label>Title:</label> 
+            <div style="position:absolute;top:0;left:0;"><label>Title:</label>
 			<input type="text" style="width:250px;" class="form-control" name="title" maxlength="39" id="ggLogwn" onkeyup="changewn();"  value="" /></div>
             <div style="position:absolute;top:0;right:0;" id="datesdrop">
             </div>
