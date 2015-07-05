@@ -54,7 +54,7 @@ Bold indicates that an item is being worked on.
 * Emoticons
 * __Auto-add total mileage__
 * __Set seasons with auto-adding mileage (Summer Training, Track season, Winter Training, Cross Country)__ __dev__
-    + UI for editing seasons 
+    + UI for editing seasons
     + Perhaps a larger interface for editing
     + JS shorten title so it won't overflow in the list
 * __Modularize (so you don't have a single 25kb php file containing all html, css, php, javascript, sql, etc)__
@@ -121,3 +121,15 @@ Bold indicates that an item is being worked on.
 * miles/km, lbs/kg
 * MySQL version
 * No stray escape characters when editing a post with quotation marks.
+
+#### Parts of the user system
+* Login screen
+* Navbar changes depending on whether you're logged in
+* Profile pictures:
+  + Limit who can see profile pictures: probably with some php linked with .htaccess
+* Hash/password and all that great stuff
+* User permissions
+* User friends, and who can see who's activity
+* Settings for your account (who can see what, your profile picture)
+* Which groups you're in.
+* We can either store this all in the &#95;seasons or whatever table, or in the big user-table.

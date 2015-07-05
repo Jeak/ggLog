@@ -32,6 +32,22 @@ function closenewworkout()
   document.getElementById("addworkoutdesktop").className = "ggLog-hide";
 //  document.getElementById("addworkoutmobile").className = "ggLog-hide";
 }
+function submitnewworkout()
+{
+  // return true; should submit the form.
+  var formID = "newworkoutform";
+  if(document.getElementById("newH").value == ""
+  && document.getElementById("newM").value == ""
+  && document.getElementById("newS").value == "")
+  {
+    document.getElementById("newH").setCustomValidity("Must enter a time (can be 0)");
+  }
+  else
+  {
+    document.getElementById("newH").setCustomValidity("");
+  }
+  return true;
+}
 function changewn()
 {
   if(document.getElementById("ggLogwn").value == "")
