@@ -122,3 +122,202 @@ function decodetime(str, type)
   }
   return -1;
 }
+
+// note: these functions are taken from 'weeks.php' They follow the PHP method
+// of representing months: using 1 as Jan, instead of 0 as javascript does.
+
+function intrp(p1, p2)
+{
+  if(typeof(p1) == "string")
+  {
+    var type = p1;
+    var dayNum = p2;
+    if(type == 'L')
+      return intrp_L(dayNum);
+    if(type == 'Y')
+      return intrp_Y(dayNum);
+    if(type == 'w')
+      return intrp_w(dayNum);
+    if(type == 'z')
+      return intrp_z(dayNum);
+    if(type == 'm')
+      return intrp_m(dayNum);
+    if(type == 'j')
+      return intrp_j(dayNum);
+    if(type == 'M')
+      return intrp_capM(dayNum);
+    if(type == 'D')
+      return intrp_D(dayNum);
+  }
+  else // array of types
+  {
+    var output = "";
+    for(var i=0;i<p2.length;++i)
+    {
+      output += intrp(p2[i], p1) + " ";
+    }
+    return output;
+  }
+}
+function intrp_w(dayNum)
+{
+  return (dayNum+4)%7;
+}
+// 1 is Sunday.
+function intrp_D(dayNum)
+{
+  var dnar = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return dnar[intrp_w(dayNum)];
+}
+function intrp_L(dayNum)
+{
+  if(intrp_Y(dayNum)%4 == 0)
+    return true;
+  return false;
+}
+function intrp_Y(dayNum)
+{
+  return Math.floor((dayNum-Math.floor((dayNum+365)/1461))/365)+1970;
+}
+function intrp_z(dayNum)
+{
+  var val = (dayNum+365)%1461;
+  //echo "intrp_z $dayNum $val " . gettype($val) . "  ";
+  if(val == 1460)
+    return 365;
+  return val%365;
+}
+// See above at intrp(): this uses PHP dates (1 as Jan, not 0)
+function intrp_m(dayNum)
+{
+  var doy = intrp_z(dayNum);
+  var offset = 0;
+  if(intrp_L(dayNum))
+    ++offset;
+
+  if(doy >= 334+offset)
+    return 12;
+  if(doy >= 304+offset)
+    return 11;
+  if(doy >= 273+offset)
+    return 10;
+  if(doy >= 243+offset)
+    return 9;
+  if(doy >= 212+offset)
+    return 8;
+  if(doy >= 181+offset)
+    return 7;
+  if(doy >= 151+offset)
+    return 6;
+  if(doy >= 120+offset)
+    return 5;
+  if(doy >= 90+offset)
+    return 4;
+  if(doy >= 59+offset)
+    return 3;
+  if(doy >= 31)
+    return 2;
+  return 1;
+}
+// Warning: see above at intrp(): this uses PHP dates, with 1 as Jan (not 0)
+function intrp_capM(dayNum, thisIsMonth)
+{
+  if(typeof thisIsMonth == 'undefined')
+    thisIsMonth = false;
+  var marr = [, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  if(thisIsMonth == true && dayNum >= 1 && dayNum <= 12)
+  {
+    return marr[dayNum];
+  }
+  return marr[intrp_m(dayNum)];
+}
+function intrp_j(dayNum)
+{
+  var doy = intrp_z(dayNum);
+  var offset = 0;
+  if(intrp_L(dayNum))
+    ++offset;
+  if(doy >= 334+offset)
+    return (1+doy-334-offset);
+  if(doy >= 304+offset)
+    return (1+doy-304-offset);
+  if(doy >= 273+offset)
+    return (1+doy-273-offset);
+  if(doy >= 243+offset)
+    return (1+doy-243-offset);
+  if(doy >= 212+offset)
+    return (1+doy-212-offset);
+  if(doy >= 181+offset)
+    return (1+doy-181-offset);
+  if(doy >= 151+offset)
+    return (1+doy-151-offset);
+  if(doy >= 120+offset)
+    return (1+doy-120-offset);
+  if(doy >= 90+offset)
+    return (1+doy-90-offset);
+  if(doy >= 59+offset)
+    return (1+doy-59-offset);
+  if(doy >= 31)
+    return (1+doy-31);
+  return (1+doy);
+}
+// This uses PHP dates, not javascript: 1 is Jan, instead of 0.
+function monthOffset(month)
+{
+  // for a non-leap year
+  if(month > 12 || month < 1)
+    return false;
+  var arr = [null, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+  return arr[month];
+}
+// Using 1 as Jan
+function ggcreatedate(year, month, date)
+{
+  // For leapyears, note that Jan 1 still occurs on the expected date
+  //  value because the extra day does not occur until Feb.
+  var output = (year-1970)*365;
+  output += floor((year-1969)/4); // add one for every previous leapyear.
+
+  output += monthOffset(month);
+  if(year%4 == 0 && month > 2) // add 1 if is > Feb of leapyear
+    ++output;
+
+  output += date -1;
+  return output;
+}
+
+function ggcreateSQLdate(dayNum)
+{
+  var month = intrp_m(dayNum);
+  var date = intrp_j(dayNum);
+  var output = intrp_Y(dayNum) + "-";
+  if(month < 10)
+    output += "0";
+  output += month + "-";
+  if(date < 10)
+    output += "0";
+  output += date;
+  return output;
+}
+
+function ggreadSQLdate(input)
+{
+  var parts = input.split("-");
+  if(parts.length != 3)
+    return false;
+  var year =parseInt(parts[0]);
+  var month =parseInt(parts[1]);
+  var day =parseInt(parts[2]);
+
+  // For leapyears, note that Jan 1 still occurs on the expected date
+  //  value because the extra day does not occur until Feb.
+  var output = (year-1970)*365;
+  output += Math.floor((year-1969)/4); // add one for every previous leapyear.
+
+  output += monthOffset(month);
+  if(year%4 == 0 && month > 2) // add 1 if is > Feb of leapyear
+    ++output;
+
+  output += day -1;
+  return output;
+}

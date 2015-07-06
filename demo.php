@@ -1,7 +1,7 @@
 <!doctype html>
 <html style="width:100%;height:100%">
   <head>
-    <title>Running Logs: NOTE: OLD MOBILE TEST VERSION</title>
+    <title>gglog.xyz: Running Logs</title>
     <!--meta name="viewport" content="width=device-width" /-->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
     <link rel="stylesheet" href="demo.css" />
@@ -99,7 +99,6 @@
         </ul>
       </div>
     </div>
-////////////////////////////
     <div class="ggLog-hide" id="addworkoutdesktop">
       <div class="ggLog-center">
         <form action="demo.php" method="post" class="form-inline" id="newworkoutform">
@@ -176,14 +175,7 @@
         </div>
       </form>
     </div>
-////////////////////////////
-<<<<<<< HEAD
-    <div style="position:relative;height:20px;top:0;width:100%;">
-=======
-    <hr class="ggLog-partial" style="clear:both;" />
     <div class="ggLog-containrecentworkouts" id="recentworkouts-desktop">
-      <h1 class="text-center">Recent Workouts</h1>
->>>>>>> mobile_test
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
         <div style="position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;"> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a><span style="padding-left:25px;">Jun 24 2013</span><span style="padding-left:35px;">Feel free to post a workout!</span></div>
@@ -202,7 +194,6 @@
           </div>
         </div>
       </div>
-
       <hr class="ggLog-partial" style="clear:both;" />
         <a href="astext.txt" style="text-align:center;display:block;width:100%;" download>Download my workouts as a text file.</a>
         <hr class="ggLog-partial" style="clear:both;" />
@@ -229,7 +220,7 @@
         <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a>
       </div>
       <div class="ggLog-leftinputmobile">
-        <span style="color:#558855;font-size:1.3em;">Title! Title! Title! This could probably be a pretty long title!</span></div>
+        <span style="color:#558855;font-size:1.3em;">Title! Title! Title! This could probably be a pretty long title!</span>
       </div>
       <div class="ggLog-leftinputmobile">
         <span class="ggLog-biggraytext">15</span> miles &nbsp; &nbsp; &nbsp; <span class="ggLog-biggraytext">1:49:02</span>
@@ -246,7 +237,7 @@
         <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a>
       </div>
       <div class="ggLog-leftinputmobile">
-        <span style="color:#558855;font-size:1.3em;">Previous log</span></div>
+        <span style="color:#558855;font-size:1.3em;">Previous log</span>
       </div>
       <div class="ggLog-leftinputmobile">
         <span class="ggLog-biggraytext">21</span> miles &nbsp; &nbsp; &nbsp; <span class="ggLog-biggraytext">1:30:02</span>

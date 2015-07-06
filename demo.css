@@ -85,7 +85,7 @@ div.ggLog-newworkout
 }
 div.ggLog-center
 {
-  border-radius:15px; 
+  border-radius:15px;
   padding:10px;
   background-color:#EEEEEE;
   width:600px;
@@ -95,7 +95,7 @@ div.ggLog-center
 }
 div.ggLog-centerseasons
 {
-  border-radius:15px; 
+  border-radius:15px;
   padding:0px;
   background-color:#FFF;
   width:600px;
@@ -135,7 +135,7 @@ div.ggLog-centerquestion
   margin-left:-150px;
 
   padding:20px;
-  border-radius:10px; 
+  border-radius:10px;
   z-index:6;
   background-color:#FFF;
 }
@@ -150,7 +150,7 @@ div.ggLog-centernewseason
   margin-left:-180px;
 
   padding:20px;
-  border-radius:10px; 
+  border-radius:10px;
   z-index:6;
   background-color:#FFF;
 }
@@ -164,7 +164,7 @@ hr.ggLog-partial
 div.ggLog-center-90
 {
 /*  border-radius:15px; */
-  padding:10px; 
+  padding:10px;
 /*  background-color:#EEEEEE; */
   left:150px;
   width:800px;
@@ -181,7 +181,7 @@ div.runspecs
 }
 div.ggLog-centermobile
 {
-  border-radius:15px; 
+  border-radius:15px;
   padding:10px;
   background-color:#EEEEEE;
   width:90%;
@@ -196,6 +196,7 @@ div.ggLog-containrecentworkouts
   top:0;
   width:100%;
 }
+
 a.editworkoutlink:link
 {
   text-decoration:none;

@@ -1,14 +1,14 @@
 function newworkout()
 {
-/*
+
   if(IsMobileBrowser() == true)
-  { */
+  {
     if(document.getElementById("addworkoutmobile").className == "ggLog-newworkoutmobile")
       closenewworkout();
     else
       document.getElementById("addworkoutmobile").className = "ggLog-newworkoutmobile";
-//    SetDateDropdown("AddWorkoutMobileDate");
-/*  }
+    SetDateDropdown("AddWorkoutMobileDate");
+  }
   else
   {
     document.getElementById("editseasons").className = "ggLog-hide";
@@ -30,7 +30,7 @@ function newworkout()
       }
     }
   }
-  document.getElementById("ggLogwn").value = "";*/
+  document.getElementById("ggLogwn").value = "";
 }
 function closenewworkout()
 {
@@ -123,16 +123,20 @@ function dwswitchbutton(evt) // this function allows for switching between the y
 }
 function demoload()
 {
-//  if(IsMobileBrowser())
-//  {
+  if(IsMobileBrowser())
+  {
     SetDateDropdown('datesdrop-mobile');
     document.getElementById('buttonholder').className = "ggLog-buttonholdermobile btn-group";
     document.getElementById('recentworkouts-desktop').className = "ggLog-hide";
-    document.getElementById('recentworkouts-mobile').className = "ggLog-containrecentworkouts-mobile";
-//  }
-//  else
-//    SetDateDropdown('datesdrop');
-  $('#useralerts').popover();
+    document.getElementById('recentworkouts-mobile').className = "ggLog-containrecentworkouts";
+  }
+  else{
+    SetDateDropdown('datesdrop');
+    document.getElementById('recentworkouts-mobile').className = "ggLog-hide";
+    //document.getElementById('recentworkouts-desktop').className = "ggLog-containrecentworkouts";
+    document.getElementById('recentworkouts-desktop').className = "ggLog-containrecentworkouts";
+  }
+  //$('#useralerts').popover();
 }
 function editworkout(id)
 {
@@ -334,6 +338,59 @@ function loadmore()
         $("#loadmorebutton").remove();
     }
   );
+}
+
+function createJSONworkoutDesktop(jsonInput)
+{
+  // jsonInput is of this format:
+  // {"PID":(int), "rundate":(int),
+  //  "title":(string), "runtime":(string),
+  //  "notes":(string), "distance":(double),
+  //  "speed":(string)}
+  // In PHP, make sure to change newlines into <br /> with htmlnewline.
+  var output = "";
+    output += "<div class=\"ggLog-center-90\" id=\"PID-" + jsonInput['PID'] + "\">\n";
+
+  //          store hard-to-access data in hidden inputs
+    output += "  <input type=\"hidden\" id=\"PID-" + jsonInput['PID'] + "date\" value=\"" + ggcreateSQLdate(jsonInput["rundate"]) + "\" />\n";
+    output += "  <input type=\"hidden\" id=\"PID-" + jsonInput['PID'] + "title\" value=\"" + jsonInput["title"] + "\" />\n";
+
+    output += "  <div style=\"position:relative;top:0;left:-40px;width:100%;height:30px;color:#AAAAAA;font-size:1.3em;\">\n";
+  //<a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-trash"> </span></a>
+    output += "  <a href=\"javascript:editworkout('"+ jsonInput['PID']+ "');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>\n";
+    output += "  <a href=\"javascript:deleteworkout('" + jsonInput['PID'] + "');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
+    output += "<span class=\"workoutdate\">";
+    //output += date("D M j Y", strtotime($data[$i]["rundate"])); // date
+    output += intrp(jsonInput["rundate"], new Array('D', 'M', 'j', 'Y')); // date
+    output += "</span><span class=\"workouttitle\">";
+    output += jsonInput["title"]; // title
+    output += "</span></div>\n";
+
+    output += "  <div style=\"position:relative;top:0;left:0;width:100%;\">\n";
+
+    output += "    <div style=\"float:left;width:500px;margin-bottom:25px;\" id=\"PID-" + jsonInput['PID'] + "notes\">";
+    output += jsonInput["notes"]; // notes?
+    output += "</div>\n";
+    output += "  </div>\n";
+
+    output += "  <div style=\"float:left;width:120px;border:1px;margin-bottom:25px;margin-left:10px\">\n";
+    output += "    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" + jsonInput['PID'] + "distance\">";
+    output += jsonInput["distance"]; // distance
+    output += "</span> miles</div>\n";
+    output += "    <div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\">";
+    output += jsonInput["speed"];
+    output += "</span> min/mi</div>\n";
+    output += "  </div>\n";
+
+    output += "  <div style=\"float:left;width:120px;\">";
+    output += "<div class=\"runspecs\"><span style=\"font-size:1.3em;color:#888\" id=\"PID-" + jsonInput['PID'] + "time\">";
+    output += jsonInput["runtime"];  // time
+    output += "</span></div>";
+    output += "  </div>\n";
+
+    output += "</div>\n";
+    output += "<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
+    return output;
 }
 
 function removebr(inhtml)
