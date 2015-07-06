@@ -215,39 +215,8 @@
     <div class="ggLog-hide" id="recentworkouts-mobile">
       <h3 class="text-center">Recent Workouts</h3>
       <hr class="ggLog-partial" style="clear:both;" />
-      <div class="ggLog-centerinputmobile">
-        <span style="color:#AAAAAA;font-size:1.3em;margin-right:15px;">Jun 24 2013</span>
-        <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a>
-      </div>
-      <div class="ggLog-leftinputmobile">
-        <span style="color:#558855;font-size:1.3em;">Title! Title! Title! This could probably be a pretty long title!</span>
-      </div>
-      <div class="ggLog-leftinputmobile">
-        <span class="ggLog-biggraytext">15</span> miles &nbsp; &nbsp; &nbsp; <span class="ggLog-biggraytext">1:49:02</span>
-      </div>
-      <div class="ggLog-leftinputmobile">
-        <span class="ggLog-biggraytext">5:58</span> min/mi
-      </div>
-      <div class="ggLog-leftinputmobile">
-      Help us find bugs (problems with this website) by testing out the site!  If you find a problem or have a suggestion to make this project better, either report it at <a href="https://github.com/Jeak/ggLog/issues?state=open">our github page</a> (account needed), or post a workout here describing the problem/suggestion.
-      </div>
-      <hr class="ggLog-partial" style="clear:both;" />
-      <div class="ggLog-centerinputmobile">
-        <span style="color:#AAAAAA;font-size:1.3em;margin-right:15px;">Jun 23 2013</span>
-        <a href="" class="editworkoutlink"><span class="glyphicon glyphicon-pencil"></span></a> <a href="javascript:deleteworkout(-1)" class="editworkoutlink"><span class="glyphicon glyphicon-trash"></span></a>
-      </div>
-      <div class="ggLog-leftinputmobile">
-        <span style="color:#558855;font-size:1.3em;">Previous log</span>
-      </div>
-      <div class="ggLog-leftinputmobile">
-        <span class="ggLog-biggraytext">21</span> miles &nbsp; &nbsp; &nbsp; <span class="ggLog-biggraytext">1:30:02</span>
-      </div>
-      <div class="ggLog-leftinputmobile">
-        <span class="ggLog-biggraytext">3:42</span> min/mi
-      </div>
-      <div class="ggLog-leftinputmobile">
-        I just set world records in every distance longer than a mile and up to 21 miles!  I'm very happy with my training, and hopefully this will help me break 2:00:00 in the marathon.  Feeling some shin splints but hopefully that goes away soon.
-      </div>
+      <button class="btn btn-default" style="display:block;margin-left:auto;margin-right:auto;margin-bottom:15px;" onclick="loadmore();" id="loadmoremobilebutton">Load More</button>
+      <!-- numberloaded will just use the one provided in the desktop section -->
     </div>
     <br /><br />
   </body>

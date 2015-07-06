@@ -92,8 +92,8 @@ function deleteworkout(id)
   content += "        <input type=\"hidden\" value=\"";
     content += id;
     content += "\" name=\"PID\" />";
-  content += "        <button onClick=\"return true;\" onkeypress=\"dwswitchbutton(event)\" class=\"form-control\" style=\"width:70px;\">Yes</button>";
-  content += "      <button onClick=\"canceldeleteworkout(); return false;\" onkeypress=\"dwswitchbutton(event)\" class=\"form-control\" style=\"width:70px;\">No</button>";
+  content += "        <div style=\"float:left;width:70px;margin-right:5px;\"><button onClick=\"return true;\" onkeypress=\"dwswitchbutton(event)\" class=\"form-control\">Yes</button></div>";
+  content += "        <div style=\"float:left;width:70px;\"><button onClick=\"canceldeleteworkout(); return false;\" onkeypress=\"dwswitchbutton(event)\" class=\"form-control\">No</button></div>";
   content += "    </form>";
   content += "  </div>";
   content += "</div>";
@@ -130,6 +130,11 @@ function demoload()
     document.getElementById('buttonholder').className = "ggLog-buttonholdermobile btn-group";
     document.getElementById('recentworkouts-desktop').className = "ggLog-hide";
     document.getElementById('recentworkouts-mobile').className = "ggLog-containrecentworkouts";
+    var anymore = loadmore(10);
+    if(anymore == true)
+    {
+      loadmore(10);
+    }
   }
   else{
     SetDateDropdown('datesdrop');
@@ -140,8 +145,13 @@ function demoload()
   }
   //$('#useralerts').popover();
 }
+
 function editworkout(id)
 {
+  if(IsMobileBrowser()) {
+    return editworkoutMobile(id);
+  }
+
   //parse the current one
   var idval = "PID-" + id;
   var staticHTML = document.getElementById(idval).innerHTML; // so you don't have to rewrite the code when you cancel
@@ -211,6 +221,71 @@ function canceleditworkout(id)
   var idval = "PID-" + id;
   var val = document.getElementById(idval + "orig").value;
   document.getElementById(idval).innerHTML = unescape(val);
+}
+
+function editworkoutMobile(id)
+{
+  var idval = "PID-" + id;
+  var staticHTML = document.getElementById(idval).innerHTML; // so you don't have to rewrite the code when you cancel
+  var datest = document.getElementById(idval + "date").value;
+  var date = new Date(datest);
+  var title = document.getElementById(idval + "title").value;
+  var notes = removebr(document.getElementById(idval + "notes").innerHTML);
+  var distance = document.getElementById(idval + "distance").innerHTML;
+  var time = document.getElementById(idval + "time").innerHTML;
+  var hours = decodetime(time, 'h');
+  var minutes = decodetime(time, 'm');
+  var seconds = decodetime(time, 's');
+
+  var content = "";
+  content += "<form action=\"demo.php\" method=\"post\" class=\"form-inline\">";
+  content += "  <input type=\"hidden\" id=\"" + idval + "orig\" value=\"" + escape(staticHTML) + "\" />";
+  content += "  <input type=\"hidden\" name=\"submitting\" value=\"newworkout\" />";
+  content += "  <input type=\"hidden\" name=\"PID\" value=\"" + id + "\" />";
+  content += "  <div style=\"width:100%;top:0;display:block;text-align:center;font-weight:900;color:green;\">Editing Workout</div>";
+  content += "  <div class=\"ggLog-leftinputmobile\">";
+  content += "    <label>Title/Loc:</label> <input type=\"text\" class=\"form-control mblil\" style=\"width:70%;\" name=\"title\" id=\"ggLogwn-mobile\" value=\""+ title + "\" />";
+  content += "  </div>";
+  content += "  <div class=\"ggLog-leftinputmobile\">";
+  content += "    <label>Distance:</label> <input type=\"text\" class=\"form-control mblil\" style=\"width:50%\" name=\"distance\" value=\""+ distance + "\" />";
+  content += "  </div>";
+  content += "  <div class=\"ggLog-leftinputmobile\" id=\""+ idval + "dropmob\"></div>";
+  content += "  <div class=\"ggLog-leftinputmobile\">";
+  content += "    <div class=\"ggLog-lefttimewords\">";
+  content += "      <label>Time:</label>";
+  content += "    </div>";
+  content += "    <div class=\"ggLog-inputhour\">";
+  content += "      <input type=\"text\" name=\"hours\" class=\"ggLog-inputpad form-control\" value=\"" + hours + "\" />";
+  content += "    </div>";
+  content += "    <div class=\"ggLog-lefttimewords\"> : </div>";
+  content += "    <div class=\"ggLog-inputms\">";
+  content += "      <input type=\"text\" name=\"minutes\" class=\"ggLog-inputpad form-control\" value=\"" + minutes + "\" />";
+  content += "    </div>";
+  content += "    <div class=\"ggLog-lefttimewords\"> : </div>";
+  content += "    <div class=\"ggLog-inputms\">";
+  content += "      <input type=\"text\" name=\"seconds\" class=\"ggLog-inputpad form-control\" value=\"" + seconds + "\" />";
+  content += "    </div>";
+  content += "  </div>";
+  content += "   <br style=\"clear:both;\" />";
+  content += "  <div class=\"ggLog-leftinputmobile\" style=\"font-weight:900;\">Notes:</div>";
+  content += "  <textarea style=\"width:90%;height:200px;display:block;margin-left:auto;margin-right:auto;\" class=\"form-control\" name=\"notes\">"+ notes + "</textarea>";
+  content += "  <br />";
+  content += "  <div class=\"ggLog-leftinputmobile\">";
+  content += "    <div style=\"float:left;width:25%;margin-right:1%;\"><input type=\"submit\" class=\"mblil form-control\" value=\"save\" /></div>";
+  content += "    <div style=\"float:left;width:30%;margin-right:1%;\"><button onClick=\"canceleditworkout('" + id + "'); return false;\" class=\"mblil form-control\">cancel</button></div>";
+  content += "    <div style=\"float:left;width:30%;margin-bottom:5px;\"><button onClick=\"deleteworkout('" + id + "'); return false;\" class=\"mblil form-control\">delete</button></div>";
+  content += "  </div>";
+  content += "</form>";
+
+  document.getElementById(idval).innerHTML = content;
+
+  var day = date.getUTCDate();
+  var month = date.getUTCMonth();
+  var year = date.getUTCFullYear();
+  // SetDateDropdown from ggLogEssentials.js
+  SetDateDropdown(idval + "dropmob", "", true, year, month, day);
+
+  return id;
 }
 
 function viewseasons()
@@ -325,43 +400,40 @@ function addbr(inhtml)
   return inhtml;
 }
 
-function loadmoreOld()
+function loadmore(howmany)
 {
+  if(typeof howmany == 'undefined') {
+    howmany = 20;
+  }
+  var anymore = true;
   var beginningl = $("#numberloaded").val();
+  var imb = IsMobileBrowser();
   var request = $.post(
     "fetchworkouts.php",
-    {begin: beginningl, number: "20"},
-    function( data ) {
-      var locOfPipe = data.indexOf("|");
-      var content = data.substr(locOfPipe+1);
-      $("#loadmorebutton").before(content);
-      $("#numberloaded").val(parseInt(beginningl)+20);
-      if(locOfPipe == 1) // means that it has reached the end
-        $("#loadmorebutton").remove();
-    }
-  );
-}
-
-function loadmore()
-{
-  var beginningl = $("#numberloaded").val();
-  var request = $.post(
-    "fetchworkouts.php",
-    {"begin": beginningl, "number": "20", "type": "json"} ,
+    {"begin": beginningl, "number": howmany, "type": "json"} ,
     function( data ) {
       var jsonData = JSON.parse(data);
-      for(var i=0;i<jsonData['count'];++i)
-      {
-        $("#loadmorebutton").before(createJSONworkoutDesktop(jsonData[i]));
+      if(!imb) {
+        for(var i=0;i<jsonData['count'];++i)
+          $("#loadmorebutton").before(createJSONworkoutDesktop(jsonData[i]));
       }
-      $("#numberloaded").val(parseInt(beginningl)+20);
+      else {
+        for(var i=0;i<jsonData['count'];++i)
+          $("#loadmoremobilebutton").before(createJSONworkoutMobile(jsonData[i]));
+      }
+      $("#numberloaded").val(parseInt(beginningl)+parseInt(howmany));
       $("#loadmorebutton").before("<span>" + jsonData['timing'] + " for " + jsonData['count'] + "</span>");
+      anymore = jsonData['more'];
       if(jsonData['more'] == false)
       {
-        $("#loadmorebutton").remove();
+        if(imb)
+          $("#loadmoremobilebutton").remove();
+        else
+          $("#loadmorebutton").remove();
       }
     }
   );
+  return anymore;
 }
 
 function createJSONworkoutDesktop(jsonInput)
@@ -415,6 +487,40 @@ function createJSONworkoutDesktop(jsonInput)
     output += "</div>\n";
     output += "<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
     return output;
+}
+
+function createJSONworkoutMobile(jsonInput)
+{
+  // see above for json object format.
+
+  var output = "";
+  output += "<span id=\"PID-"+ jsonInput['PID'] +"\">";
+  output += "<div class=\"ggLog-centerinputmobile\">";
+
+  output += "  <input type=\"hidden\" id=\"PID-" + jsonInput['PID'] + "date\" value=\"" + ggcreateSQLdate(jsonInput["rundate"]) + "\" />\n";
+  output += "  <input type=\"hidden\" id=\"PID-" + jsonInput['PID'] + "title\" value=\"" + jsonInput["title"] + "\" />\n";
+
+  output += "  <span style=\"color:#AAAAAA;font-size:1.3em;margin-right:15px;\">" + intrp(jsonInput['rundate'], new Array('D', 'M', 'j', 'Y')) + "</span>";
+  output += "  <a href=\"javascript:editworkout('" + jsonInput['PID'] + "');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+  output += "  <a href=\"javascript:deleteworkout('" + jsonInput['PID'] + "');\" class=\"editworkoutlink\"><span class=\"glyphicon glyphicon-trash\"></span></a>";
+  output += "</div>";
+  output += "<div class=\"ggLog-leftinputmobile\">";
+  output += "  <span style=\"color:#558855;font-size:1.3em;\" id=\"\">" + jsonInput['title'] + "</span>";
+  output += "</div>";
+  output += "<div class=\"ggLog-leftinputmobile\">";
+  output += "  <span class=\"ggLog-biggraytext\" id=\"PID-" + jsonInput['PID'] + "distance\">"+ jsonInput['distance'] +"</span> miles &nbsp; &nbsp; &nbsp";
+  output += "  <span class=\"ggLog-biggraytext\" id=\"PID-" + jsonInput['PID'] + "time\">" + jsonInput['runtime'] + "</span>";
+  output += "</div>";
+  output += "<div class=\"ggLog-leftinputmobile\">";
+  output += "  <span class=\"ggLog-biggraytext\">"+ jsonInput['speed'] + "</span> min/mi";
+  output += "</div>";
+  output += "<div class=\"ggLog-leftinputmobile\" id=\"PID-" + jsonInput['PID'] + "notes\">";
+  output += jsonInput['notes'];
+  output += "</div>";
+  output += "</span>\n";
+  output += "<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
+
+  return output;
 }
 
 function removebr(inhtml)
