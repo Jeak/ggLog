@@ -206,6 +206,45 @@ function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = 
 return $output;
 }
 
+function makeWorkoutJSON($data, $beginloc, $numberToDisplay)
+{
+  // for pre-sorted data, earliest activities first.
+  $starter = microtime(true);
+  $templateOutput = array();
+  $ic = 0;
+  for($i = count($data)-1-$beginloc; $i>= count($data)-$beginloc-$numberToDisplay && $i >= 0;--$i)
+  {
+    $ic = $i;
+    $single = $data[$ic];
+    $single['PID'] = intval($single['PID']);
+    $single['rundate'] = intval($single['rundate']);
+    $single['distance'] = floatval($single['distance']);
+    $single['speed'] = speed($single["runtime"], $single["distance"]);
+    $templateOutput[] = $single;
+  }
+  $templateOutput['more'] = true;
+  if(count($data)-$beginloc-$numberToDisplay <= 0)
+    $templateOutput['more'] = false;
+  $templateOutput['count'] = (count($data)-$beginloc)-$ic;
+  $templateOutput['timing'] = (microtime(true) - $starter);
+  return json_encode($templateOutput);
+}
+
+function getWorkoutJSON($beginloc, $numberToDisplay)
+{
+  $pdo = gg_get_pdo();
+  $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_TABLE);
+  $data = array();
+  while ($row = $result->fetch(PDO::FETCH_ASSOC))
+  {
+    $data[] = $row;
+  }
+  $pdo = null;
+
+  sortbydate($data); // function above
+  return makeWorkoutJSON($data, $beginloc, $numberToDisplay);
+}
+
 //                       bool     date   date
 function convertToText($alltime, $begin, $end) // inclusive
 {

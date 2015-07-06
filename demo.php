@@ -197,7 +197,7 @@
       <hr class="ggLog-partial" style="clear:both;" />
         <a href="astext.txt" style="text-align:center;display:block;width:100%;" download>Download my workouts as a text file.</a>
         <hr class="ggLog-partial" style="clear:both;" />
-        <?php
+        <?php /*
         require_once("workouts.php");
         require_once("seasons.php");
         $start = microtime(true);
@@ -206,13 +206,13 @@
         $start = microtime(true);
         echo "<h3 class=\"text-center\">Recent Workouts</h3>";
         displayworkouts(true, 0, 20);
-        echo microtime(true) - $start;
+        echo microtime(true) - $start; */
         ?>
         <button class="btn btn-default" style="display:block;margin-left:auto;margin-right:auto;margin-bottom:15px;" onclick="loadmore();" id="loadmorebutton">Load More</button>
-        <input type="hidden" id="numberloaded" value="20" />
+        <input type="hidden" id="numberloaded" value="0" autocomplete="off" />
     </div>
     <hr class="ggLog-partial" style="clear:both;" />
-    <div class="ggLog-containrecentworkouts" id="recentworkouts-mobile">
+    <div class="ggLog-hide" id="recentworkouts-mobile">
       <h3 class="text-center">Recent Workouts</h3>
       <hr class="ggLog-partial" style="clear:both;" />
       <div class="ggLog-centerinputmobile">

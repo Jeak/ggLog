@@ -123,6 +123,7 @@ function dwswitchbutton(evt) // this function allows for switching between the y
 }
 function demoload()
 {
+  $("#numberloaded").val("0");
   if(IsMobileBrowser())
   {
     SetDateDropdown('datesdrop-mobile');
@@ -135,6 +136,7 @@ function demoload()
     document.getElementById('recentworkouts-mobile').className = "ggLog-hide";
     //document.getElementById('recentworkouts-desktop').className = "ggLog-containrecentworkouts";
     document.getElementById('recentworkouts-desktop').className = "ggLog-containrecentworkouts";
+    loadmore();
   }
   //$('#useralerts').popover();
 }
@@ -323,7 +325,7 @@ function addbr(inhtml)
   return inhtml;
 }
 
-function loadmore()
+function loadmoreOld()
 {
   var beginningl = $("#numberloaded").val();
   var request = $.post(
@@ -336,6 +338,28 @@ function loadmore()
       $("#numberloaded").val(parseInt(beginningl)+20);
       if(locOfPipe == 1) // means that it has reached the end
         $("#loadmorebutton").remove();
+    }
+  );
+}
+
+function loadmore()
+{
+  var beginningl = $("#numberloaded").val();
+  var request = $.post(
+    "fetchworkouts.php",
+    {"begin": beginningl, "number": "20", "type": "json"} ,
+    function( data ) {
+      var jsonData = JSON.parse(data);
+      for(var i=0;i<jsonData['count'];++i)
+      {
+        $("#loadmorebutton").before(createJSONworkoutDesktop(jsonData[i]));
+      }
+      $("#numberloaded").val(parseInt(beginningl)+20);
+      $("#loadmorebutton").before("<span>" + jsonData['timing'] + " for " + jsonData['count'] + "</span>");
+      if(jsonData['more'] == false)
+      {
+        $("#loadmorebutton").remove();
+      }
     }
   );
 }
