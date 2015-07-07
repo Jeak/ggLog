@@ -2,19 +2,20 @@
 <html>
   <head>
     <title>About</title>
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/3.0.0/css/bootstrap-combined.min.css">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="ggLogEssentials.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="ggLogEssentials.js"></script>
 
     <style type="text/css">
       h1, h2, h3, h4, h5, h6
       { text-align:center; font-weight:900; }
-      
+
     </style>
   </head>
-  
+
   <body>
     <?php require_once("navbar.php"); navbar("about.php"); ?>
     <div style="display:block;width:160px;margin-left:auto;margin-right:auto;">

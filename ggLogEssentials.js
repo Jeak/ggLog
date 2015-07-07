@@ -123,6 +123,20 @@ function decodetime(str, type)
   return -1;
 }
 
+function setNavbar()
+{
+  if(IsMobileBrowser())
+  {
+    document.getElementById("ggNavbarDesktop").className = "ggLog-hide";
+    document.getElementById("ggNavbarMobile").className = "ggLog-navbar-mobile";
+  }
+  else
+  {
+    document.getElementById("ggNavbarDesktop").className = "navbar ggLog-navbar-desktop";
+    document.getElementById("ggNavbarMobile").className = "ggLog-hide";
+  }
+}
+
 // note: these functions are taken from 'weeks.php' They follow the PHP method
 // of representing months: using 1 as Jan, instead of 0 as javascript does.
 

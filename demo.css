@@ -3,10 +3,6 @@ body, html
 width:100%;
 height:100%;
 }
-div.ggLog-hide
-{
-  display:none;
-}
 .mblil
 {
   display:inline !important;
@@ -137,7 +133,7 @@ div.ggLog-centerquestion
 
   padding:20px;
   border-radius:10px;
-  z-index:6;
+  z-index:16;
   background-color:#FFF;
 }
 div.ggLog-centernewseason

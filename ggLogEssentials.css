@@ -1,0 +1,14 @@
+.ggLog-hide {
+  display:none;
+}
+.ggLog-navbar-desktop {
+  margin-top:0;
+  float:left;
+}
+.ggLog-navbar-mobile {
+  width:40px;
+  height:35px;
+  margin-top:5px;
+  margin-right:10px;
+  float:right;
+}

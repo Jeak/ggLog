@@ -2,9 +2,10 @@
 <html>
   <head>
     <title>ggLog</title>
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="ggLogEssentials.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="ggLogEssentials.js"></script>
@@ -19,7 +20,7 @@
       }
     </script>
   </head>
-  
+
   <body onLoad="bload()">
     <?php require_once("navbar.php"); navbar("index.php"); ?>
   <div style="display:block;max-width:850px;margin-left:auto;margin-right:auto;">
