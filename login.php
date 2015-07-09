@@ -1,3 +1,40 @@
+<?php
+require_once("config.php");
+require_once("loginbackend.php");
+$tried_before = false;
+$error = false;
+$successfullogin = false;
+if(isset($_POST['username']) && isset($_POST['password']))
+{
+  $pdo = gg_get_pdo();
+  $tried_before = true;
+  // Figure out if this username actually exists
+  $stm = "SELECT salt, password FROM " . GG_PREFIX . "users WHERE username=?";
+  echo $stm;
+  $sth = $pdo->prepare($stm);
+  $sth->execute(array($_POST['username']));
+  $salt = "";
+  $givenpasswordhash = ""; // one from database
+  if(empty($sth)) // If the username doesn't exist..
+    $error = "Username not found.";
+  else {
+    // In this case, the username DOES exist.
+    $userinfo = $sth->fetchAll(PDO::FETCH_ASSOC);
+    $userinfo = $userinfo[0];
+    $givenpasswordhash = $userinfo['password'];
+    $salt = $userinfo['salt'];
+    // Figured out the password hash now
+    $passwordhash = ggLog_encrypt($_POST['password'], $salt);
+    if($passwordhash === $givenpasswordhash)
+    {
+      $successfullogin = true;
+      header("Location: index.php"); //LATER, GO SOMEWHERE WE ACTUALLY WANT TO GO.
+    }
+    else
+      $error = "Username and/or password were incorrect.  Try again.";
+  }
+}
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -57,11 +94,18 @@
     <h1 class="text-center">Login</h1>
     <br />
     <div id="formContainer" class="ggLog-hide">
-      <form action="login.php" action="post">
+      <form action="login.php" method="post">
+        <?php
+        if($error != false)
+        { ?>
+          <div style="width:90%;background-color:#FFAA99;margin: 0 auto;display:block;border:2px solid #661111;">
+            <b>Error: </b> <?php echo $error; ?>
+          </div>
+          <?php } ?>
         <div style="float:left;">Username: </div>
         <div style="float:left;width:50%;"><input type="text" name="username" class="form-control" /></div><br style="clear:both;" /><br />
         <div style="float:left;">Password: </div>
-        <div style="float:left;width:50%;"><input type="password" name="username" class="form-control" /></div>
+        <div style="float:left;width:50%;"><input type="password" name="password" class="form-control" /></div>
         <br style="clear:both;" /><br />
         <div class="ggLog-submit-cont" id="submitbutton">
           <input type="submit" value="Login" class="form-control" />
