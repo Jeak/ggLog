@@ -21,6 +21,7 @@ function navbar($activepage)
   $navpages[] = new navitem("demo.php","Logs");
 //  $navpages[] = new navitem("people.php","People");
   $navpages[] = new navitem("login.php","Login");
+  $navpages[] = new navitem("register.php","Register");
   $navpages[] = new navitem("about.php","About");
 
   echo "<div style=\"position:fixed;z-index:10;background-image:url('fade.png');top:0;width:100%;padding-left:5%;padding-top:10px;border-bottom-style:solid;border-width:3px;border-color:#557c48;height:60px;\" ><img style=\"float:left;height:39px;margin-right:15px;\" src=\"logo.png\">";

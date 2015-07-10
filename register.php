@@ -1,5 +1,4 @@
 <?php
-// REMEMBER TO TAKE INTO ACCOUNT LOWERCASE!
 require_once("config.php");
 require_once("loginbackend.php");
 //$sessionstarted = false;
@@ -8,46 +7,14 @@ require_once("loginbackend.php");
 //{
 //  header("Location: _my_workouts_page.php");
 //}
-$tried_before = false;
-$error = false;
-$successfullogin = false;
-if(isset($_POST['username']) && isset($_POST['password']))
-{
-  $pdo = gg_get_pdo();
-  $tried_before = true;
-  // Figure out if this username actually exists
-  $stm = "SELECT salt, password FROM " . GG_PREFIX . "users WHERE username=?";
-  echo $stm;
-  $sth = $pdo->prepare($stm);
-  $sth->execute(array($_POST['username']));
-  $salt = "";
-  $givenpasswordhash = ""; // one from database
-  if(empty($sth)) // If the username doesn't exist..
-    $error = "Username not found.";
-  else {
-    // In this case, the username DOES exist.
-    $userinfo = $sth->fetchAll(PDO::FETCH_ASSOC);
-    $userinfo = $userinfo[0];
-    $givenpasswordhash = $userinfo['password'];
-    $salt = $userinfo['salt'];
-    // Figured out the password hash now
-    $passwordhash = ggLog_encrypt($_POST['password'], $salt);
-    if($passwordhash === $givenpasswordhash)
-    {
-      $successfullogin = true;
-      header("Location: index.php"); //LATER, GO SOMEWHERE WE ACTUALLY WANT TO GO.
-      session_start();
-      $_SESSION[GG_PREFIX . 'username'] = $_POST['username'];
-    }
-    else
-      $error = "Username and/or password were incorrect.  Try again.";
-  }
-}
+$givenusername = $_POST['username'];
+$givenpassword = $_POST['password'];
+$givenemail = $_POST['email'];
 ?>
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login Page | ggLog.xyz</title>
+    <title>Make an account | ggLog.xyz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="login.css">
@@ -95,24 +62,32 @@ if(isset($_POST['username']) && isset($_POST['password']))
         document.getElementById("formContainer").className="ggLog-form-cont";
       }
     }
+    $(document).ready(function(){
+      $("#email").on("change", function(){
+        var currentval = $("email").val();
+        
+      });
+    });
     </script>
   </head>
 
   <body onLoad="bload()">
-    <?php require_once("navbar.php"); navbar("login.php"); ?>
-    <h1 class="text-center">Login</h1>
+    <?php require_once("navbar.php"); navbar("register.php"); ?>
+    <h1 class="text-center">Make an account</h1>
     <br />
     <div id="formContainer" class="ggLog-hide">
-      <form action="login.php" method="post">
+      <form action="register.php" method="post">
         <?php
         if($error != false)
         { ?>
-          <div style="width:90%;background-color:#FFAA99;margin: 0 auto;display:block;border:2px solid #661111;margin-bottom:15px;padding:5px;">
+          <div style="width:90%;background-color:#FFAA99;margin: 0 auto;display:block;border:2px solid #661111;">
             <b>Error: </b> <?php echo $error; ?>
           </div>
           <?php } ?>
+        <div style="float:left;">Email: </div>
+        <div style="float:left;width:50%;"><input type="text" name="email" id ="email" class="form-control" /></div><br style="clear:both;" /><br />
         <div style="float:left;">Username: </div>
-        <div style="float:left;width:50%;"><input type="text" name="username" class="form-control" /></div><br style="clear:both;" /><br />
+        <div style="float:left;width:50%;"><input type="text" name="username" id="username" class="form-control" /></div><br style="clear:both;" /><br />
         <div style="float:left;">Password: </div>
         <div style="float:left;width:50%;"><input type="password" name="password" class="form-control" /></div>
         <br style="clear:both;" /><br />
@@ -120,7 +95,7 @@ if(isset($_POST['username']) && isset($_POST['password']))
           <input type="submit" value="Login" class="form-control" />
         </div>
       </form>
-      <span style="color:#776600;">Don't have an account yet?  Register <a href="register.php">here</a></span>
+      <span style="color:#776600;">Already have an account?  Login <a href="login.php">here</a></span>
     </div>
   </body>
 </html>
