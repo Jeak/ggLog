@@ -1,4 +1,5 @@
 <?php
+// Assumes that sesssion_start() has already been called.
 
 require_once('datetime.php');
 require_once('config.php');
@@ -19,79 +20,96 @@ function workoutsAsArray()
   * 4, notes
   * 5. PID
   */
-  $pdo = gg_get_pdo();
-
-  $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_TABLE);
-  $data = array();
-
-  while($row = $result->fetch(PDO::FETCH_ASSOC))
+  if(isset($_SESSION[GG_PREFIX . 'username']))
   {
-    $data[] = $row;
+    $pdo = gg_get_pdo();
+
+    $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_PREFIX . $_SESSION[GG_PREFIX . "username"] . "_workouts");
+    $data = array();
+
+    while($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+      $data[] = $row;
+    }
+    // Close connection
+    $pdo = null;
+    return $data;
   }
-  // Close connection
-  $pdo = null;
-  return $data;
+  return false;
 }
 
 // Actually EDITS a workout but creates one if not found
 function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $s, $notes)
 {
-  $pdo = gg_get_pdo();
-
-  $works = true;
-
-  //$rundate = createsqldate($year, $month, $day);
-  $rundate = ggcreatedate($year, $month, $day);
-
-  if($rundate == false)
-    $works = false;
-
-  $runtime = createsqltime($h, $m, $s);
-
-  if($works == true)
+  if(isset($_SESSION[GG_PREFIX . 'username']))
   {
-    if($PID < 0)
+    $pdo = gg_get_pdo();
+
+    $works = true;
+
+    //$rundate = createsqldate($year, $month, $day);
+    $rundate = ggcreatedate($year, $month, $day);
+
+    if($rundate == false)
+      $works = false;
+
+    $runtime = createsqltime($h, $m, $s);
+    $tname = GG_PREFIX . $_SESSION[GG_PREFIX . "username"] . "_workouts"l
+    if($works == true)
     {
-      $stm = "INSERT INTO " . GG_TABLE . "(rundate, title, distance, runtime, notes, PID) ".
-      "VALUES(?,?,?,?,?, NULL)"; // pass NULL to PID to make it auto increment
-      $stmt = $pdo->prepare($stm);
-      $stmt->execute(array($rundate, $title, $distance, $runtime, $notes));
-      //sqlite_exec($dbhandle, $stm, $error);
+      if($PID < 0)
+      {
+        $stm = "INSERT INTO " . $tname . "(rundate, title, distance, runtime, notes, PID) ".
+        "VALUES(?,?,?,?,?, NULL)"; // pass NULL to PID to make it auto increment
+        $stmt = $pdo->prepare($stm);
+        $stmt->execute(array($rundate, $title, $distance, $runtime, $notes));
+        //sqlite_exec($dbhandle, $stm, $error);
+      }
+      else
+      {
+        $stm = "UPDATE " . $tname . " ".
+        "SET rundate=?, title=?, distance=?, runtime=?, notes=? WHERE PID=?";
+        $stmt = $pdo->prepare($stm);
+        $stmt->execute(array($rundate, $title, $distance, $runtime, $notes, $PID));
+      }
     }
-    else
-    {
-      $stm = "UPDATE " . GG_TABLE . " ".
-      "SET rundate=?, title=?, distance=?, runtime=?, notes=? WHERE PID=?";
-      $stmt = $pdo->prepare($stm);
-      $stmt->execute(array($rundate, $title, $distance, $runtime, $notes, $PID));
-    }
+    $pdo = null;
   }
-  $pdo = null;
+  else {
+    return false;
+  }
 }
 
 function deleteworkout($PID) // $PID as a string
 {
-  $pdo = gg_get_pdo();
-
-  $results = $pdo->query("SELECT PID FROM " . GG_TABLE);
-  $found = false;
-  while ($row = $results->fetch(PDO::FETCH_ASSOC))
+  if(isset($_SESSION[GG_PREFIX . 'username']))
   {
-    if(intval($PID == intval($row['PID'])))
+    $pdo = gg_get_pdo();
+    $tname = GG_PREFIX . $_SESSION[GG_PREFIX . 'username'] . "_workouts";
+
+    $results = $pdo->query("SELECT PID FROM " . $tname);
+    $found = false;
+    while ($row = $results->fetch(PDO::FETCH_ASSOC))
     {
-      $found = true;
-      break;
+      if(intval($PID == intval($row['PID'])))
+      {
+        $found = true;
+        break;
+      }
     }
-  }
 
-  $stm = "DELETE FROM " . GG_TABLE . " WHERE PID=" . $PID;
-  if($found == true)
-  {
-    $pdo->exec($stm);
-  }
-  //[RELEASE] for the release, replace with @sqlite_exec() to surpress errors
+    $stm = "DELETE FROM " . $tname . " WHERE PID=" . $PID;
+    if($found == true)
+    {
+      $pdo->exec($stm);
+    }
+    //[RELEASE] for the release, replace with @sqlite_exec() to surpress errors
 
-  $pdo = null;
+    $pdo = null;
+  }
+  else {
+    return false;
+  }
 }
 
 /*//////////////////////////////////////////
@@ -101,44 +119,49 @@ require_once("datetime.php");
 
 function displayworkouts($echoResults = true, $wheretobegin = -1, $numbertodisplay = 30, &$finished=false)
 {
-  $output = "";
-  $preface="      ";
-  $pdo = gg_get_pdo();
-
-  /*            //  UNCOMMENT THIS TO DISPLAY ALL VALUES IN A TABLE
-                // -------------------------------------------------
-  $result = sqlite_query($dbhandle, "SELECT * FROM " . GG_TABLE);
-  echo "<table style=\"border:2px solid black;\">";
-  while( $row = sqlite_fetch_array($result, SQLITE_NUM))
+  if(isset($_SESSION[GG_PREFIX . 'username']))
   {
-    echo "<tr style=\"border:2px solid black;\">";
-    foreach($row as $col)
+    $output = "";
+    $preface="      ";
+    $pdo = gg_get_pdo();
+    $tname = GG_PREFIX . $_SESSION[GG_PREFIX . 'username'] . "_workouts";
+
+    /*            //  UNCOMMENT THIS TO DISPLAY ALL VALUES IN A TABLE
+                  // -------------------------------------------------
+    $result = sqlite_query($dbhandle, "SELECT * FROM " . GG TABLE);
+    echo "<table style=\"border:2px solid black;\">";
+    while( $row = sqlite_fetch_array($result, SQLITE_NUM))
     {
-      echo "<td style=\"border:2px solid black;width:120px;\">" . $col . "</td>";
+      echo "<tr style=\"border:2px solid black;\">";
+      foreach($row as $col)
+      {
+        echo "<td style=\"border:2px solid black;width:120px;\">" . $col . "</td>";
+      }
+      echo "</tr>";
     }
-    echo "</tr>";
+    echo "</table><br /><br /><br />";
+    */
+
+    $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . $tname);
+    $data = array();
+    while ($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+      $data[] = $row;
+    }
+    $pdo = null;
+
+    sortbydate($data); // function above
+
+    $output .= displayOnlyWorkouts($data, $wheretobegin, $numbertodisplay, $finished); // function below
+
+    if($echoResults == true)
+    {
+      echo $output;
+    }
+
+    return $output;
   }
-  echo "</table><br /><br /><br />";
-  */
-
-  $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_TABLE);
-  $data = array();
-  while ($row = $result->fetch(PDO::FETCH_ASSOC))
-  {
-    $data[] = $row;
-  }
-  $pdo = null;
-
-  sortbydate($data); // function above
-
-  $output .= displayOnlyWorkouts($data, $wheretobegin, $numbertodisplay, $finished); // function below
-
-  if($echoResults == true)
-  {
-    echo $output;
-  }
-
-  return $output;
+  return false;
 }
 
 function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = false) // why is $isFinished in variables?
@@ -232,17 +255,22 @@ function makeWorkoutJSON($data, $beginloc, $numberToDisplay)
 
 function getWorkoutJSON($beginloc, $numberToDisplay)
 {
-  $pdo = gg_get_pdo();
-  $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . GG_TABLE);
-  $data = array();
-  while ($row = $result->fetch(PDO::FETCH_ASSOC))
+  if(isset($_SESSION[GG_PREFIX . 'username']))
   {
-    $data[] = $row;
-  }
-  $pdo = null;
+    $pdo = gg_get_pdo();
+    $tname = GG_PREFIX . $_SESSION[GG_PREFIX . 'username'] . "_workouts ";
+    $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . $tname);
+    $data = array();
+    while ($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+      $data[] = $row;
+    }
+    $pdo = null;
 
-  sortbydate($data); // function above
-  return makeWorkoutJSON($data, $beginloc, $numberToDisplay);
+    sortbydate($data); // function above
+    return makeWorkoutJSON($data, $beginloc, $numberToDisplay);
+  }
+  return false;
 }
 
 //                       bool     date   date

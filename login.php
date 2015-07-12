@@ -1,4 +1,5 @@
 <?php
+session_start();
 // REMEMBER TO TAKE INTO ACCOUNT LOWERCASE!
 require_once("config.php");
 require_once("loginbackend.php");

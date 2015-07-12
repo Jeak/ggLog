@@ -1,3 +1,11 @@
+<?php
+require_once("config.php");
+session_start();
+if(!isset($_SESSION[GG_PREFIX . 'username']))
+{
+  header("Location: index.php");
+}
+?>
 <!doctype html>
 <html style="width:100%;height:100%">
   <head>

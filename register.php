@@ -1,4 +1,5 @@
 <?php
+session_start();
 //$sessionstarted = false;
 //session_start();
 //if(isset($_SESSION[GG_PREFIX . 'username']))
