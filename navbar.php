@@ -1,5 +1,5 @@
 <?php
-
+require_once("config.php");
 $iploc = "../58/";
 
 class navitem
@@ -38,7 +38,10 @@ function navbar($activepage)
     echo "</li>";
   }
   echo "</ul>";
+  session_start();
   echo "</div>";
+  if(isset($_SESSION[GG_PREFIX . 'username']))
+    echo "<div style=\"float:right;width:300px;\">Hello, " . $_SESSION[GG_PREFIX . 'username'] . "! &nbsp; &nbsp; &nbsp; <a href=\"javascript:void(0);\" onclick=\"ggLogLogout();\">Logout</a></div>";
 
   // Mobile version
   echo "<div class=\"ggLog-navbar-mobile\" id=\"ggNavbarMobile\">";

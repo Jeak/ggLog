@@ -25,6 +25,7 @@
     <?php require_once("navbar.php"); navbar("index.php"); ?>
   <div style="display:block;max-width:850px;margin-left:auto;margin-right:auto;">
     <h1 class="text-center">ggLog</h1>
+    <p class="text-center"><?php require_once("config.php"); if(isset($_SESSION[GG_PREFIX . "username"])) { echo "Welcome, " . $_SESSION[GG_PREFIX . "username"] . "!";} else {echo "No one is logged in.";} ?></p>
     <p class="text-center"><b>A running log for the rest of us.</b></p>
 	<a class="text-center"; href="http://pastehtml.com/view/dg0vqgaa5.html"><strong>IMPORTANT ANNOUNCEMENT</strong></a>
     <p class="text-center">ggLog is an online running log for those of us who simply:<br></p>

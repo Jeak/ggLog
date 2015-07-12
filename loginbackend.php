@@ -23,7 +23,7 @@ function ggLog_create_new_user($infoarray)
   $userarray[':screenname'] = $infoarray['screenname'];
   if(isset($infoarray['saltedpassword']))
   {
-    $userarray[':passwordhash'] = $infoarray['saltedpassword']
+    $userarray[':passwordhash'] = $infoarray['saltedpassword'];
     $userarray[':salt'] = $infoarray['salt'];
   }
   else
@@ -58,6 +58,18 @@ function ggLog_create_new_user($infoarray)
          ")";
   $pdo->exec($stm);
 
+}
+
+function ggLog_logout()
+{
+  session_start();
+  unset($_SESSION[GG_PREFIX . 'username']);
+  session_destroy();
+}
+
+if(isset($_POST['type']) && $_POST['type'] == 'logout')
+{
+  ggLog_logout();
 }
 
 ?>

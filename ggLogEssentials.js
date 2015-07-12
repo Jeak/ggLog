@@ -139,6 +139,19 @@ function setNavbar()
   }
 }
 
+function ggLogLogout()
+{
+  var xmlhttp = new XMLHttpRequest();
+  var parameters = "type=logout";
+  xmlhttp.open("POST", "loginbackend.php", true);
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send(parameters);
+  xmlhttp.onreadystatechange=function()
+  {
+    window.location.href = 'index.php';
+  }
+}
+
 // note: these functions are taken from 'weeks.php' They follow the PHP method
 // of representing months: using 1 as Jan, instead of 0 as javascript does.
 

@@ -23,6 +23,7 @@ if(isset($_POST['username']))
     $userarray = array( "username" => $givenusername, "saltedpassword" => $storepassword, "salt" => $newsalt,
                         "screenname" => $screenname, "email" => $givenemail);
     ggLog_create_new_user($userarray);
+    header("Location: login.php");
   }
 }
 $error = false;

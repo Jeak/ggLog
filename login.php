@@ -35,9 +35,9 @@ if(isset($_POST['username']) && isset($_POST['password']))
     if($passwordhash === $givenpasswordhash)
     {
       $successfullogin = true;
-      header("Location: index.php"); //LATER, GO SOMEWHERE WE ACTUALLY WANT TO GO.
       session_start();
       $_SESSION[GG_PREFIX . 'username'] = $_POST['username'];
+      header("Location: index.php"); //LATER, GO SOMEWHERE WE ACTUALLY WANT TO GO.
     }
     else
       $error = "Username and/or password were incorrect.  Try again.";
