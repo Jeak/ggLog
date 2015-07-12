@@ -7,9 +7,13 @@ require_once("loginbackend.php");
 //{
 //  header("Location: _my_workouts_page.php");
 //}
-$givenusername = $_POST['username'];
-$givenpassword = $_POST['password'];
-$givenemail = $_POST['email'];
+if(isset($_POST['username']))
+{
+  $givenusername = $_POST['username'];
+  $givenpassword = $_POST['password'];
+  $givenemail = $_POST['email'];
+}
+$error = false;
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,6 +23,7 @@ $givenemail = $_POST['email'];
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="ggLogEssentials.css">
+    <!--link rel="icon" href="something" sizes="" /-->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="ggLogEssentials.js"></script>
@@ -47,10 +52,18 @@ $givenemail = $_POST['email'];
       width:90%;
       margin-left:5%;
     }
+    .ggLog-eu-notes
+    {
+      clear:both;
+      width:100%;
+      color:#661111;
+    }
     </style>
     <script>
     function bload()
     {
+      document.getElementById("email").value = "";
+      document.getElementById("username").value = "";
       if(IsMobileBrowser())
       {
         document.getElementById("submitbutton").className="ggLog-submit-contm";
@@ -62,10 +75,83 @@ $givenemail = $_POST['email'];
         document.getElementById("formContainer").className="ggLog-form-cont";
       }
     }
+    var ebusy = false;
+    var ubusy = false;
     $(document).ready(function(){
-      $("#email").on("change", function(){
-        var currentval = $("email").val();
-        
+      $("#email").on("input", function(){
+        var currentval = $("#email").val();
+        currentval = currentval.toLowerCase();
+        if(ebusy == false && currentval != "") {
+          ebusy = true;
+          if(currentval.indexOf("@") == -1)
+          {
+            document.getElementById("emailnotes").className="ggLog-eu-notes";
+            document.getElementById("emailnotes").innerHTML="Invalid email address.";
+            ebusy = false;
+          }
+          else {
+            var request = $.post(
+              "registercheck.php",
+              {"type": "email", "email": currentval} ,
+              function( data ) {
+                if(data == 'bad')
+                {
+                  document.getElementById("emailnotes").className="ggLog-eu-notes";
+                  document.getElementById("emailnotes").innerHTML="This email is already taken or is invalid";
+                }
+                else {
+                  document.getElementById("emailnotes").className="ggLog-hide";
+                  document.getElementById("emailnotes").innerHTML="";
+                }
+                ebusy = false;
+            });
+          }
+        }
+      });
+      $("#username").on("input", function(){
+        var currentval = $("#username").val();
+        currentval = currentval.toLowerCase();
+        if(ubusy == false && currentval != "") {
+          ubusy = true;
+          var allow = true;
+          for(var i=0;i<currentval.length; ++i)
+          {
+            var thisnum = currentval.charCodeAt(i);
+            if(!((thisnum >= 97 && thisnum <=122) || (thisnum >= 48 && thisnum <= 57)))
+            {
+              allow = false;
+              break;
+            }
+          }
+          if(currentval.length > 20 || currentval.length < 2)
+            allow = false;
+          if(currentval == "users" || currentval == "user" || currentval == "other" || currentval == "others" || currentval == "admin")
+            allow = false;
+          if(allow == false)
+          {
+            document.getElementById("usernotes").className="ggLog-eu-notes";
+            document.getElementById("usernotes").innerHTML="This email is too short or contains bad characters.";
+            ubusy = false;
+          }
+          if(allow == true)
+          {
+            var request = $.post(
+              "registercheck.php",
+              {"type": "username", "username": currentval} ,
+              function( data ) {
+                if(data == "bad")
+                {
+                  document.getElementById("usernotes").className="ggLog-eu-notes";
+                  document.getElementById("usernotes").innerHTML = "This email has already been taken.";
+                }
+                else {
+                  document.getElementById("usernotes").className="ggLog-hide";
+                  document.getElementById("usernotes").innerHTML="";
+                }
+                ubusy = false;
+            });
+          }
+        }
       });
     });
     </script>
@@ -85,9 +171,9 @@ $givenemail = $_POST['email'];
           </div>
           <?php } ?>
         <div style="float:left;">Email: </div>
-        <div style="float:left;width:50%;"><input type="text" name="email" id ="email" class="form-control" /></div><br style="clear:both;" /><br />
+        <div style="float:left;width:50%;"><input type="text" name="email" id ="email" class="form-control" /></div><div class="ggLog-hide" id="emailnotes"></div><br style="clear:both;" /><br />
         <div style="float:left;">Username: </div>
-        <div style="float:left;width:50%;"><input type="text" name="username" id="username" class="form-control" /></div><br style="clear:both;" /><br />
+        <div style="float:left;width:50%;"><input type="text" name="username" id="username" class="form-control" /></div><div class="ggLog-hide" id="usernotes"></div><br style="clear:both;" /><br />
         <div style="float:left;">Password: </div>
         <div style="float:left;width:50%;"><input type="password" name="password" class="form-control" /></div>
         <br style="clear:both;" /><br />

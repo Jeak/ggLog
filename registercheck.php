@@ -23,7 +23,7 @@ if(isset($_POST['type']))
       echo "good";
     }
   }
-  else if($POST['type'] == 'username' && isset($_POST['username']))
+  else if($_POST['type'] == 'username' && isset($_POST['username']))
   {
     $pdo = gg_get_pdo();
     $stm = "SELECT username FROM " . GG_PREFIX . "users";
@@ -31,7 +31,7 @@ if(isset($_POST['type']))
     $allrows = $results->fetchAll(PDO::FETCH_ASSOC);
     $match = false;
     foreach($allrows as $usernameToCheck) {
-      if($usernameToCheck == strtolower($_POST['username']))
+      if($usernameToCheck['username'] == strtolower($_POST['username']))
       {
         echo "bad";
         $match = true;
