@@ -1,6 +1,4 @@
 <?php
-require_once("config.php");
-require_once("loginbackend.php");
 //$sessionstarted = false;
 //session_start();
 //if(isset($_SESSION[GG_PREFIX . 'username']))
@@ -9,9 +7,23 @@ require_once("loginbackend.php");
 //}
 if(isset($_POST['username']))
 {
+  require_once("config.php");
+  require_once("loginbackend.php");
+  require_once("registercheck.php");
+
   $givenusername = $_POST['username'];
   $givenpassword = $_POST['password'];
   $givenemail = $_POST['email'];
+
+  if(checkEmail($givenemail) && checkUser($givenusername) && checkPassword($givenpassword))
+  {
+    $newsalt = hash("sha1", microtime());
+    $storepassword = ggLog_encrypt( $givenpassword, $newsalt );
+    $screenname = $givenusername;
+    $userarray = array( "username" => $givenusername, "saltedpassword" => $storepassword, "salt" => $newsalt,
+                        "screenname" => $screenname, "email" => $givenemail);
+    ggLog_create_new_user($userarray);
+  }
 }
 $error = false;
 ?>
@@ -60,10 +72,21 @@ $error = false;
     }
     </style>
     <script>
+    function setSubmitButton() {
+      if(($("#emailnotes").html() == "" && $("#passnotes").html() == "" && $("#usernotes").html() == "") && ($("email").val() != "" && $("#password").val() != "" && $("#username").val() != ""))
+      {
+        $("#submb").prop('disabled', false);
+      }
+      else {
+        $("#submb").prop('disabled', true);
+      }
+    }
+
     function bload()
     {
       document.getElementById("email").value = "";
       document.getElementById("username").value = "";
+      $("#submb").prop('disabled', true);
       if(IsMobileBrowser())
       {
         document.getElementById("submitbutton").className="ggLog-submit-contm";
@@ -77,6 +100,7 @@ $error = false;
     }
     var ebusy = false;
     var ubusy = false;
+
     $(document).ready(function(){
       $("#email").on("input", function(){
         var currentval = $("#email").val();
@@ -107,6 +131,7 @@ $error = false;
             });
           }
         }
+        setSubmitButton();
       });
       $("#username").on("input", function(){
         var currentval = $("#username").val();
@@ -152,6 +177,18 @@ $error = false;
             });
           }
         }
+        setSubmitButton();
+      });
+      $("#password").on("input", function(){
+        if($("#password").val().length < 5) {
+          document.getElementById("passnotes").className="ggLog-eu-notes";
+          document.getElementById("passnotes").innerHTML = "Not long enough.";
+        }
+        else {
+          document.getElementById("passnotes").className="ggLog-hide";
+          document.getElementById("passnotes").innerHTML = "";
+        }
+        setSubmitButton();
       });
     });
     </script>
@@ -175,10 +212,10 @@ $error = false;
         <div style="float:left;">Username: </div>
         <div style="float:left;width:50%;"><input type="text" name="username" id="username" class="form-control" /></div><div class="ggLog-hide" id="usernotes"></div><br style="clear:both;" /><br />
         <div style="float:left;">Password: </div>
-        <div style="float:left;width:50%;"><input type="password" name="password" class="form-control" /></div>
+        <div style="float:left;width:50%;"><input type="password" name="password" id="password" class="form-control" /></div><div class="ggLog-hide" id="passnotes"></div><br style="clear:both;" /><br />
         <br style="clear:both;" /><br />
         <div class="ggLog-submit-cont" id="submitbutton">
-          <input type="submit" value="Login" class="form-control" />
+          <input type="submit" id="submb" value="Register" class="form-control" />
         </div>
       </form>
       <span style="color:#776600;">Already have an account?  Login <a href="login.php">here</a></span>
