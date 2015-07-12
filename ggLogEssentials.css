@@ -12,3 +12,12 @@
   margin-right:10px;
   float:right;
 }
+.ggLog-userinfo-mobile {
+  padding-left:10px;
+  padding-top:5px;
+  float:left;
+}
+.ggLog-userinfo-desktop {
+  width:300px;
+  float:right;
+}

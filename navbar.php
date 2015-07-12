@@ -14,14 +14,21 @@ class navitem
   }
 }
 
-function navbar($activepage)
+function navbar($activepage, $startsession = false)
 {
-
+  if($startsession == true)
+    session_start();
   $navpages = array(new navitem("index.php", "Home")); //adding the pages
+
+  if(isset($_SESSION[GG_PREFIX . 'username']))
+  {
   $navpages[] = new navitem("demo.php","Logs");
 //  $navpages[] = new navitem("people.php","People");
-  $navpages[] = new navitem("login.php","Login");
-  $navpages[] = new navitem("register.php","Register");
+  }
+  else {
+    $navpages[] = new navitem("login.php","Login");
+    $navpages[] = new navitem("register.php","Register");
+  }
   $navpages[] = new navitem("about.php","About");
 
   echo "<div style=\"position:fixed;z-index:10;background-image:url('fade.png');top:0;width:100%;padding-left:5%;padding-top:10px;border-bottom-style:solid;border-width:3px;border-color:#557c48;height:60px;\" ><img style=\"float:left;height:39px;margin-right:15px;\" src=\"logo.png\">";
@@ -40,9 +47,11 @@ function navbar($activepage)
   echo "</ul>";
   echo "</div>";
   if(isset($_SESSION[GG_PREFIX . 'username']))
-    echo "<div style=\"float:right;width:300px;\">Hello, " . $_SESSION[GG_PREFIX . 'username'] . "! &nbsp; &nbsp; &nbsp; <a href=\"javascript:void(0);\" onclick=\"ggLogLogout();\">Logout</a></div>";
+    echo "<div class=\"ggLog-userinfo-desktop\" id=\"userinfodesk\">Hello, " . $_SESSION[GG_PREFIX . 'username'] . "! &nbsp; &nbsp; &nbsp; <a href=\"javascript:void(0);\" onclick=\"ggLogLogout();\">Logout</a></div>";
 
   // Mobile version
+  if(isset($_SESSION[GG_PREFIX . 'username']))
+    echo "<div class=\"ggLog-userinfo-mobile\" id=\"userinfomob\"><a href=\"javascript:void(0);\" onclick=\"ggLogLogout();\">Logout</a></div>";
   echo "<div class=\"ggLog-navbar-mobile\" id=\"ggNavbarMobile\">";
   echo "  <div class=\"dropdown\">";
   echo "    <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">";

@@ -1,6 +1,5 @@
 <?php
 // Assumes that sesssion_start() has already been called.
-
 require_once('datetime.php');
 require_once('config.php');
 require_once('weeks.php');
@@ -9,7 +8,7 @@ require_once('weeks.php');
      ADDING WORKOUTS
 *//////////////////////
 
-function workoutsAsArray()
+function workoutsAsArray($startsession = true)
 {
   /* $data[workout #][_attribute__]
   *        Attributes:
@@ -20,6 +19,8 @@ function workoutsAsArray()
   * 4, notes
   * 5. PID
   */
+  if($startsession == true)
+    session_start();
   if(isset($_SESSION[GG_PREFIX . 'username']))
   {
     $pdo = gg_get_pdo();
@@ -54,7 +55,7 @@ function addworkout($PID = -1, $year, $month, $day, $title, $distance, $h, $m, $
       $works = false;
 
     $runtime = createsqltime($h, $m, $s);
-    $tname = GG_PREFIX . $_SESSION[GG_PREFIX . "username"] . "_workouts"l
+    $tname = GG_PREFIX . $_SESSION[GG_PREFIX . "username"] . "_workouts";
     if($works == true)
     {
       if($PID < 0)
@@ -253,8 +254,10 @@ function makeWorkoutJSON($data, $beginloc, $numberToDisplay)
   return json_encode($templateOutput);
 }
 
-function getWorkoutJSON($beginloc, $numberToDisplay)
+function getWorkoutJSON($beginloc, $numberToDisplay, $startsession = true)
 {
+  if($startsession == true)
+    session_start();
   if(isset($_SESSION[GG_PREFIX . 'username']))
   {
     $pdo = gg_get_pdo();
