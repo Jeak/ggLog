@@ -88,6 +88,7 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
   }
     ?>
     <h1 class="text-center">Your Workouts</h1>
+    <iframe src="testjs1.html" height="340" style="display:block;margin: 0 auto;width:250px;"></iframe>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
 <!--      <div class="btn-group" style="display:block;width:400px;margin-left:auto;margin-right:auto;">   -->
       <div class="ggLog-buttonholder btn-group" id="buttonholder">

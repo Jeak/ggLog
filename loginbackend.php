@@ -62,6 +62,7 @@ function ggLog_create_new_user($infoarray)
 
 function ggLog_logout()
 {
+  session_start();
   unset($_SESSION[GG_PREFIX . 'username']);
   session_destroy();
 }

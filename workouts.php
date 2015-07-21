@@ -302,8 +302,8 @@ function getWeeklyJSON($beginloc, $endloc, $numberToDisplay = 10000, $startsessi
   if(isset($_SESSION[GG_PREFIX . 'username']))
   {
     $pdo = gg_get_pdo();
-    $stm = "SELECT rundate, distance, runtime FROM " . GG_PREFIX . $_SESSION[GG_PREFIX . "username"] . "_workouts "; //.
-        //"WHERE rundate <= $endloc AND rundate >= $beginloc";
+    $stm = "SELECT rundate, distance, runtime FROM " . GG_PREFIX . $_SESSION[GG_PREFIX . "username"] . "_workouts " .
+        "WHERE rundate <= $endloc AND rundate >= $beginloc";
     $results = $pdo->query($stm);
     $data = $results->fetchAll(PDO::FETCH_ASSOC);
 
@@ -319,7 +319,7 @@ function getWeeklyJSON($beginloc, $endloc, $numberToDisplay = 10000, $startsessi
     $orderedweeks = $wm->weekArray();
     sortbydate($orderedweeks, 0);
 
-    return $orderedweeks;
+    return json_encode($orderedweeks);
   }
   return false;
 }

@@ -4,6 +4,12 @@
 // Pass things around as an integer: # days since 1 Jan 1970.
 // 1 Jan 1970 = 0; 2 Jan 1970 = 1; etc.
 
+char checkdate(int year, int month, int day)
+{
+  int monthlengths[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+  
+}
+
 // Every day is core day!
 char is_core_day()
 {

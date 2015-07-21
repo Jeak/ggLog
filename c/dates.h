@@ -5,6 +5,8 @@
 // Pass things around as an integer: # days since 1 Jan 1970.
 // 1 Jan 1970 = 0; 2 Jan 1970 = 1; etc.
 
+char checkdate(int year, int month, int date);
+
 // Every day is core day!
 char is_core_day();
 char * today_exercises();
