@@ -11,13 +11,14 @@ function checkEmailDatabase($givenemail)
   $allrows = $results->fetchAll(PDO::FETCH_ASSOC);
   $match = false;
   foreach($allrows as $emailToCheck) {
-    if($emailToCheck['email'] == strtolower($givenemail))
+    if(strtolower($emailToCheck['email']) == strtolower($givenemail))
     {
       return false;
     }
   }
   return true;
 }
+
 
 function checkUserDatabase($givenuser)
 {
@@ -27,7 +28,7 @@ function checkUserDatabase($givenuser)
   $allrows = $results->fetchAll(PDO::FETCH_ASSOC);
   $match = false;
   foreach($allrows as $usernameToCheck) {
-    if($usernameToCheck['username'] == strtolower($givenuser))
+    if(strtolower($usernameToCheck['username']) == strtolower($givenuser))
     {
       return false;
     }

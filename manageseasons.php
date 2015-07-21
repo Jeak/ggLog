@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,7 +16,6 @@
     <script type="text/javascript" src="flot/jquery.flot.categories.min.js"></script>
     <link rel="stylesheet" href="demo.css" />
   </head>
-
   <body>
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <div class="ggLog-hide" id="coverForNotices"></div>

@@ -41,10 +41,10 @@
         catch (PDOException $e)
         {
           echo "<b>Connection error: " . $e->getMessage();
-          echo "\n<br /><a href=\"index.php\">Go back</a><br /></b>";
+          echo "\n<br /><a href=\"install.php\">Go back</a><br /></b>";
           $errors=true;
         }
-        require_once("../config.php");
+//        require_once("../config.php");
         if($errors==false)
         {
           $t = $pdo->query('SHOW TABLES');
@@ -56,7 +56,7 @@
           {
             if(strlen($tblname[0]) >= strlen($prfx) && $prfx == substr($tblname[0], 0, strlen($prfx)))
             {
-              echo "<b>Prefix $prfx is already used.  <br /><a href=\"index.php\">Go back</a><br /></b>";
+              echo "<b>Prefix $prfx is already used.  <br /><a href=\"install.php\">Go back</a><br /></b>";
               $errors=true;
               break;
             }
@@ -64,23 +64,13 @@
         }
         if($errors==false)
         { // check for file-writing permissions
-          if(!is_writable("index.php"))
-          {
-            echo "index.php not writable.<br />";
-            $errors = true;
-          }
-          if(!is_writable("index-later.php"))
-          {
-            echo "index-later.php not writable.<br />";
-            $errors = true;
-          }
           if(!is_writable("config.php"))
           {
             echo "config.php not writable.<br />";
             $errors = true;
           }
           if($errors == true)
-            echo "<a href=\"index.php\"><b>Go back</b></a>";
+            echo "<a href=\"install.php\"><b>Go back</b></a>";
         }
         if($errors==false)
         {
@@ -95,6 +85,7 @@
           $stm = "CREATE TABLE $prfx" . "users(" .
           "PID INTEGER AUTO_INCREMENT PRIMARY KEY, " . 
           "username TINYTEXT, " . 
+          "email TINYTEXT, " . 
           "salt TINYTEXT, " . 
           "password TINYTEXT, " . 
           "screenname TINYTEXT" . 
@@ -113,9 +104,10 @@
           $configphp .= "}\n\n?>";
 
           file_put_contents("config.php", $configphp);
-          $replacecont = file_get_contents("index-later.php");
+//        $replacecont = file_get_contents("index-later.php");
           //file_put_contents("index.php", $replacecont);
           //unlink("index-later.php");
+          unlink("install.php");
         }
       }
     }
@@ -124,7 +116,7 @@
       echo "<h2>Welcome to the famous 5-hour ggLog Installation!</h2>";
       echo "<p>We will only need to set up database info.</p>";
 
-      echo "<form action=\"index.php?part=1\" method=\"post\">\n";
+      echo "<form action=\"install.php?part=1\" method=\"post\">\n";
       echo "<div style=\"float:left;\">Database name: </div>";
       echo  "<div style=\"float;width:300px;\"><input type=\"text\" name=\"dbname\" value=\"ggLog\" class=\"form-control\" /></div>";
       clearboth();

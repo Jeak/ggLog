@@ -124,6 +124,7 @@ function dwswitchbutton(evt) // this function allows for switching between the y
 function demoload()
 {
   $("#numberloaded").val("0");
+  setNavbar();
   if(IsMobileBrowser())
   {
     SetDateDropdown('datesdrop-mobile');
@@ -465,7 +466,7 @@ function createJSONworkoutDesktop(jsonInput)
     output += "  <div style=\"position:relative;top:0;left:0;width:100%;\">\n";
 
     output += "    <div style=\"float:left;width:500px;margin-bottom:25px;\" id=\"PID-" + jsonInput['PID'] + "notes\">";
-    output += jsonInput["notes"]; // notes?
+    output += addbr(jsonInput["notes"]); // notes?
     output += "</div>\n";
     output += "  </div>\n";
 
@@ -492,7 +493,6 @@ function createJSONworkoutDesktop(jsonInput)
 function createJSONworkoutMobile(jsonInput)
 {
   // see above for json object format.
-
   var output = "";
   output += "<span id=\"PID-"+ jsonInput['PID'] +"\">";
   output += "<div class=\"ggLog-centerinputmobile\">";
@@ -514,7 +514,7 @@ function createJSONworkoutMobile(jsonInput)
   output += "<div class=\"ggLog-leftinputmobile\">";
   output += "  <span class=\"ggLog-biggraytext\">"+ jsonInput['speed'] + "</span> min/mi";
   output += "</div>";
-  output += "<div class=\"ggLog-leftinputmobile\" id=\"PID-" + jsonInput['PID'] + "notes\">";
+  output += "<div class=\"ggLog-leftinputmobile\" id=\"PID-" + addbr(jsonInput['PID']) + "notes\">";
   output += jsonInput['notes'];
   output += "</div>";
   output += "</span>\n";

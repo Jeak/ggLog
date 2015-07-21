@@ -127,7 +127,7 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
             <div style="position:absolute;top:0;right:0;width:160px;height:170px">
               <div style="position:relative;top:35px;right:0;width:160px;height:35px;">
                 <label> Distance:</label>
-                <input type="text" class="form-control" name="distance" maxlength = "3" style="width:90px" placeholder="Distance" required />
+                <input type="text" class="form-control" name="distance" maxlength = "5" style="width:90px" placeholder="Distance" required />
               </div>
               <div style="position:relative;top:50px;right:0;width:160px;height:35px;">
                 <label>Time:</label>

@@ -6,7 +6,9 @@ require_once('datetime.php');
 
     // each html form has a <input type="hidden" name="submitting" value="__" />
     // which specifies what is happening
-
+  session_start();
+  if(isset($_SESSION[GG_PREFIX . 'username']))
+  {
     if($_POST['submitting'] == "newworkout") // for editing or creating a workout
     {
       $day= floatval($_POST['day']);
@@ -35,6 +37,7 @@ require_once('datetime.php');
       $beginmonth = intval($_POST['begin-month']);
       $beginyear = intval($_POST['begin-year']);
       $endday = intval($_POST['end-day']);
+
       $endmonth = intval($_POST['end-month']);
       $endyear = intval($_POST['end-year']);
       $name = sanitize($_POST['seasonname']);
@@ -59,5 +62,6 @@ require_once('datetime.php');
       // usually an AJAX request
       echo listseasons(false);
     }
+  }
 
 ?>

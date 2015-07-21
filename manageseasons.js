@@ -11,6 +11,7 @@ function mouseoffseason(id)
 }
 function expandseason(type, id)
 {
+  
   //when you click on a season: it shows or hides Display Workouts, Analysis, and Edit for that season.
   if($("li.active.list-group-item").length == 0)
   {

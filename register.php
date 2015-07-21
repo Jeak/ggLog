@@ -100,86 +100,111 @@ $error = false;
         document.getElementById("formContainer").className="ggLog-form-cont";
       }
     }
-    var ebusy = false;
-    var ubusy = false;
+    ebusy = false;
+    ubusy = false;
+
+    function emailcheck()
+    {
+      var currentval = $("#email").val();
+      currentval = currentval.toLowerCase();
+      if(ebusy == false && currentval != "") {
+        ebusy = true;
+        var includesBadChar = false;
+        for(var i = 0;i<strlen(currentval);++i)
+        {
+          if(currentval.charAt(i) == '/' || currentval.charAt(i) == '<' || currentval.charAt(i) == '>'
+          || currentval.charAt(i) == ';' || currentval.charAt(i) == "'") {
+            includesBadChar = true;
+          }
+        }
+        if(currentval.indexOf("@") == -1 || currentval.indexOf(".") == -1 || includesBadChar)
+        {
+          document.getElementById("emailnotes").className="ggLog-eu-notes";
+          document.getElementById("emailnotes").innerHTML="Invalid email address.";
+          ebusy = false;
+        }
+
+        else {
+          var request = $.post(
+            "registercheck.php",
+            {"type": "email", "email": currentval} ,
+            function( data ) {
+              if(data == 'bad')
+              {
+                document.getElementById("emailnotes").className="ggLog-eu-notes";
+                document.getElementById("emailnotes").innerHTML="This email is already taken or is invalid";
+              }
+              else {
+                document.getElementById("emailnotes").className="ggLog-hide";
+                document.getElementById("emailnotes").innerHTML="";
+              }
+              ebusy = false;
+          });
+        }
+        setSubmitButton();
+      }
+      else{
+        setTimeout(emailcheck, 250);
+      }
+    }
+
+    function usercheck()
+    {
+      var currentval = $("#username").val();
+      currentval = currentval.toLowerCase();
+      if(ubusy == false && currentval != "") {
+        ubusy = true;
+        var allow = true;
+        for(var i=0;i<currentval.length; ++i)
+        {
+          var thisnum = currentval.charCodeAt(i);
+          if(!((thisnum >= 97 && thisnum <=122) || (thisnum >= 48 && thisnum <= 57)))
+          {
+            allow = false;
+            break;
+          }
+        }
+        if(currentval.length > 20 || currentval.length < 2)
+          allow = false;
+        if(currentval == "users" || currentval == "user" || currentval == "other" || currentval == "others" || currentval == "admin")
+          allow = false;
+        if(allow == false)
+        {
+          document.getElementById("usernotes").className="ggLog-eu-notes";
+          document.getElementById("usernotes").innerHTML="This email is too short or contains bad characters.";
+          ubusy = false;
+        }
+        if(allow == true)
+        {
+          var request = $.post(
+            "registercheck.php",
+            {"type": "username", "username": currentval} ,
+            function( data ) {
+              if(data == "bad")
+              {
+                document.getElementById("usernotes").className="ggLog-eu-notes";
+                document.getElementById("usernotes").innerHTML = "This username has already been taken.";
+              }
+              else {
+                document.getElementById("usernotes").className="ggLog-hide";
+                document.getElementById("usernotes").innerHTML="";
+              }
+              ubusy = false;
+          });
+        }
+        setSubmitButton();
+      }
+      else {
+        setTimeout(usercheck, 250);
+      }
+    }
 
     $(document).ready(function(){
       $("#email").on("input", function(){
-        var currentval = $("#email").val();
-        currentval = currentval.toLowerCase();
-        if(ebusy == false && currentval != "") {
-          ebusy = true;
-          if(currentval.indexOf("@") == -1)
-          {
-            document.getElementById("emailnotes").className="ggLog-eu-notes";
-            document.getElementById("emailnotes").innerHTML="Invalid email address.";
-            ebusy = false;
-          }
-          else {
-            var request = $.post(
-              "registercheck.php",
-              {"type": "email", "email": currentval} ,
-              function( data ) {
-                if(data == 'bad')
-                {
-                  document.getElementById("emailnotes").className="ggLog-eu-notes";
-                  document.getElementById("emailnotes").innerHTML="This email is already taken or is invalid";
-                }
-                else {
-                  document.getElementById("emailnotes").className="ggLog-hide";
-                  document.getElementById("emailnotes").innerHTML="";
-                }
-                ebusy = false;
-            });
-          }
-        }
-        setSubmitButton();
+        emailcheck();
       });
       $("#username").on("input", function(){
-        var currentval = $("#username").val();
-        currentval = currentval.toLowerCase();
-        if(ubusy == false && currentval != "") {
-          ubusy = true;
-          var allow = true;
-          for(var i=0;i<currentval.length; ++i)
-          {
-            var thisnum = currentval.charCodeAt(i);
-            if(!((thisnum >= 97 && thisnum <=122) || (thisnum >= 48 && thisnum <= 57)))
-            {
-              allow = false;
-              break;
-            }
-          }
-          if(currentval.length > 20 || currentval.length < 2)
-            allow = false;
-          if(currentval == "users" || currentval == "user" || currentval == "other" || currentval == "others" || currentval == "admin")
-            allow = false;
-          if(allow == false)
-          {
-            document.getElementById("usernotes").className="ggLog-eu-notes";
-            document.getElementById("usernotes").innerHTML="This email is too short or contains bad characters.";
-            ubusy = false;
-          }
-          if(allow == true)
-          {
-            var request = $.post(
-              "registercheck.php",
-              {"type": "username", "username": currentval} ,
-              function( data ) {
-                if(data == "bad")
-                {
-                  document.getElementById("usernotes").className="ggLog-eu-notes";
-                  document.getElementById("usernotes").innerHTML = "This email has already been taken.";
-                }
-                else {
-                  document.getElementById("usernotes").className="ggLog-hide";
-                  document.getElementById("usernotes").innerHTML="";
-                }
-                ubusy = false;
-            });
-          }
-        }
-        setSubmitButton();
+        usercheck();
       });
       $("#password").on("input", function(){
         if($("#password").val().length < 5) {
@@ -210,9 +235,9 @@ $error = false;
           </div>
           <?php } ?>
         <div style="float:left;">Email: </div>
-        <div style="float:left;width:50%;"><input type="text" name="email" id ="email" class="form-control" /></div><div class="ggLog-hide" id="emailnotes"></div><br style="clear:both;" /><br />
+        <div style="float:left;width:50%;"><input type="email" name="email" id ="email" class="form-control" required /></div><div class="ggLog-hide" id="emailnotes"></div><br style="clear:both;" /><br />
         <div style="float:left;">Username: </div>
-        <div style="float:left;width:50%;"><input type="text" name="username" id="username" class="form-control" /></div><div class="ggLog-hide" id="usernotes"></div><br style="clear:both;" /><br />
+        <div style="float:left;width:50%;"><input type="text" name="username" id="username" class="form-control" required /></div><div class="ggLog-hide" id="usernotes"></div><br style="clear:both;" /><br />
         <div style="float:left;">Password: </div>
         <div style="float:left;width:50%;"><input type="password" name="password" id="password" class="form-control" /></div><div class="ggLog-hide" id="passnotes"></div><br style="clear:both;" /><br />
         <br style="clear:both;" /><br />

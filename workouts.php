@@ -165,6 +165,21 @@ function displayworkouts($echoResults = true, $wheretobegin = -1, $numbertodispl
   return false;
 }
 
+function filterWorkoutsByDate($beginloc, $endloc, $data = null, $sorted = false)
+{
+  if($data == null)
+    $data = workoutsAsArray();
+  $output;
+  foreach($data as $entry)
+  {
+    if($entry['rundate'] >= $beginloc && $entry['rundate'] <= $endloc)
+      $output[] = $entry;
+  }
+  if(!$sorted)
+    $output = sortbydate($output);
+  return $output;
+}
+
 function displayOnlyWorkouts($data, $beginloc, $numberToDisplay, &$isFinished = false) // why is $isFinished in variables?
 {
   $preface = "";
@@ -272,6 +287,39 @@ function getWorkoutJSON($beginloc, $numberToDisplay, $startsession = true)
 
     sortbydate($data); // function above
     return makeWorkoutJSON($data, $beginloc, $numberToDisplay);
+  }
+  return false;
+}
+
+function getWeeklyJSON($beginloc, $endloc, $numberToDisplay = 10000, $startsession = true)
+{
+  // Since this is coming from JS, this should sanitize
+  $beginloc = intval($beginloc);
+  $endloc = intval($endloc);
+  $numberToDisplay = intval($numberToDisplay);
+  if($startsession == true)
+    session_start();
+  if(isset($_SESSION[GG_PREFIX . 'username']))
+  {
+    $pdo = gg_get_pdo();
+    $stm = "SELECT rundate, distance, runtime FROM " . GG_PREFIX . $_SESSION[GG_PREFIX . "username"] . "_workouts "; //.
+        //"WHERE rundate <= $endloc AND rundate >= $beginloc";
+    $results = $pdo->query($stm);
+    $data = $results->fetchAll(PDO::FETCH_ASSOC);
+
+    $wm = new weekManage();
+    foreach($data as $entry)
+    {
+      $day = intval($entry["rundate"]);
+      $time = timetoseconds($entry["runtime"]);
+      $distance = $entry["distance"];
+      $wm->addtime($day, $time);
+      $wm->addmiles($day, $distance);
+    }
+    $orderedweeks = $wm->weekArray();
+    sortbydate($orderedweeks, 0);
+
+    return $orderedweeks;
   }
   return false;
 }
