@@ -24,66 +24,10 @@ char intrp_capM(int dayNum);
 char intrp_capM(int dayNum, char thisIsMonth);
 int intrp_j(int dayNum);
 int monthOffset(int month);
-function ggcreatedate($year, $month, $date)
-{
-  if(!checkdate($month, $date, $year))
-    return false;
-  // For leapyears, note that Jan 1 still occurs on the expected date
-  //  value because the extra day does not occur until Feb.
-  $output = ($year-1970)*365;
-  $output += floor(($year-1969)/4); // add one for every previous leapyear.
+int ggcreatedate(int year, int month, int date);
+char* ggcreateSQLdate(int dayNum);
+int ggreadSQLdate(char* input);
 
-  $output += monthOffset($month);
-  if($year%4 == 0 && $month > 2) // add 1 if is > Feb of leapyear
-    ++$output;
-
-  $output += $date -1;
-  return $output;
-}
-function ggcreateSQLdate($dayNum)
-{
-  $month = intrp_m($dayNum);
-  $date = intrp_j($dayNum);
-  $output = intrp_Y($dayNum) . "-";
-  if($month < 10)
-    $output .= "0";
-  $output .= $month . "-";
-  if($date < 10)
-    $output .= "0";
-  $output .= $date;
-  return $output;
-}
-function ggreadSQLdate($input)
-{
-  $parts = explode("-", $input);
-  if(count($parts) != 3)
-    return false;
-  $year =intval($parts[0]);
-  $month =intval($parts[1]);
-  $day =intval($parts[2]);
-
-  // For leapyears, note that Jan 1 still occurs on the expected date
-  //  value because the extra day does not occur until Feb.
-  $output = ($year-1970)*365;
-  $output += floor(($year-1969)/4); // add one for every previous leapyear.
-
-  $output += monthOffset($month);
-  if($year%4 == 0 && $month > 2) // add 1 if is > Feb of leapyear
-    ++$output;
-
-  $output += $day -1;
-  return $output;
-}
-// date() time method
-function fromDate($timestamp)
-{
-  return readSQLdate(date("Y-m-j", $timestamp));
-}
-function toDate($dayNum)
-{
-  return strtotime(createSQLdate);
-}
-// Perhaps create non-static functions.
 
 
 

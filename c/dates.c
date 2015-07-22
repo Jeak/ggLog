@@ -7,7 +7,16 @@
 char checkdate(int year, int month, int day)
 {
   int monthlengths[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-  
+
+  if(year%4 == 0) // Leapyears
+    monthlengths[2] = 29;
+
+  if(month < 1 || month > 12)
+    return 0;
+  if(day < 1 || day > monthlengths[month])
+    return 0;
+  // If it hasn't been deemed invalid, it's valid.
+  return 1;
 }
 
 // Every day is core day!
@@ -134,61 +143,79 @@ int monthOffset(int month)
 }
 int ggcreatedate(int year, int month, int date)
 {
-  if(!checkdate($month, $date, $year))
+  if(!checkdate(month, date, year))
     return -1;
   // For leapyears, note that Jan 1 still occurs on the expected date
   //  value because the extra day does not occur until Feb.
-  $output = ($year-1970)*365;
-  $output += floor(($year-1969)/4); // add one for every previous leapyear.
+  int output = (year-1970)*365;
+  output += ((int) ((year-1969)/4)); // add one for every previous leapyear.
 
-  $output += monthOffset($month);
-  if($year%4 == 0 && $month > 2) // add 1 if is > Feb of leapyear
-    ++$output;
+  output += monthOffset(month);
+  if(year%4 == 0 && month > 2) // add 1 if is > Feb of leapyear
+    ++output;
 
-  $output += $date -1;
-  return $output;
+  output += date -1;
+  return output;
 }
-function ggcreateSQLdate($dayNum)
+char * ggcreateSQLdate(int dayNum)
 {
-  $month = intrp_m($dayNum);
-  $date = intrp_j($dayNum);
-  $output = intrp_Y($dayNum) . "-";
-  if($month < 10)
-    $output .= "0";
-  $output .= $month . "-";
-  if($date < 10)
-    $output .= "0";
-  $output .= $date;
-  return $output;
+  int year = intrp_Y(dayNum);
+  int month = intrp_m(dayNum);
+  int date = intrp_j(dayNum);
+  char output[11];
+  output[0] = ((int) (year/1000))+48;
+  output[1] = ((int) (year/100))%10+48;
+  output[2] = ((int) (year/10))%100+48;
+  output[3] = year%1000+48;
+  output[4] = '-';
+  output[5] = ((int) (month/10))+48;
+  output[6] = month%10+48;
+  output[7] = '-';
+  output[8] = ((int) (date/10))+48;
+  output[9] = date%10+48;
+  output[10] = '\0';
+  return output;
 }
-function ggreadSQLdate($input)
+int ggreadSQLdate(char *input)
 {
-  $parts = explode("-", $input);
-  if(count($parts) != 3)
-    return false;
-  $year =intval($parts[0]);
-  $month =intval($parts[1]);
-  $day =intval($parts[2]);
+  int year, month, day, dateint[3], i, j, counta, countb;
+  year=month=day=counta=countb=0;
+  char datestr[3][5];
+  for(i=0;i<strlen(input) && input[i] != '\0'l++i)
+  {
+    if(input[i] == '-')
+    {
+      datestr[counta][countb] = '\0';
+      countb = 0;
+      ++counta;
+    }
+    else
+    {
+      datestr[counta][countb] = input[i];
+      ++countb;
+    }
+  }
+  for(i=0;i<3;++i)
+  {
+    dateint[i] = 0;
+    for(j=0;j<strlen(datestr[i]);++j)
+    {
+      dateint[i] *= 10;
+      dateint[i] += datestr[i]-48;
+    }
+  }
+  year = dateint[0];
+  month = dateint[1];
+  day = dateint[2];
 
   // For leapyears, note that Jan 1 still occurs on the expected date
   //  value because the extra day does not occur until Feb.
-  $output = ($year-1970)*365;
-  $output += floor(($year-1969)/4); // add one for every previous leapyear.
+  int output = (year-1970)*365;
+  output += ((int) ((year-1969)/4));
 
-  $output += monthOffset($month);
-  if($year%4 == 0 && $month > 2) // add 1 if is > Feb of leapyear
-    ++$output;
-
-  $output += $day -1;
-  return $output;
+  output += monthOffset(month);
+  if(year%4 == 0 && month > 2)
+    ++output;
+  output += day - 1;
+  return output;
 }
-// date() time method
-function fromDate($timestamp)
-{
-  return readSQLdate(date("Y-m-j", $timestamp));
-}
-function toDate($dayNum)
-{
-  return strtotime(createSQLdate);
-}
-// Perhaps create non-static functions.

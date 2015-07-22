@@ -73,7 +73,9 @@ function d3demob()
     var bar = tch.append("g")
       .attr("transform", "translate(" + (20*i) + ", " + (dmax*diff+20-diff*data[i]) + ")");
     bar.append("rect")
-      .on('click', function(){cchanger(this)})
+      .on('mouseover', function(){cchanger(this)})
+      .on('click', function(){clickedcol(this)})
+      .on("mouseout", function(){cclear();})
       .attr("width", 19)
       .attr("height", diff*data[i]);
     bar.append("text")
@@ -85,9 +87,18 @@ function d3demob()
 }
 function cchanger(tinput)
 {
-  var cparts = d3.select(".chart").select(".special").classed("special", false);
+  //var cparts = d3.select(".chart").select(".special").classed("special", false);
   d3.select(tinput).classed("special", true);
   //alert(d3.select(tinput).classed("special"));
+}
+function clickedcol(tinput)
+{
+  var cparts = d3.select(".chart").select(".clicked").classed("clicked", false);
+  d3.select(tinput).classed("clicked", true);
+}
+function cclear()
+{
+  var cparts = d3.select(".chart").select(".special").classed("special", false);
 }
 </script>
   <style>
@@ -96,6 +107,9 @@ function cchanger(tinput)
     }
     .chart rect.special{
       fill: #10C300;
+    }
+    .chart rect.clicked {
+      fill: #80F300;
     }
     .chart text {
       fill: #003300;
