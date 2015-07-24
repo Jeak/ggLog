@@ -24,7 +24,7 @@ if(isset($_SESSION[GG_PREFIX . 'username']))
       $dwork = getWorkoutJSON($beginloc, $numberofworkouts, false);
       echo $dwork;
     }
-    if($_POST['type'] == 'jsonnn'))
+    if($_POST['type'] == 'jsonnn')
     {
       $dwork = getWithoutNotesJSON();
       echo $dwork;

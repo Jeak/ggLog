@@ -419,7 +419,7 @@ function loadmore(howmany)
           $("#loadmorebutton").before(createJSONworkoutDesktop(jsonData[i]));
       }
       else {
-        alert(createJSONworkoutMobile(jsonData[0]));
+        //alert(createJSONworkoutMobile(jsonData[0]));
         for(var i=0;i<jsonData['count'];++i)
           $("#loadmoremobilebutton").before(createJSONworkoutMobile(jsonData[i]));
       }

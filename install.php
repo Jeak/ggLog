@@ -20,7 +20,7 @@
 </head>
 <body>
   <div class="cent">
-  <img src="logo.png" style="height:39px;display:block;margin-left:auto;margin-right:auto;" />
+  <img src="img/logo.png" style="height:39px;display:block;margin-left:auto;margin-right:auto;" />
   <?php
     function clearboth()
     {
@@ -32,10 +32,10 @@
       if($_GET['part'] == "1")
       {
         $errors = false;
-        
+
       //return new PDO("mysql:host=" . GG_HOST . ";dbname=" . GG_DATABASE, GG_USERNAME, GG_PASSWORD );
         $pdo = null;
-        try { // Check if the 
+        try { // Check if the
           $pdo = new PDO("mysql:host=" . $_POST['dbhost'] . ";dbname=" . $_POST['dbname'], $_POST['dbuser'], $_POST['dbpass']);
         }
         catch (PDOException $e)
@@ -83,12 +83,12 @@
           //   Profile pic?
           $prfx = $_POST['dbprfx'];
           $stm = "CREATE TABLE $prfx" . "users(" .
-          "PID INTEGER AUTO_INCREMENT PRIMARY KEY, " . 
-          "username TINYTEXT, " . 
-          "email TINYTEXT, " . 
-          "salt TINYTEXT, " . 
-          "password TINYTEXT, " . 
-          "screenname TINYTEXT" . 
+          "PID INTEGER AUTO_INCREMENT PRIMARY KEY, " .
+          "username TINYTEXT, " .
+          "email TINYTEXT, " .
+          "salt TINYTEXT, " .
+          "password TINYTEXT, " .
+          "screenname TINYTEXT" .
           ")";
           echo $stm;
           $pdo->exec($stm);
@@ -98,7 +98,10 @@
           $configphp .= "define(\"GG_DATABASE\",\"" . $_POST['dbname'] . "\");\n";
           $configphp .= "define(\"GG_USERNAME\",\"" . $_POST['dbuser'] . "\");\n";
           $configphp .= "define(\"GG_PASSWORD\",\"" . $_POST['dbpass'] . "\");\n";
-          $configphp .= "define(\"GG_PREFIX\",\"" . $_POST['dbprfx'] . "\");\n\n";
+          $configphp .= "define(\"GG_PREFIX\",\"" . $_POST['dbprfx'] . "\");\n";
+          $configphp .= "if ( !defined('ABSPATH') )\n";
+          $configphp .= "  define('ABSPATH', dirname(__FILE__) . '/');\n\n";
+
           $configphp .= "function gg_get_pdo()\n{\n";
           $configphp .= "return new PDO(\"mysql:host=\" . GG_HOST . \";dbname=\" . GG_DATABASE, GG_USERNAME, GG_PASSWORD );\n";
           $configphp .= "}\n\n?>";
@@ -134,8 +137,8 @@
       clearboth();
       echo "<div style=\"width:150px;display:block;margin-left:auto;margin-right:auto;\"><input type=\"submit\" class=\"form-control\" value=\"Continue\" /></div>";
       clearboth();
-      
-      echo "</form>"; 
+
+      echo "</form>";
     }
   ?>
   </div>

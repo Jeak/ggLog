@@ -1,5 +1,5 @@
 <?php
-require_once("../config.php");
+require_once( __DIR__."/../config.php");
 
 function ggLog_encrypt($toEncrypt, $salt = null)
 {

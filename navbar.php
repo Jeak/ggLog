@@ -31,7 +31,7 @@ function navbar($activepage, $startsession = false)
   }
   $navpages[] = new navitem("about.php","About");
 
-  echo "<div style=\"position:fixed;z-index:10;background-image:url('fade.png');top:0;width:100%;padding-left:5%;padding-top:10px;border-bottom-style:solid;border-width:3px;border-color:#557c48;height:60px;\" ><img style=\"float:left;height:39px;margin-right:15px;\" src=\"logo.png\">";
+  echo "<div style=\"position:fixed;z-index:10;background-image:url('img/fade.png');top:0;width:100%;padding-left:5%;padding-top:10px;border-bottom-style:solid;border-width:3px;border-color:#557c48;height:60px;\" ><img style=\"float:left;height:39px;margin-right:15px;\" src=\"img/logo.png\">";
   //Desktop version
   echo "<div class=\"navbar ggLog-navbar-desktop\" id=\"ggNavbarDesktop\">";
   echo "<ul class=\"nav nav-tabs\">";

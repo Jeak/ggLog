@@ -1,7 +1,7 @@
 <?php
 // Assumes that sesssion_start() has already been called.
 require_once('datetime.php');
-require_once('../config.php');
+require_once( __DIR__.'/../config.php');
 require_once('weeks.php');
 
 /*/////////////////////
