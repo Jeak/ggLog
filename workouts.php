@@ -291,6 +291,21 @@ function getWorkoutJSON($beginloc, $numberToDisplay, $startsession = true)
   return false;
 }
 
+function getWithoutNotesJSON($sort = false)
+{
+  if(isset($_SESSION[GG_PREFIX . 'username']))
+  {
+    $tname = GG_PREFIX . $_SESSION[GG_PREFIX . 'username'] . "_workouts ";
+    $stm = "SELECT rundate, distance, runtime, title, PID FROM $tname";
+    $result = $pdo->query($stm);
+    $data = $result->fetchAll(PDO::FETCH_ASSOC);
+    if($sort)
+      $data = sortbydate($data);
+    return $data;
+  }
+  return false;
+}
+
 function getWeeklyJSON($beginloc, $endloc, $numberToDisplay = 10000, $startsession = true)
 {
   // Since this is coming from JS, this should sanitize

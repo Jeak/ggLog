@@ -18,9 +18,17 @@ if(isset($_SESSION[GG_PREFIX . 'username']))
     echo "|";
     echo $dwork;
   }
-  if(isset($_POST['type']) && $_POST['type'] == 'json') {
-    $dwork = getWorkoutJSON($beginloc, $numberofworkouts, false);
-    echo $dwork;
+  if(isset($_POST['type']))
+  {
+    if($_POST['type'] == 'json') {
+      $dwork = getWorkoutJSON($beginloc, $numberofworkouts, false);
+      echo $dwork;
+    }
+    if($_POST['type'] == 'jsonnn'))
+    {
+      $dwork = getWithoutNotesJSON();
+      echo $dwork;
+    }
   }
 }
 ?>

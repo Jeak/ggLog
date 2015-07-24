@@ -10,7 +10,7 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
 <html style="width:100%;height:100%">
   <head>
     <title>gglog.xyz: Running Logs</title>
-    <!--meta name="viewport" content="width=device-width" /-->
+    <meta name="viewport" content="width=device-width" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
     <link rel="stylesheet" href="demo.css" />
     <link rel="stylesheet" href="ggLogEssentials.css" />

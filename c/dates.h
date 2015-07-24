@@ -28,7 +28,4 @@ int ggcreatedate(int year, int month, int date);
 char* ggcreateSQLdate(int dayNum);
 int ggreadSQLdate(char* input);
 
-
-
-
 #endif

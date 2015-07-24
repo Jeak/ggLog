@@ -419,6 +419,7 @@ function loadmore(howmany)
           $("#loadmorebutton").before(createJSONworkoutDesktop(jsonData[i]));
       }
       else {
+        alert(createJSONworkoutMobile(jsonData[0]));
         for(var i=0;i<jsonData['count'];++i)
           $("#loadmoremobilebutton").before(createJSONworkoutMobile(jsonData[i]));
       }
@@ -514,8 +515,8 @@ function createJSONworkoutMobile(jsonInput)
   output += "<div class=\"ggLog-leftinputmobile\">";
   output += "  <span class=\"ggLog-biggraytext\">"+ jsonInput['speed'] + "</span> min/mi";
   output += "</div>";
-  output += "<div class=\"ggLog-leftinputmobile\" id=\"PID-" + addbr(jsonInput['PID']) + "notes\">";
-  output += jsonInput['notes'];
+  output += "<div class=\"ggLog-leftinputmobile\" id=\"PID-" + jsonInput['PID'] + "notes\">";
+  output += addbr(jsonInput['notes']);
   output += "</div>";
   output += "</span>\n";
   output += "<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
