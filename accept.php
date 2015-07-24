@@ -1,8 +1,8 @@
 <?php
 //This PHP file is for accepting ajax requests of all types.  Will be expanded later and more will use this.
-require_once('workouts.php'); // adding/editing/deleting workouts
-require_once('seasons.php');
-require_once('datetime.php');
+require_once('src/workouts.php'); // adding/editing/deleting workouts
+require_once('src/seasons.php');
+require_once('src/datetime.php');
 
     // each html form has a <input type="hidden" name="submitting" value="__" />
     // which specifies what is happening

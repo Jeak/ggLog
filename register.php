@@ -9,8 +9,8 @@ session_start();
 if(isset($_POST['username']))
 {
   require_once("config.php");
-  require_once("loginbackend.php");
-  require_once("registercheck.php");
+  require_once("src/loginbackend.php");
+  require_once("src/registercheck.php");
 
   $givenusername = $_POST['username'];
   $givenpassword = $_POST['password'];
@@ -36,11 +36,11 @@ $error = false;
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="login.css">
-    <link rel="stylesheet" href="ggLogEssentials.css">
+    <link rel="stylesheet" href="css/ggLogEssentials.css">
     <!--link rel="icon" href="something" sizes="" /-->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="ggLogEssentials.js"></script>
+    <script src="js/ggLogEssentials.js"></script>
     <style>
     .ggLog-submit-cont
     {
@@ -126,7 +126,7 @@ $error = false;
 
         else {
           var request = $.post(
-            "registercheck.php",
+            "src/registercheck.php",
             {"type": "email", "email": currentval} ,
             function( data ) {
               if(data == 'bad')
@@ -177,7 +177,7 @@ $error = false;
         if(allow == true)
         {
           var request = $.post(
-            "registercheck.php",
+            "src/registercheck.php",
             {"type": "username", "username": currentval} ,
             function( data ) {
               if(data == "bad")

@@ -12,14 +12,14 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
     <title>gglog.xyz: Running Logs</title>
     <meta name="viewport" content="width=device-width" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
-    <link rel="stylesheet" href="demo.css" />
-    <link rel="stylesheet" href="ggLogEssentials.css" />
+    <link rel="stylesheet" href="css/workouts.css" />
+    <link rel="stylesheet" href="css/ggLogEssentials.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="ggLogEssentials.js"></script>
-    <script type="text/javascript" src="demo.js"></script>
-    <script type="text/javascript" src="loginstuff.js"></script>
+    <script type="text/javascript" src="js/ggLogEssentials.js"></script>
+    <script type="text/javascript" src="js/workouts.js"></script>
+    <!--script type="text/javascript" src="loginstuff.js"></script-->
   </head>
   <body style="width:100%;height:100%;" onLoad="demoload();">
     <!--div style="display:block;top:0;right:0;text-align:right;padding-bottom:0;z-index:1;padding-right:10px;" id="userstuff">
@@ -30,9 +30,9 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
     <?php require_once("navbar.php"); navbar("demo.php"); ?>
     <div class="ggLog-hide" id="coverForNotices"></div>
     <?php // deal with $_POST requests
-    require_once('workouts.php'); // adding/editing/deleting workouts
-    require_once('seasons.php');
-    require_once('datetime.php');
+    require_once('src/workouts.php'); // adding/editing/deleting workouts
+    require_once('src/seasons.php');
+    require_once('src/datetime.php');
 
     // each html form has a <input type="hidden" name="submitting" value="__" />
     // which specifies what is happening
@@ -102,7 +102,7 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
         <ul class="list-group" style="margin-top:15px;width:519px;max-height:350px;overflow:auto;">
           <a href="javascript:editseason('edit', 'pid')" class="none"><li class="list-group-item" id="pid" onmouseover="mouseoverseason('pid');" onmouseout="mouseoffseason('pid');"><span style="color:#00F">450mi</span> Summer Training (nonfunctional Example) <span class="badge">Jun 23 2013 to Sep 17 2013</span><span class="ggLog-hide" id="pid-edit"></span></li></a>
           <?php // listing seasons
-          require_once("seasons.php");
+          require_once("src/seasons.php");
 
           echo listseasons(false);
           ?>
@@ -208,8 +208,8 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
         <a href="astext.txt" style="text-align:center;display:block;width:100%;" download>Download my workouts as a text file.</a>
         <hr class="ggLog-partial" style="clear:both;" />
         <?php /*
-        require_once("workouts.php");
-        require_once("seasons.php");
+        require_once("src/workouts.php");
+        require_once("src/seasons.php");
         $start = microtime(true);
         displayWeeklyDistances(true);
         echo (microtime(true) - $start) . " (Please do not mind these load times; they are temporary, for beta testing.)";

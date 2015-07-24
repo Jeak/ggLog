@@ -1,5 +1,5 @@
 <?php
-require_once("workouts.php");
+require_once("src/workouts.php");
 require_once("config.php");
 session_start();
 if(isset($_SESSION[GG_PREFIX . 'username']))

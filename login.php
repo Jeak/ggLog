@@ -2,7 +2,7 @@
 session_start();
 // REMEMBER TO TAKE INTO ACCOUNT LOWERCASE!
 require_once("config.php");
-require_once("loginbackend.php");
+require_once("src/loginbackend.php");
 //$sessionstarted = false;
 //session_start();
 //if(isset($_SESSION[GG_PREFIX . 'username']))
@@ -52,10 +52,10 @@ if(isset($_POST['username']) && isset($_POST['password']))
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="login.css">
-    <link rel="stylesheet" href="ggLogEssentials.css">
+    <link rel="stylesheet" href="css/ggLogEssentials.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="ggLogEssentials.js"></script>
+    <script src="js/ggLogEssentials.js"></script>
     <style>
     .ggLog-submit-cont
     {

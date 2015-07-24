@@ -1,5 +1,5 @@
 <?php
-require_once("config.php");
+require_once("../config.php");
 
 // return "true": still good. return "false": bad, already present.
 function checkEmailDatabase($givenemail)

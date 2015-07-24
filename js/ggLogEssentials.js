@@ -147,7 +147,7 @@ function ggLogLogout()
 {
   var xmlhttp = new XMLHttpRequest();
   var parameters = "type=logout";
-  xmlhttp.open("POST", "loginbackend.php", true);
+  xmlhttp.open("POST", "src/loginbackend.php", true);
   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xmlhttp.send(parameters);
   xmlhttp.onreadystatechange=function()
