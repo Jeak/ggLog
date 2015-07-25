@@ -211,6 +211,31 @@
   {
     return strtotime(createSQLdate);
   }
+  function fillWeeks($preorderedweeksarray)
+  { // $preorderedweeksarray from weekManage.
+    $outarr = array();
+    $lastdate = null;
+    foreach($preorderedweeksarray as $tweek)
+    {
+      if($lastdate == null)
+      {
+        $lastdate = $tweek[0];
+        $outarr[] = $tweek;
+      }
+      else
+      {
+        while($lastdate != $tweek[0]-7)
+        {
+          $lastdate += 7;
+          $outarr[] = array($lastdate, $lastdate+6, 0.0, 0);
+        }
+        $lastdate = $tweek[0];
+        $outarr[] = $tweek;
+      }
+    }
+    return $outarr;
+  }
+
   // Perhaps create non-static functions.
 
 class weekManage
@@ -316,5 +341,5 @@ $wm->addmiles(time(), 13);
 
 echo $wm->get(time())->strout();*/
 
-  
+
 ?>

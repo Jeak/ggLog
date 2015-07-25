@@ -143,6 +143,7 @@ function demoload()
     //document.getElementById('recentworkouts-desktop').className = "ggLog-containrecentworkouts";
     document.getElementById('recentworkouts-desktop').className = "ggLog-containrecentworkouts";
     loadmore();
+    mileageGraphDesktop("mchart");
   }
   //$('#useralerts').popover();
 }
@@ -395,12 +396,6 @@ function canceleditseason()
   document.getElementById('coverForNotices').className="ggLog-hide";
 }
 
-function addbr(inhtml)
-{
-  inhtml = inhtml.replace(new RegExp('\n', 'g'), '<br />\n');
-  return inhtml;
-}
-
 function loadmore(howmany)
 {
   if(typeof howmany == 'undefined') {
@@ -524,6 +519,12 @@ function createJSONworkoutMobile(jsonInput)
   return output;
 }
 
+function addbr(inhtml)
+{
+  inhtml = inhtml.replace(new RegExp('\n', 'g'), '<br />\n');
+  return inhtml;
+}
+
 function removebr(inhtml)
 {
   inhtml = inhtml.replace(new RegExp('\n', 'g'), '');
@@ -533,6 +534,105 @@ function removebr(inhtml)
   return inhtml;
 }
 
+function mileageGraphDesktop(id, data)
+{
+  var dateloc = 0;
+  var milesloc = 2;
+  // Data in the raw form provided by fetchworkouts.php
+
+  //Fetch data
+  if(typeof data == "undefined")
+  {
+    var request = $.post(
+      "fetchworkouts.php",
+      {"type": "mgraph", "len": 0} ,
+      function( data ) {
+        data =JSON.parse(data);
+        mileageGraphDesktop(id, data);
+      }
+    );
+  }
+
+  else
+  {
+    var dmax = 0;
+    for(var i=0;i<data.length;++i)
+    {
+      if(dmax < data[i][milesloc])
+        dmax = data[i][milesloc];
+    }
+    var rnd = Math.ceil(dmax/15)*5;
+
+    dmax = Math.ceil(dmax/rnd)*rnd;
+
+    var tch = d3.select("#" + id);
+    tch.classed("ggmcd", true);
+
+    var maxheight = 100;
+
+    var diff = maxheight/dmax;
+
+    var maxtotalwidth = 750;
+    var maxwidth = 50;
+    var minwidth = 20;
+    var startfrom = 0;
+
+    var bwidth = parseInt(maxtotalwidth/data.length);
+    if(bwidth > 50)
+      bwidth = maxwidth;
+    if(bwidth < 20)
+    {
+      bwidth = minwidth;
+      startfrom = data.length-parseInt(maxtotalwidth/minwidth);
+    }
+
+    tch.html("");
+
+    tch.style("height", (dmax*diff+35)+"px")
+      .style("width", (maxtotalwidth+30)+"px");
+       //.style("width", (data.length*bwidth+30)+"px");
+
+    for(var i=0;i<=dmax/rnd;++i)
+    {
+      tch.append("line")
+        .attr("x1", 0)
+        .attr("y1", i*diff*rnd+20)
+        //.attr("x2", data.length*bwidth+17)
+        .attr("x2", maxtotalwidth+17)
+        .attr("y2", i*diff*rnd+20)
+        .attr("style", "stroke:#aaaaaa;width:0.5px;");
+      tch.append("g")
+        .attr("transform", "translate("+ (maxtotalwidth+30) +","+ (i*diff*rnd+20) +")")
+      .append("text")
+        .attr("style", "fill:#bbbbbb")
+        .text(dmax-i*rnd);
+    }
+
+    for(var i=startfrom;i<data.length;++i)
+    {
+      var bar = tch.append("g")
+        .attr("transform", "translate(" + (bwidth*(i-startfrom)) + ", " + (dmax*diff+20-diff*data[i][milesloc]) + ")");
+      bar.append("rect")
+        .on('mouseover', function(){cchanger(this)})
+        .on('click', function(){clickedcol(this)})
+        .on("mouseout", function(){cclear();})
+        .attr("width", bwidth-1)
+        .attr("height", diff*data[i][milesloc]);
+      bar.append("text")
+        .attr("x", bwidth/2+1)
+        .attr("y", (-5)+"px")
+        .on('click', function(){cchanger(this)})
+        .text(data[i][milesloc]);
+      if(intrp_j(data[i][dateloc]) < 8 && intrp_j(data[i][dateloc]) > 0)
+      {
+        bar.append("text")
+          .attr("x", (bwidth/2+1) + "px")
+          .attr("y", (diff*data[i][milesloc]+12) + "px")
+          .text(intrp_capM(data[i][dateloc]))
+      }
+    }
+  }
+}
 
 function encodetime(h, m, s)
 {

@@ -4,11 +4,11 @@ session_start();
 require_once("config.php");
 require_once("src/loginbackend.php");
 //$sessionstarted = false;
-//session_start();
-//if(isset($_SESSION[GG_PREFIX . 'username']))
-//{
-//  header("Location: _my_workouts_page.php");
-//}
+session_start();
+if(isset($_SESSION[GG_PREFIX . 'username']))
+{
+  header("Location: demo.php");
+}
 $tried_before = false;
 $error = false;
 $successfullogin = false;

@@ -333,7 +333,7 @@ function getWeeklyJSON($beginloc, $endloc, $numberToDisplay = 10000, $startsessi
     }
     $orderedweeks = $wm->weekArray();
     sortbydate($orderedweeks, 0);
-
+    $orderedweeks = fillWeeks($orderedweeks);
     return json_encode($orderedweeks);
   }
   return false;

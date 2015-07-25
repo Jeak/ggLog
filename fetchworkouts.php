@@ -4,8 +4,12 @@ require_once("config.php");
 session_start();
 if(isset($_SESSION[GG_PREFIX . 'username']))
 {
-  $beginloc = intval($_POST['begin']);
-  $numberofworkouts = intval($_POST['number']);
+  $beginloc;
+  $numberofworkouts;
+  if(isset($_POST['begin']))
+    $beginloc = intval($_POST['begin']);
+  if(isset($_POST['number']))
+    $numberofworkouts = intval($_POST['number']);
 
   if(!isset($_POST['type']) || $_POST['type'] == "")
   {
@@ -27,6 +31,17 @@ if(isset($_SESSION[GG_PREFIX . 'username']))
     if($_POST['type'] == 'jsonnn')
     {
       $dwork = getWithoutNotesJSON();
+      echo $dwork;
+    }
+    if($_POST['type'] == 'mgraph')
+    {
+      $daysToReturn = intval($_POST['len']);
+      if($daysToReturn == 0)
+        $daysToReturn = 100000;
+      $edate = ggreadSQLdate(date('Y-m-j'));
+      if(isset($_POST['end']))
+        $edate = intval($_POST['begin']);
+      $dwork = getWeeklyJSON($edate-$daysToReturn, $edate, 10000, false);
       echo $dwork;
     }
   }

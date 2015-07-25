@@ -231,3 +231,24 @@ span.workouttitle
 {
   padding-left:40px;
 }
+
+/*  SVG charts  */
+#mchart {
+  display:block;
+  margin: 0 auto;
+  background-color:#EEFFDD;
+}
+#mchart rect {
+  fill: #106000;
+}
+#mchart rect.special{
+  fill: #10C300;
+}
+#mchart rect.clicked {
+  fill: #80F300;
+}
+#mchart text {
+  fill: #003300;
+  font: 10px sans-serif;
+  text-anchor: end;
+}

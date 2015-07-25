@@ -15,6 +15,7 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
     <link rel="stylesheet" href="css/workouts.css" />
     <link rel="stylesheet" href="css/ggLogEssentials.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/ggLogEssentials.js"></script>
@@ -88,7 +89,8 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
   }
     ?>
     <h1 class="text-center">Your Workouts</h1>
-    <iframe src="test1.php" height="340" style="display:block;margin: 0 auto;width:250px;"></iframe>
+    <!--iframe src="test1.php" height="200" style="display:block;margin: 0 auto;width:820px;"></iframe-->
+    <svg id="mchart"></svg>
     <div style="positition:relative;margin-top:15px;width:100%;height:50px;">
 <!--      <div class="btn-group" style="display:block;width:400px;margin-left:auto;margin-right:auto;">   -->
       <div class="ggLog-buttonholder btn-group" id="buttonholder">
