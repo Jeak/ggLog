@@ -405,8 +405,8 @@ function loadmore(howmany)
   var beginningl = $("#numberloaded").val();
   var imb = IsMobileBrowser();
   var request = $.post(
-    "fetchworkouts.php",
-    {"begin": beginningl, "number": howmany, "type": "json"} ,
+    "accept.php",
+    {"begin": beginningl, "number": howmany, "submitting": "jsonwkts"} ,
     function( data ) {
       var jsonData = JSON.parse(data);
       if(!imb) {
@@ -538,14 +538,14 @@ function mileageGraphDesktop(id, data)
 {
   var dateloc = 0;
   var milesloc = 2;
-  // Data in the raw form provided by fetchworkouts.php
+  // If provided, data is already JSON.parse-ed.
 
   //Fetch data
   if(typeof data == "undefined")
   {
     var request = $.post(
-      "fetchworkouts.php",
-      {"type": "mgraph", "len": 0} ,
+      "accept.php",
+      {"submitting": "mgraph", "len": 0} ,
       function( data ) {
         data =JSON.parse(data);
         mileageGraphDesktop(id, data);
