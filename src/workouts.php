@@ -389,4 +389,112 @@ function convertToText($alltime, $begin, $end) // inclusive
   return $output;
 }
 
+function importFromFlotrackr($inputstring)
+{
+	//Interpret CSV from Flotrackr.
+	//Need to split by newlines but NOT between quotes!
+	
+	//Check if the first line is correct # of commas
+	$inputstring = trim($inputstring);
+	$list = explode("\n",$inputstring);
+		
+	if(count($list) < 2) // If it has no content
+		return false;
+	if(substr_count($list[0],",") != 13) // If it has incorrect number of commas
+		return false;
+		
+	$usefulparts = array(); // will be filled after parsing.
+	//Date, Name, Minutes, Seconds, Distance, Unit, Feel, Notes, Cross Train Type, Calulate Pace, Field 1, Field 2, Field 3, Field 4
+	/* [][0] = date, string x
+	 * [][1] = title, string x
+	 * [][2] = Minutes, string (all strings initially) x
+	 * [][3] = Seconds x
+	 * [][4] = Distance
+	 * [][5] = Distance UNIT
+	 * [][6] = Feels x
+	 * [][7] = Notes x
+	 * [][8] = XT type N
+	 * [][9] = Calc Pace? N
+	 * [][10] = field 1 x
+	 * [][11] = field 2 x
+	 * [][12] = field 3 x
+	 * [][13] = field 4 x
+	 */
+	
+	for($i=1;$i<count($list);++$i) // Parse into $usefulparts
+	{
+		$inquotes = false;
+		$usefulparts[$i] = array();
+		$list[$i] = trim($list[$i]);
+		$sublist = explode("\",\"", $list[$i]); //Split at ","
+		if(count($sublist) == 14) // If there's the right number
+			$usefulparts[$i] = $sublist;
+		else if(count($sublist) > 14) // If too many, assume "," comes from "notes" section
+		{
+			for($j=0;$j<7;++$j)
+			{
+				$usefulparts[$i][$j] = $sublist[$j];
+			}
+			for($j=0;$j<6;++$j)
+			{
+				$usefulparts[$i][13-$j] = $sublist[count($sublist)-1-$j];
+			}
+			for($j=7;$j<7+count($sublist)-14;++$j)
+			{
+				$usefulparts[$i][7] .= $sublist[$j] . "\".\"";
+			}
+			$usefulparts[$i][7] .= $sublist[count($sublist)-7];
+		}
+		else if(count($sublist) < 14) // Too little, quit.
+			return false;
+		// Remove extra " before first and after last.
+		$usefulparts[$i][0] = substr($usefulparts[$i][0], 1)
+		$usefulparts[$i][13] = substr($usefulparts[$i][13], 0, strlen($usefulparts[$i][13])-1);
+	}
+	
+	for($i=0;$i<count($usefulparts);++$i)
+	{
+		$notes;
+		switch($usefulparts[$i][6]) { // for "I feel..."
+			case "1": $notes = "I Felt Terrible\n";	break;
+			case "2": $notes = "I Felt OK\n"; break;
+			case "3": $notes = "I Felt Pretty Good\n"; break;
+			case "4": $notes = "I Felt Good\n";	break;
+			case "5": $notes = "I Felt Great\n"; break;
+			default: $notes = ""; break;
+		}
+		$notes .= $usefulparts[$i][7]; // Add actual notes.
+		for($i=1;$i<=4;++$i) //Add fields 1-4
+		{
+			if($usefulparts[$i][9+$i] != "")
+				$notes .= "\n" . $i . ". " . $usefulparts[$i][9+$i];
+		}
+		
+		$ymd = $usefulparts[$i][0]; // Parse date into year, month, day
+		$ymd = explode("-", $ymd);
+		if(count($ymd) != 3) break;
+		$ymd[0] = intval($ymd[0]);
+		$ymd[1] = intval($ymd[1]);
+		$ymd[2] = intval($ymd[2]);
+		
+		// $title = $usefulparts[$i][1] .. done..
+		
+		$hms[0] = 0; // Parsing h:m:s
+		$hms[1] = intval($usefulparts[$i][2]);
+		$hms[2] = intval($usefulparts[$i][3]);
+		$hms[1] += intval($hms[2]/60);
+		$hms[2] = $hms[2]%60;
+		$hms[0] = intval($hms[1]/60);
+		$hms[1] = $hms[1]%60;
+		
+		$distance = intval("0" . $usefulparts[$i][4]);
+		
+		if($hms[5] == "kilometers")
+			$distance *= 0.621;
+		
+		addworkout(-1,$ymd[0], $ymd[1], $ymd[2], $usefulparts[$i][1], $distance, $hms[0], $hms[1], $hms[2], $notes);
+	}
+	return true;
+}
+
 ?>

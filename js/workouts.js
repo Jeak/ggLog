@@ -136,6 +136,7 @@ function demoload()
     {
       loadmore(10);
     }
+    document.getElementById("mchart").className = "ggLog-hide";
   }
   else{
     SetDateDropdown('datesdrop');

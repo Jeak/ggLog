@@ -1,5 +1,5 @@
 .ggLog-hide {
-  display:none;
+  display:none !important;
 }
 .ggLog-navbar-desktop {
   margin-top:0;

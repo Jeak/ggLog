@@ -199,6 +199,31 @@ $error = false;
       }
     }
 
+
+    function cpass()
+    {
+      var passval = $("#password").val();
+      var cpassval = $("#cpassword").val();
+      if(cpassval.length == 0)
+      {
+        $("#cpnotes").removeClass('ggLog-eu-notes');
+        $("#cpnotes").addClass('ggLog-hide');
+        $("#cpnotes").html("");
+      }
+      if(cpassval.length != 0 && cpassval == passval)
+      {
+        $("#cpnotes").removeClass('ggLog-eu-notes');
+        $("#cpnotes").addClass('ggLog-hide');
+        $("#cpnotes").html("");
+      }
+      if(cpassval.length != 0 && cpassval != passval)
+      {
+        $("#cpnotes").addClass('ggLog-eu-notes');
+        $("#cpnotes").removeClass('ggLog-hide');
+        $("#cpnotes").html("The passwords don't match!");
+      }
+    }
+
     $(document).ready(function(){
       $("#email").on("input", function(){
         emailcheck();
@@ -206,7 +231,11 @@ $error = false;
       $("#username").on("input", function(){
         usercheck();
       });
+      $("#cpassword").on("input", function(){
+        cpass();
+      });
       $("#password").on("input", function(){
+        cpass();
         if($("#password").val().length < 5) {
           document.getElementById("passnotes").className="ggLog-eu-notes";
           document.getElementById("passnotes").innerHTML = "Not long enough.";
@@ -240,6 +269,8 @@ $error = false;
         <div style="float:left;width:50%;"><input type="text" name="username" id="username" class="form-control" required /></div><div class="ggLog-hide" id="usernotes"></div><br style="clear:both;" /><br />
         <div style="float:left;">Password: </div>
         <div style="float:left;width:50%;"><input type="password" name="password" id="password" class="form-control" /></div><div class="ggLog-hide" id="passnotes"></div><br style="clear:both;" /><br />
+        <div style="float:left;">Confirm Password: </div>
+        <div style="float:left;width:50%;"><input type="password" id="cpassword" class="form-control" /></div><div class="ggLog-hide" id="cpnotes"></div><br style="clear:both;" /><br />
         <br style="clear:both;" /><br />
         <div class="ggLog-submit-cont" id="submitbutton">
           <input type="submit" id="submb" value="Register" class="form-control" />
