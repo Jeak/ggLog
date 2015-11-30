@@ -87,6 +87,10 @@ require_once('src/datetime.php');
         $dwork = getWeeklyJSON($edate-$daysToReturn, $edate, 10000, false);
         echo $dwork;
       }
+      else if($_POST['submitting'] == 'flotrackrimport')
+      {
+		  
+	  }
     }
   }
 

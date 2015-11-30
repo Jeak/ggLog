@@ -535,6 +535,72 @@ function removebr(inhtml)
   return inhtml;
 }
 
+function startUploadFlotrackr()
+{
+	var contain = document.getElementById("uflotrackr");
+	contain.innerHTML = "";
+	var form = document.createElement("form");
+	form.setAttribute("onsubmit", "submitUploadFlotrackr(); return false;");
+	form.setAttribute("style", "display:inline");
+	form.setAttribute("id", "uftrfrm");
+	
+	var uploadselect = document.createElement("input");
+	uploadselect.setAttribute("type", "file");
+	uploadselect.setAttribute("name", "csvfile");
+	uploadselect.setAttribute("id", "csvfile");
+	uploadselect.setAttribute("style", "display:inline");
+	var submitbutton = document.createElement("input");
+	submitbutton.setAttribute("type", "submit");
+	submitbutton.setAttribute("style", "display:inline");
+	
+	var cancelbutton = document.createElement("button");
+	cancelbutton.setAttribute("onclick", "cancelUploadFlotrackr()");
+	cancelbutton.innerHTML = "Cancel";
+	cancelbutton.setAttribute("style", "display:inline");
+	
+	form.appendChild(uploadselect);
+	form.innerHTML += " &nbsp; &nbsp; ";
+	form.appendChild(submitbutton);
+	
+	contain.appendChild(form);
+	contain.innerHTMl += " &nbsp; &nbsp; ";
+	contain.appendChild(cancelbutton);
+}
+
+function submitUploadFlotrackr()
+{
+	
+	var contain = document.getElementById("uflotrackr");
+	
+	var formData = new FormData();
+	var file = document.getElementById("csvfile").files[0];//, formdata = false;
+	if(file.type != "text/csv" && file.type != "text/plain")
+	{
+		contain.innerHTML = "failure.";
+	}
+	else
+	{
+		formData.append("csvfile", file, file.name);
+		formData.append("submitting", "flotrackrimport");
+		//Finish formData
+	}
+	
+	contain.innerHTML = "Loading...";
+	
+	
+	cancelUploadFlotrackr();
+}
+
+function cancelUploadFlotrackr()
+{
+	var contain = document.getElementById("uflotrackr");
+	contain.innerHTML = "";
+	var ulink = document.createElement("a");
+	ulink.innerHTML = "Upload Flotrack Logs";
+	ulink.setAttribute("href", "javascript:startUploadFlotrackr();");
+	contain.appendChild(ulink);
+}
+
 function mileageGraphDesktop(id, data)
 {
   var dateloc = 0;

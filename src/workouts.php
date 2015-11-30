@@ -448,7 +448,7 @@ function importFromFlotrackr($inputstring)
 		else if(count($sublist) < 14) // Too little, quit.
 			return false;
 		// Remove extra " before first and after last.
-		$usefulparts[$i][0] = substr($usefulparts[$i][0], 1)
+		$usefulparts[$i][0] = substr($usefulparts[$i][0], 1);
 		$usefulparts[$i][13] = substr($usefulparts[$i][13], 0, strlen($usefulparts[$i][13])-1);
 	}
 	

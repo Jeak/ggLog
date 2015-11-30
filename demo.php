@@ -187,6 +187,9 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
         </div>
       </form>
     </div>
+    <div style="position:relative;width:100%;text-align:center;" id="uflotrackr">
+	  <a href="javascript:startUploadFlotrackr();">Upload Flotrack Logs</a>
+    </div>
     <div class="ggLog-containrecentworkouts" id="recentworkouts-desktop">
       <hr class="ggLog-partial" style="clear:both;"/>
       <div class="ggLog-center-90">
