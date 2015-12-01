@@ -92,6 +92,29 @@ require_once('src/datetime.php');
 		  
 	  }
     }
+	else
+	{
+    if($_POST['submitting'] == 'jsonwktsother')
+    {
+      $username = $_POST['username'];
+      $beginloc = intval($_POST['begin']);
+      $numberofworkouts = intval($_POST['number']);
+      $dwork = getWorkoutJSONOther($username, $beginloc, $numberofworkouts, false);
+      echo $dwork;
+    }
+    else if($_POST['submitting'] == 'mgraphother')
+    {
+      $username = $_POST['username'];
+      $daysToReturn = intval($_POST['len']);
+      if($daysToReturn == 0)
+        $daysToReturn = 100000;
+      $edate = ggreadSQLdate(date('Y-m-j'));
+      if(isset($_POST['end']))
+        $edate = intval($_POST['begin']);
+      $dwork = getWeeklyJSONOther($username, $edate-$daysToReturn, $edate, 10000, false);
+      echo $dwork;
+    }
+	}
   }
 
 ?>

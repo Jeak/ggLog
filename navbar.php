@@ -1,6 +1,5 @@
 <?php
 require_once("config.php");
-$iploc = "../58/";
 
 class navitem
 {

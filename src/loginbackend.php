@@ -67,6 +67,17 @@ function ggLog_logout()
   session_destroy();
 }
 
+function user_exists($username)
+{
+  $pdo = gg_get_pdo();
+  $stm = "SELECT salt FROM " . GG_PREFIX . "users WHERE username=?";
+  $sth = $pdo->prepare($stm);
+  $sth->execute(array($username));
+  if(empty($sth)) // If the username doesn't exist..
+    return false;
+  return true;
+}
+
 if(isset($_POST['type']) && $_POST['type'] == 'logout')
 {
   ggLog_logout();

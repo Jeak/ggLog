@@ -3,6 +3,7 @@
 require_once('datetime.php');
 require_once( __DIR__.'/../config.php');
 require_once('weeks.php');
+require_once('loginbackend.php');
 
 /*/////////////////////
      ADDING WORKOUTS
@@ -291,6 +292,26 @@ function getWorkoutJSON($beginloc, $numberToDisplay, $startsession = true)
   return false;
 }
 
+function getWorkoutJSONOther($username, $beginloc, $numberToDisplay, $startsession = true)
+{
+  // LATER, CHECK PERMISSIONS!
+  if(user_exists($username))
+  {
+    $pdo = gg_get_pdo();
+    $tname = GG_PREFIX . $username . "_workouts ";
+    $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . $tname);
+    $data = array();
+    while ($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+      $data[] = $row;
+    }
+    $pdo = null;
+    sortbydate($data); // function above
+    return makeWorkoutJSON($data, $beginloc, $numberToDisplay);
+  }
+  return false;
+}
+
 function getWithoutNotesJSON($sort = false)
 {
   if(isset($_SESSION[GG_PREFIX . 'username']))
@@ -318,6 +339,38 @@ function getWeeklyJSON($beginloc, $endloc, $numberToDisplay = 10000, $startsessi
   {
     $pdo = gg_get_pdo();
     $stm = "SELECT rundate, distance, runtime FROM " . GG_PREFIX . $_SESSION[GG_PREFIX . "username"] . "_workouts " .
+        "WHERE rundate <= $endloc AND rundate >= $beginloc";
+    $results = $pdo->query($stm);
+    $data = $results->fetchAll(PDO::FETCH_ASSOC);
+
+    $wm = new weekManage();
+    foreach($data as $entry)
+    {
+      $day = intval($entry["rundate"]);
+      $time = timetoseconds($entry["runtime"]);
+      $distance = $entry["distance"];
+      $wm->addtime($day, $time);
+      $wm->addmiles($day, $distance);
+    }
+    $orderedweeks = $wm->weekArray();
+    sortbydate($orderedweeks, 0);
+    $orderedweeks = fillWeeks($orderedweeks);
+    return json_encode($orderedweeks);
+  }
+  return false;
+}
+
+function getWeeklyJSONOther($username, $beginloc, $endloc, $numberToDisplay = 10000, $startsession = true)
+{
+  // Since this is coming from JS, this should sanitize
+  $beginloc = intval($beginloc);
+  $endloc = intval($endloc);
+  $numberToDisplay = intval($numberToDisplay);
+  //SECURITY LATER!!
+  if(user_exists($username))
+  {
+    $pdo = gg_get_pdo();
+    $stm = "SELECT rundate, distance, runtime FROM " . GG_PREFIX . $username . "_workouts " .
         "WHERE rundate <= $endloc AND rundate >= $beginloc";
     $results = $pdo->query($stm);
     $data = $results->fetchAll(PDO::FETCH_ASSOC);

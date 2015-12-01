@@ -125,21 +125,29 @@ function decodetime(str, type)
   return -1;
 }
 
-function setNavbar()
+function setNavbar(loggedin)
 {
+  if(typeof loggedin != "boolean")
+    loggedin = true;
   if(IsMobileBrowser())
   {
     document.getElementById("ggNavbarDesktop").className = "ggLog-hide";
     document.getElementById("ggNavbarMobile").className = "ggLog-navbar-mobile";
-    document.getElementById("userinfodesk").className = "ggLog-hide";
-    document.getElementById("userinfomob").className = "ggLog-userinfo-mobile";
+    if(loggedin)
+    {
+      document.getElementById("userinfodesk").className = "ggLog-hide";
+      document.getElementById("userinfomob").className = "ggLog-userinfo-mobile";
+    }
   }
   else
   {
     document.getElementById("ggNavbarDesktop").className = "navbar ggLog-navbar-desktop";
     document.getElementById("ggNavbarMobile").className = "ggLog-hide";
-    document.getElementById("userinfodesk").className = "ggLog-userinfo-desktop";
-    document.getElementById("userinfomob").className = "ggLog-hide";
+    if(loggedin)
+    {
+      document.getElementById("userinfodesk").className = "ggLog-userinfo-desktop";
+      document.getElementById("userinfomob").className = "ggLog-hide";
+    }
   }
 }
 

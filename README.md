@@ -52,7 +52,9 @@ function gg_get_pdo()
 Bold indicates that an item is being worked on.
 
 * Emoticons
-* __Auto-add total mileage__
+* __NEED TO WORK ON: Finish flotrackr upload & parse__
+* __Safe, secure, multi-user system!!__
+* Auto-add total mileage
 * __Set seasons with auto-adding mileage (Summer Training, Track season, Winter Training, Cross Country)__ __dev__
     + UI for editing seasons
     + Perhaps a larger interface for editing
