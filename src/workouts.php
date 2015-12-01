@@ -270,6 +270,39 @@ function makeWorkoutJSON($data, $beginloc, $numberToDisplay)
   return json_encode($templateOutput);
 }
 
+function makeWorkoutJSONSpec($data, $begindate, $enddate)
+{
+  // for pre-sorted data, earliest activities first.
+  $starter = microtime(true);
+  $templateOutput = array();
+  $ic = 0;
+  $counter = 0;
+  for($i = count($data)-1;$i >= 0; --$i)
+  {
+    //echo intval($data[$i]['rundate']) . " vs " . $begindate . "-" . $enddate . "  ";
+    if(intval($data[$i]['rundate']) < $begindate)
+      break;
+    $ic = $i;
+    if(intval($data[$i]['rundate']) <= $enddate)
+    {
+      $single = $data[$ic];
+      $single['PID'] = intval($single['PID']);
+      $single['rundate'] = intval($single['rundate']);
+      $single['distance'] = floatval($single['distance']);
+      $single['speed'] = speed($single["runtime"], $single["distance"]);
+      $templateOutput[] = $single;
+      
+    }
+    ++$counter;
+  }
+  $templateOutput['more'] = true;
+  if($i == 0)
+    $templateOutput['more'] = false;
+  $templateOutput['count'] = $counter;
+  $templateOutput['timing'] = (microtime(true) - $starter);
+  return json_encode($templateOutput);
+}
+
 function getWorkoutJSON($beginloc, $numberToDisplay, $startsession = true)
 {
   if($startsession == true)
@@ -308,6 +341,25 @@ function getWorkoutJSONOther($username, $beginloc, $numberToDisplay, $startsessi
     $pdo = null;
     sortbydate($data); // function above
     return makeWorkoutJSON($data, $beginloc, $numberToDisplay);
+  }
+  return false;
+}
+function getWorkoutJSONSpecOther($username, $begindate, $enddate, $startsession = true)
+{
+  // LATER, CHECK PERMISSIONS!
+  if(user_exists($username))
+  {
+    $pdo = gg_get_pdo();
+    $tname = GG_PREFIX . $username . "_workouts ";
+    $result = $pdo->query("SELECT rundate, title, distance, runtime, notes, PID FROM " . $tname);
+    $data = array();
+    while ($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+      $data[] = $row;
+    }
+    $pdo = null;
+    sortbydate($data); // function above
+    return makeWorkoutJSONSpec($data, $begindate, $enddate);
   }
   return false;
 }

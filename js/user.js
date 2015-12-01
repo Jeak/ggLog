@@ -119,6 +119,55 @@ function loadmore(howmany)
   return anymore;
 }
 
+function loadspec(begin, end)
+{
+  howmany = 20;
+  var anymore = true;
+  var imb = IsMobileBrowser();
+  var cuser = document.getElementById("ggcurrentusername").value;
+  var request = $.post(
+    "accept.php",
+    {"begin": begin, "end": end, "submitting": "jsonwktsspecother", "username": cuser} ,
+    function( data ) {
+      var jsonData = JSON.parse(data);
+      if(!imb) {
+        for(var i=0;i<jsonData['count'];++i)
+          $("#loadmorebutton").before(createJSONworkoutDesktop(jsonData[i]));
+      }
+      else {
+        //alert(createJSONworkoutMobile(jsonData[0]));
+        for(var i=0;i<jsonData['count'];++i)
+          $("#loadmoremobilebutton").before(createJSONworkoutMobile(jsonData[i]));
+      }
+      $("#numberloaded").val(jsonData['count']);
+     /*   if(imb)
+          $("#loadmoremobilebutton").remove();
+        else
+          $("#loadmorebutton").remove();*/
+    }
+  );
+  return anymore;
+}
+
+function removeAllWorkouts(classname)
+{
+  var additional = false
+  if(typeof classname != "string") {
+    classname = "workoutcont";
+    additional = true;
+  }
+  var allWorkoutElements = document.getElementsByClassName(classname);
+  for(var i=allWorkoutElements.length-1;i>=0;--i)
+  {
+    allWorkoutElements[i].parentElement.removeChild(allWorkoutElements[i]);
+  }
+  $("#numberloaded").val(0);
+  if(additional)
+  {
+    removeAllWorkouts("blankwohr");
+  }
+}
+
 function createJSONworkoutDesktop(jsonInput)
 {
   // jsonInput is of this format:
@@ -128,7 +177,7 @@ function createJSONworkoutDesktop(jsonInput)
   //  "speed":(string)}
   // In PHP, make sure to change newlines into <br /> with htmlnewline.
   var output = "";
-    output += "<div class=\"ggLog-center-90\" id=\"PID-" + jsonInput['PID'] + "\">\n";
+    output += "<div class=\"ggLog-center-90 workoutcont\" id=\"PID-" + jsonInput['PID'] + "\">\n";
 
   //          store hard-to-access data in hidden inputs
     output += "  <input type=\"hidden\" id=\"PID-" + jsonInput['PID'] + "date\" value=\"" + ggcreateSQLdate(jsonInput["rundate"]) + "\" />\n";
@@ -168,7 +217,7 @@ function createJSONworkoutDesktop(jsonInput)
     output += "  </div>\n";
 
     output += "</div>\n";
-    output += "<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
+    output += "<hr class=\"ggLog-partial blankwohr\" style=\"clear:both;\" />\n";
     return output;
 }
 
@@ -177,7 +226,7 @@ function createJSONworkoutMobile(jsonInput)
   // see above for json object format.
   var output = "";
   output += "<span id=\"PID-"+ jsonInput['PID'] +"\">";
-  output += "<div class=\"ggLog-centerinputmobile\">";
+  output += "<div class=\"ggLog-centerinputmobile workoutcont\">";
 
   output += "  <input type=\"hidden\" id=\"PID-" + jsonInput['PID'] + "date\" value=\"" + ggcreateSQLdate(jsonInput["rundate"]) + "\" />\n";
   output += "  <input type=\"hidden\" id=\"PID-" + jsonInput['PID'] + "title\" value=\"" + jsonInput["title"] + "\" />\n";
@@ -200,7 +249,7 @@ function createJSONworkoutMobile(jsonInput)
   output += addbr(jsonInput['notes']);
   output += "</div>";
   output += "</span>\n";
-  output += "<hr class=\"ggLog-partial\" style=\"clear:both;\" />\n";
+  output += "<hr class=\"ggLog-partial blankwohr\" style=\"clear:both;\" />\n";
 
   return output;
 }
@@ -367,9 +416,10 @@ function mileageGraphDesktop(id, data)
       var bar = tch.append("g")
         .attr("transform", "translate(" + (bwidth*(i-startfrom)) + ", " + (dmax*diff+20-diff*data[i][milesloc]) + ")");
       bar.append("rect")
-        .on('mouseover', function(){cchanger(this)})
-        .on('click', function(){clickedcol(this)})
-        .on("mouseout", function(){cclear();})
+        .on('mouseover', function(){mgdOver(this)})
+        .on('click', function(){mgdClick(this)})
+        .on("mouseout", function(){mgdOff();})
+        .attr("weekstart", data[i][dateloc])
         .attr("width", bwidth-1)
         .attr("height", diff*data[i][milesloc]);
       bar.append("text")
@@ -386,6 +436,21 @@ function mileageGraphDesktop(id, data)
       }
     }
   }
+}
+
+function mgdOver(tinput){
+  d3.select(tinput).classed("special", true);
+}
+function mgdOff(){
+  var cparts = d3.select("#mchart").select(".special").classed("special", false);
+}
+function mgdClick(tinput) {
+  var cparts = d3.select("#mchart").select(".clicked").classed("clicked", false);
+  d3.select(tinput).classed("clicked", true);
+  var dayone = parseInt(d3.select(tinput).attr("weekstart"));
+  var endweek = dayone +6;
+  removeAllWorkouts();
+  loadspec(dayone, endweek);
 }
 
 function encodetime(h, m, s)

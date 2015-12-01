@@ -102,6 +102,14 @@ require_once('src/datetime.php');
       $dwork = getWorkoutJSONOther($username, $beginloc, $numberofworkouts, false);
       echo $dwork;
     }
+    if($_POST['submitting'] == 'jsonwktsspecother')
+    {
+      $username = $_POST['username'];
+      $begindate = intval($_POST['begin']);
+      $enddate = intval($_POST['end']);
+      $dwork = getWorkoutJSONSpecOther($username, $begindate, $enddate, false);
+      echo $dwork;
+    }
     else if($_POST['submitting'] == 'mgraphother')
     {
       $username = $_POST['username'];

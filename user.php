@@ -43,7 +43,6 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
     {
     ?>
     <input type="hidden" value="<?php echo $_GET['u']; ?>" id="ggcurrentusername" />
-    
     <h1 class="text-center"><?php echo $_GET['u']; ?>'s Workouts</h1>
     <!--iframe src="test1.php" height="200" style="display:block;margin: 0 auto;width:820px;"></iframe-->
     <svg id="mchart"></svg>
