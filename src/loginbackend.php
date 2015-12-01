@@ -73,8 +73,9 @@ function user_exists($username)
   $stm = "SELECT salt FROM " . GG_PREFIX . "users WHERE username=?";
   $sth = $pdo->prepare($stm);
   $sth->execute(array($username));
-  if(empty($sth)) // If the username doesn't exist..
+  if($sth->rowCount() == 0) {// If the username doesn't exist..
     return false;
+  }
   return true;
 }
 

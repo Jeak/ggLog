@@ -75,7 +75,7 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
     }
     else {
     ?>
-    Otherwise..
+    <h1 class="text-center">No such user.</h1>
     <?php
     }
     ?>

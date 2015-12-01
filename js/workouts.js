@@ -582,6 +582,17 @@ function submitUploadFlotrackr()
 	{
 		formData.append("csvfile", file, file.name);
 		formData.append("submitting", "flotrackrimport");
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'accept.php', true);
+		xhr.onload = function () {
+		  if (xhr.status === 200) {
+			// File(s) uploaded.
+			alert(xhr.responseText);
+		  } else {
+			alert('An error occurred!');
+		  }
+		};
+		xhr.send(formData);
 		//Finish formData
 	}
 	

@@ -89,8 +89,14 @@ require_once('src/datetime.php');
       }
       else if($_POST['submitting'] == 'flotrackrimport')
       {
-		  
-	  }
+        $csv = $_FILES['csvfile'];
+        $rand = "./csv/" . substr(md5(microtime()),0,10) . ".csv";
+        move_uploaded_file($csv["tmp_name"], $rand);
+        $content = file_get_contents($rand);
+        //echo $content;
+        importFromFlotrackr($content);
+        unlink($rand);
+      }
     }
 	else
 	{

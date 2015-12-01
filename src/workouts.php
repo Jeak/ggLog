@@ -501,13 +501,21 @@ function importFromFlotrackr($inputstring)
 	
 	//Check if the first line is correct # of commas
 	$inputstring = trim($inputstring);
-	$list = explode("\n",$inputstring);
-		
-	if(count($list) < 2) // If it has no content
+	$list = explode("\n\"",$inputstring);
+  foreach($list as &$le)
+  {
+    $le = "\"" . $le;
+  }
+  
+	if(count($list) < 2){ // If it has no content
+    echo "no content";
 		return false;
-	if(substr_count($list[0],",") != 13) // If it has incorrect number of commas
+  }
+	if(substr_count($list[0],",") != 13) {// If it has incorrect number of commas
+    echo "incnorr lines " . substr_count($list[0], ",");
 		return false;
-		
+  }
+  
 	$usefulparts = array(); // will be filled after parsing.
 	//Date, Name, Minutes, Seconds, Distance, Unit, Feel, Notes, Cross Train Type, Calulate Pace, Field 1, Field 2, Field 3, Field 4
 	/* [][0] = date, string x
@@ -532,6 +540,8 @@ function importFromFlotrackr($inputstring)
 		$usefulparts[$i] = array();
 		$list[$i] = trim($list[$i]);
 		$sublist = explode("\",\"", $list[$i]); //Split at ","
+    /*if($i == 109)
+      print_r($sublist); */
 		if(count($sublist) == 14) // If there's the right number
 			$usefulparts[$i] = $sublist;
 		else if(count($sublist) > 14) // If too many, assume "," comes from "notes" section
@@ -550,14 +560,16 @@ function importFromFlotrackr($inputstring)
 			}
 			$usefulparts[$i][7] .= $sublist[count($sublist)-7];
 		}
-		else if(count($sublist) < 14) // Too little, quit.
+		else if(count($sublist) < 14) {// Too little, quit.
+      echo "too little on $i";
 			return false;
+    }
 		// Remove extra " before first and after last.
 		$usefulparts[$i][0] = substr($usefulparts[$i][0], 1);
 		$usefulparts[$i][13] = substr($usefulparts[$i][13], 0, strlen($usefulparts[$i][13])-1);
 	}
-	
-	for($i=0;$i<count($usefulparts);++$i)
+	//print_r($usefulparts);
+	for($i=1;$i<count($usefulparts);++$i)
 	{
 		$notes;
 		switch($usefulparts[$i][6]) { // for "I feel..."
@@ -569,10 +581,10 @@ function importFromFlotrackr($inputstring)
 			default: $notes = ""; break;
 		}
 		$notes .= $usefulparts[$i][7]; // Add actual notes.
-		for($i=1;$i<=4;++$i) //Add fields 1-4
+		for($j=1;$j<=4;++$j) //Add fields 1-4
 		{
-			if($usefulparts[$i][9+$i] != "")
-				$notes .= "\n" . $i . ". " . $usefulparts[$i][9+$i];
+			if($usefulparts[$i][9+$j] != "")
+				$notes .= "\n" . $j . ". " . $usefulparts[$i][9+$j];
 		}
 		
 		$ymd = $usefulparts[$i][0]; // Parse date into year, month, day
@@ -594,7 +606,7 @@ function importFromFlotrackr($inputstring)
 		
 		$distance = intval("0" . $usefulparts[$i][4]);
 		
-		if($hms[5] == "kilometers")
+		if($usefulparts[$i][5] == "kilometers")
 			$distance *= 0.621;
 		
 		addworkout(-1,$ymd[0], $ymd[1], $ymd[2], $usefulparts[$i][1], $distance, $hms[0], $hms[1], $hms[2], $notes);
