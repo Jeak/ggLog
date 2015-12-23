@@ -109,10 +109,10 @@ function loadmore(howmany)
       anymore = jsonData['more'];
       if(jsonData['more'] == false)
       {
-        if(imb)
+/*        if(imb)
           $("#loadmoremobilebutton").remove();
         else
-          $("#loadmorebutton").remove();
+          $("#loadmorebutton").remove(); */
       }
     }
   );
@@ -132,7 +132,9 @@ function loadspec(begin, end)
       var jsonData = JSON.parse(data);
       if(!imb) {
         for(var i=0;i<jsonData['count'];++i)
+	{
           $("#loadmorebutton").before(createJSONworkoutDesktop(jsonData[i]));
+	}
       }
       else {
         //alert(createJSONworkoutMobile(jsonData[0]));

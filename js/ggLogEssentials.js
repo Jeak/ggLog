@@ -66,7 +66,7 @@ function SetDateDropdown(idname, prefix, showlabel, year, month, date)
     diff = 7;
   }
   diff*= -1;
-  for(var i=0;i>diff;i--)
+  for(var i=1;i>diff;i--)
   {
     if(year == (todayyear+i))
     {
