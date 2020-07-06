@@ -26,9 +26,12 @@ function SetDateDropdown(idname, prefix, showlabel, year, month, date)
   }
   var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var contents ="";
-  if(showlabel == true)
+  if(showlabel !== false)
   {
-    contents += "Date: ";
+    if (showlabel === true) {
+      showlabel = "Date";
+    }
+    contents += showlabel + ": ";
   }
   contents +="<select name=\"" + prefix + "month\" style=\"width:70px;padding-left:3px;padding-right:3px;\" class=\"mblil form-control\"> ";
   for(var i=0;i<12;++i)
