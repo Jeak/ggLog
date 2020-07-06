@@ -27,15 +27,21 @@
       echo "<br style=\"clear:both\" />";
     }
 
-    if(isset($_GET['part']))
+    function createDB($dbHost, $dbName, $dbUser, $dbPass) {
+      $pdo = new PDO("mysql:host=" . $dbHost, $dbUser, $dbPass);
+      $pdo->exec("CREATE DATABASE IF NOT EXISTS ".$dbName.";");
+    }
+
+    if(isset($_POST['part']))
     {
-      if($_GET['part'] == "1")
+      if($_POST['part'] == "1")
       {
         $errors = false;
 
-      //return new PDO("mysql:host=" . GG_HOST . ";dbname=" . GG_DATABASE, GG_USERNAME, GG_PASSWORD );
+        //return new PDO("mysql:host=" . GG_HOST . ";dbname=" . GG_DATABASE, GG_USERNAME, GG_PASSWORD );
         $pdo = null;
         try { // Check if the
+          createDB($_POST['dbhost'], $_POST['dbname'], $_POST['dbuser'], $_POST['dbpass']);
           $pdo = new PDO("mysql:host=" . $_POST['dbhost'] . ";dbname=" . $_POST['dbname'], $_POST['dbuser'], $_POST['dbpass']);
         }
         catch (PDOException $e)
@@ -119,7 +125,8 @@
       echo "<h2>Welcome to the famous 5-hour ggLog Installation!</h2>";
       echo "<p>We will only need to set up database info.</p>";
 
-      echo "<form action=\"install.php?part=1\" method=\"post\">\n";
+      echo "<form action=\"install.php\" method=\"post\">\n";
+      echo "<input type=\"hidden\" name=\"part\" value=\"1\" />";
       echo "<div style=\"float:left;\">Database name: </div>";
       echo  "<div style=\"float;width:300px;\"><input type=\"text\" name=\"dbname\" value=\"ggLog\" class=\"form-control\" /></div>";
       clearboth();
