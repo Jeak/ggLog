@@ -303,6 +303,17 @@ function viewseasons()
     document.getElementById("editseasons").className = "ggLog-hide";
 
 }
+function importstrava()
+{
+  closenewworkout();
+  var current = document.getElementById("importstrava").className;
+
+  if (current == "ggLog-hide") {
+    document.getElementById("importstrava").className = "ggLog-newworkout";
+  } else {
+    document.getElementById("importstrava").className = "ggLog-hide";
+  }
+}
 
 function mouseoverseason(id)
 {

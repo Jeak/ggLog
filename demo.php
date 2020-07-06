@@ -96,6 +96,19 @@ if(!isset($_SESSION[GG_PREFIX . 'username']))
       <div class="ggLog-buttonholder btn-group" id="buttonholder">
         <button type="button" class="btn btn-default" style="" onclick="javascript:newworkout();">New Workout</button>
         <button type="button" class="btn btn-default" onclick="viewseasons();">Seasons</button>
+        <button type="button" class="btn btn-default" onclick="importstrava();">Import from Strava</button>
+      </div>
+    </div>
+    <div class="ggLog-hide" id="importstrava">
+      <div class="ggLog-center">
+        <form action="demo.php" method="post" class="form-inline" id="newworkoutform">
+          <input type="hidden" name="submitting" value="importstrava" />
+          <p class="text-center"><b>Import from Strava</b></p>
+          <div style="position:relative;height:35px;width:100%;">
+            <div style="position:absolute;top:0;right:0;" id="strava-begin">
+            </div>
+          </div>
+        </form>
       </div>
     </div>
     <div class="ggLog-hide" id="editseasons">
